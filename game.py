@@ -2,7 +2,6 @@ from personnage import personnage
 from sword import sword
 from surface import surface
 import pygame
-import time
 
 bg = pygame.image.load("image/backgroundComp.png")
 bg2 = pygame.image.load("image/bg2.png")
