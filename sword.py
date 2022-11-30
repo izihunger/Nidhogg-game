@@ -1,7 +1,7 @@
 import pygame
 
 swordRight = pygame.image.load("image/Sword.png")
-swordRight = pygame.transform.scale(swordRight, (44, 10))
+swordRight = pygame.transform.scale(swordRight, (55, 13))
 swordLeft = pygame.transform.flip(swordRight, True, False)
 swordBot = pygame.transform.rotate(swordLeft, 90)
 swordTop = pygame.transform.rotate(swordLeft, 270)
@@ -13,7 +13,7 @@ class sword:
         self.y = y
         self.sprite = psprite
         self.hitbox = pygame.Rect(0,0,0,0)
-        self.size = (44, 10)
+        self.size = (55, 13)
         self.throw = 0, "", 0
         self.animCounter = 0
 
@@ -26,14 +26,14 @@ class sword:
         if 0 < self.x + 15*direction < 800-self.hitbox.width:
             if self.animCounter == 3:
                 self.animCounter = 0
-                self.setPos(self.x + 15*direction, self.y + 20, (44, 10))
+                self.setPos(self.x + 15*direction, self.y + 25, self.size)
                 self.sprite = spritesAnimSword[self.animCounter]
             else:
                 self.animCounter += 1
                 if self.animCounter % 2 == 0:
-                    self.setPos(self.x + 15*direction, self.y + 20, (44, 10))
+                    self.setPos(self.x + 15*direction, self.y + 25, self.size)
                 else:
-                    self.setPos(self.x + 15*direction, self.y - 20, (10, 44))
+                    self.setPos(self.x + 15*direction, self.y - 25, self.size)
                 self.sprite = spritesAnimSword[self.animCounter]
         else:
             self.stopThrow(swordRight)
@@ -44,10 +44,9 @@ class sword:
         else:
             i = -1
         self.animationSword(i)
-        #self.setPos(self.x + i, self.y, (44, 10))
 
     def stopThrow(self, sprite):
         self.throw = 0, "", 0
-        self.setPos(self.x, 470, (44, 10))
+        self.setPos(self.x, 470, self.size)
         self.rotation = 0
         self.sprite = sprite

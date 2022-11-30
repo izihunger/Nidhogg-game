@@ -18,17 +18,15 @@ miniaMap4 = pygame.transform.scale(pygame.image.load("image/bg4Minia.png"), (300
 plateforme = pygame.transform.scale(pygame.image.load("image/plateforme.PNG"), (100, 20))
 plateforme2 = pygame.transform.scale(pygame.image.load("image/plateforme2.PNG"), (460, 76))
 
-sizeSprites = height, width = 44, 64
+sizeSprites = height, width = 55, 80
 
-attaqueRight = pygame.transform.scale(pygame.image.load("image/attaqueFrame.png"), sizeSprites)
-attaqueRight2 = pygame.transform.scale(pygame.image.load("image/attaqueFrame2.png"), sizeSprites)
-attaqueLeft = pygame.transform.flip(attaqueRight, True, False)
-attaqueLeft2 = pygame.transform.flip(attaqueRight2, True, False)
-
-animationAttaqueRight = [attaqueRight, attaqueRight2]
+moveRight = pygame.transform.scale(pygame.image.load("image/moveFrame.png"), sizeSprites)
+moveLeft = pygame.transform.scale(pygame.image.load("image/moveFrame2.png"), sizeSprites)
+moveRight2 = pygame.transform.flip(moveRight, True, False)
+moveLeft2 = pygame.transform.flip(moveLeft, True, False)
 
 swordRight = pygame.image.load("image/Sword.png")
-swordRight = pygame.transform.scale(swordRight, (44, 10))
+swordRight = pygame.transform.scale(swordRight, (55, 13))
 swordLeft = pygame.transform.flip(swordRight, True, False)
 swordBot = pygame.transform.rotate(swordLeft, 90)
 swordTop = pygame.transform.rotate(swordLeft, 270)
@@ -61,8 +59,8 @@ class label:
 class game:
     def __init__(self, screen):
         self.run = True
-        self.p1 = personnage(1, 200, 300, "right", attaqueRight, swordRight)
-        self.p2 = personnage(2, 600, 300, "left", attaqueLeft, swordLeft)
+        self.p1 = personnage(1, 200, 300, "right", moveRight, swordRight)
+        self.p2 = personnage(2, 600, 300, "left", moveRight2, swordLeft)
         self.sword_list = []
         self.swordNumber = 0
         self.screen = screen
@@ -369,18 +367,18 @@ class game:
     def startGame(self):
         self.sword_list = []
         self.plateform = [self.plateform[0]]
-        self.cameraX = -(map[self.map][self.level].get_width()/2 - 400)
+        self.cameraX = -(map[self.map][self.level].get_width() / 2 - 400)
         self.swordNumber = 0
         # Create player 1
         self.p1.hitbox = pygame.Rect((self.p1.x, self.p1.y), sizeSprites)
         # Create player 2
         self.p2.hitbox = pygame.Rect((self.p2.x, self.p2.y), sizeSprites)
         # Create sword 1 for player 1 when spawn
-        s1 = sword(self.p1.x + 35, self.p1.y + 10, swordRight)
-        s1.hitbox = pygame.Rect(s1.x, s1.y, 44, 10)
+        s1 = sword(self.p1.x + 48, self.p1.y + 15, swordRight)
+        s1.hitbox = pygame.Rect((s1.x, s1.y), s1.size)
         # Create sword 2 for player 2 when spawn
-        s2 = sword(self.p2.x - 35, self.p2.y + 10, swordLeft)
-        s2.hitbox = pygame.Rect(s2.x, s2.y, 44, 10)
+        s2 = sword(self.p2.x - 48, self.p2.y + 15, swordLeft)
+        s2.hitbox = pygame.Rect((s2.x, s2.y), s2.size)
         # Affectation
         self.addSword(self.p1, s1)
         self.addSword(self.p2, s2)
@@ -391,8 +389,10 @@ class game:
         if self.map == 1:
             self.plateform = [
                 surface(pygame.Rect((0, 479), (map[self.map][self.level].get_width(), 161)), None),
-                surface(pygame.Rect((0+self.cameraX, 415), (plateforme2.get_width(), plateforme2.get_height())), plateforme2),
-                surface(pygame.Rect((plateforme2.get_width()+ 100 + self.cameraX, 390), (plateforme.get_width(), plateforme.get_height())), plateforme)]
+                surface(pygame.Rect((0 + self.cameraX, 415), (plateforme2.get_width(), plateforme2.get_height())),
+                        plateforme2),
+                surface(pygame.Rect((plateforme2.get_width() + 100 + self.cameraX, 350),
+                                    (plateforme.get_width(), plateforme.get_height())), plateforme)]
 
     def changeLevel(self, nextLevel, player):
         self.level += nextLevel
@@ -405,7 +405,7 @@ class game:
             self.cameraX = -(map[self.map][self.level].get_width() - 800)
         if self.map == 1:
             if self.level in [0, 1, 2, 3]:
-                self.plateform.append(surface(pygame.Rect((200 + self.cameraX, 390), (100, 20)), plateforme))
+                self.plateform.append(surface(pygame.Rect((200 + self.cameraX, 350), (100, 20)), plateforme))
         self.p1.timingRespawn = 0
         self.p1.setPos(200, 300, sizeSprites)
         self.p1.position = "right"
@@ -413,11 +413,11 @@ class game:
         self.p2.setPos(600, 300, sizeSprites)
         self.p2.position = "left"
         # Create sword 1 for player 1 when spawn
-        s1 = sword(self.p1.x + 35, self.p1.y + 10, swordRight)
-        s1.hitbox = pygame.Rect(s1.x, s1.y, 44, 10)
+        s1 = sword(self.p1.x + 48, self.p1.y + 15, swordRight)
+        s1.hitbox = pygame.Rect((s1.x, s1.y), s1.size)
         # Create sword 2 for player 2 when spawn
-        s2 = sword(self.p2.x - 35, self.p2.y + 10, swordLeft)
-        s2.hitbox = pygame.Rect(s2.x, s2.y, 44, 10)
+        s2 = sword(self.p2.x - 48, self.p2.y + 15, swordLeft)
+        s2.hitbox = pygame.Rect((s2.x, s2.y), s2.size)
         # Affectation
         self.addSword(self.p1, s1)
         self.addSword(self.p2, s2)
@@ -456,8 +456,14 @@ class game:
     def timingRespawn(self):
         if self.p1.timingRespawn:
             self.p1.timingRespawn -= 1
+            if not self.p1.timingRespawn:
+                self.p1.setPos(50, 300, self.p1.size)
+                self.p1.sword.setPos(self.p1.x + 48, self.p1.y + 15, self.p1.sword.size)
         if self.p2.timingRespawn:
             self.p2.timingRespawn -= 1
+            if not self.p2.timingRespawn:
+                self.p2.setPos(750, 300, self.p2.size)
+                self.p2.sword.setPos(self.p2.x - 48, self.p2.y + 15, self.p2.sword.size)
 
     def timerPickUpSword(self):
         if self.p1.timerpickUp:
@@ -532,11 +538,11 @@ class game:
                 self.p2.pickUpSword(s, self.p2.position)
 
     def changeCamera(self):
-        #if not self.p1.timingRespawn and not self.p2.timingRespawn:
+        # if not self.p1.timingRespawn and not self.p2.timingRespawn:
         if self.p1.x >= self.p2.x:
-            centerBetweenPlayers = abs(self.p1.x + self.p1.hitbox.width - self.p2.x) / 2
+            centerBetweenPlayers = abs(self.p1.x - self.p2.x) / 2
         else:
-            centerBetweenPlayers = abs(self.p2.x + self.p2.hitbox.width - self.p1.x) / 2
+            centerBetweenPlayers = abs(self.p2.x - self.p1.x) / 2
         p1Globalx = self.p1.x + abs(self.cameraX)
         p2Globalx = self.p2.x + abs(self.cameraX)
         if p1Globalx > p2Globalx:
@@ -545,19 +551,17 @@ class game:
             centerMap = p2Globalx - centerBetweenPlayers
         move = ((centerMap - 400) - abs(self.cameraX))
         if -(map[self.map][self.level].get_width() - 800) <= self.cameraX - move <= 0:
-            self.cameraX -= move
             if move:
-                if not self.p1.timingRespawn:
-                    self.p1.setPos(self.p1.x - move, self.p1.y, self.p1.size)
-                    if self.p1.sword is not None:
-                        self.p1.sword.setPos(self.p1.sword.x - move, self.p1.sword.y, self.p1.sword.size)
-                if not self.p2.timingRespawn:
-                    self.p2.setPos(self.p2.x - move, self.p2.y, self.p2.size)
-                    if self.p2.sword is not None:
-                        self.p2.sword.setPos(self.p2.sword.x - move, self.p2.sword.y, self.p2.sword.size)
+                self.cameraX -= move
+                self.p1.setPos(self.p1.x - move, self.p1.y, self.p1.size)
+                if self.p1.sword is not None:
+                    self.p1.sword.setPos(self.p1.sword.x - move, self.p1.sword.y, self.p1.sword.size)
+                self.p2.setPos(self.p2.x - move, self.p2.y, self.p2.size)
+                if self.p2.sword is not None:
+                    self.p2.sword.setPos(self.p2.sword.x - move, self.p2.sword.y, self.p2.sword.size)
                 for s in self.sword_list:
-                    if (s.throw == (1, "left", 1) or s.throw == (1, "right", 1) or s.throw == (1, "left", 2) \
-                        or s.throw == (1, "right", 2)) or (s != self.p1.sword and s != self.p2.sword):
+                    if (s.throw == (1, "left", 1) or s.throw == (1, "right", 1) or s.throw == (1, "left", 2) or
+                            s.throw == (1, "right", 2)) or (s != self.p1.sword and s != self.p2.sword):
                         s.setPos(s.x - move, s.y, s.size)
-                for plateforme in self.plateform[1:]:
-                    plateforme.hitbox.x -= move
+                for plateform in self.plateform[1:]:
+                    plateform.hitbox.x -= move
