@@ -9,6 +9,9 @@ if __name__ == "__main__":
         pygame.key.set_repeat(1, 1)
 
         game = game(screen)
+        # Affectation key
+        game.p1.setCtrlPlayer(pygame.K_z, pygame.K_q, pygame.K_d, pygame.K_e)
+        game.p2.setCtrlPlayer(pygame.K_UP, pygame.K_LEFT, pygame.K_RIGHT, pygame.K_RSHIFT)
 
         counter = 0
 

@@ -61,8 +61,8 @@ class label:
 class game:
     def __init__(self, screen):
         self.run = True
-        self.p1 = None
-        self.p2 = None
+        self.p1 = personnage(1, 200, 300, "right", attaqueRight, swordRight)
+        self.p2 = personnage(2, 600, 300, "left", attaqueLeft, swordLeft)
         self.sword_list = []
         self.swordNumber = 0
         self.screen = screen
@@ -374,10 +374,8 @@ class game:
         self.cameraX = -(map[self.map][self.level].get_width()/2 - 400)
         self.swordNumber = 0
         # Create player 1
-        self.p1 = personnage(1, 200, 300, "right", attaqueRight, swordRight)
         self.p1.hitbox = pygame.Rect((self.p1.x, self.p1.y), sizeSprites)
         # Create player 2
-        self.p2 = personnage(2, 600, 300, "left", attaqueLeft, swordLeft)
         self.p2.hitbox = pygame.Rect((self.p2.x, self.p2.y), sizeSprites)
         # Create sword 1 for player 1 when spawn
         s1 = sword(self.p1.x + 35, self.p1.y + 10, swordRight)
@@ -388,19 +386,15 @@ class game:
         # Affectation
         self.addSword(self.p1, s1)
         self.addSword(self.p2, s2)
-        # Affectation key
-        self.p1.setCtrlPlayer(pygame.K_z, pygame.K_q, pygame.K_d, pygame.K_e)
-        self.p2.setCtrlPlayer(pygame.K_UP, pygame.K_LEFT, pygame.K_RIGHT, pygame.K_RSHIFT)
         # Display the game
         self.displayBg()
         self.displayPlayers()
         self.displaySword()
         if self.map == 1:
             self.listHitbox = [pygame.Rect((0, 479), (map[self.map][self.level].get_width(), 161)),
-                               pygame.Rect((0, 415), (plateforme2.get_width(), plateforme2.get_height()))]
+                               pygame.Rect((0+self.cameraX, 415), (plateforme2.get_width(), plateforme2.get_height()))]
             self.plateform = [
-                surface(pygame.Rect((0, 415), (plateforme2.get_width(), plateforme2.get_height())), plateforme2)]
-
+                surface(pygame.Rect((0+self.cameraX, 415), (plateforme2.get_width(), plateforme2.get_height())), plateforme2)]
 
     def changeLevel(self, nextLevel, player):
         self.level += nextLevel
