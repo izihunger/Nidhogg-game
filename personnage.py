@@ -60,12 +60,12 @@ class personnage:
         self.y = y
         self.hitbox = pygame.Rect((x, y), sizePers)
 
-    def jumps(self, hb):
+    def jumps(self, surfaces):
         self.jumpAnim()
         collision = False
-        for hitbox in hb[1:]:
-            if (hitbox.left <= self.hitbox.left <= hitbox.right or hitbox.left <= self.hitbox.right <= hitbox.right) \
-                    and self.hitbox.top <= hitbox.bottom < self.hitbox.bottom:
+        for surfaces in surfaces[1:]:
+            if (surfaces.hitbox.left <= self.hitbox.left <= surfaces.hitbox.right or surfaces.hitbox.left <= self.hitbox.right <= surfaces.hitbox.right) \
+                    and self.hitbox.top <= surfaces.hitbox.bottom < self.hitbox.bottom:
                 collision = True
         if self.y > self.jumpHeight and not collision:
             self.setPos(self.x, self.y - 10, sizePersonnage)
@@ -75,18 +75,21 @@ class personnage:
             self.jump = 0
             self.fall = 1
 
-    def falling(self, hb):
+    def falling(self, surfaces):
         self.jumpAnim()
-        if self.hitbox.collidelistall(hb) != [] and hb[self.hitbox.collidelistall(hb)[0]].top - 10 <= self.hitbox.bottom <= hb[self.hitbox.collidelistall(hb)[0]].top + 10:
-            self.setPos(self.x, hb[self.hitbox.collidelistall(hb)[0]].top - 63, sizePersonnage)
-            self.attaqueAnim()
-            if self.sword is not None:
-                self.sword.setPos(self.sword.x, self.y + 10, (44, 10))
-            self.animJumpCounter = 0
-            self.fall = 0
-        else:
-            self.setPos(self.x, self.y + 10, sizePersonnage)
-            self.animJumpCounter += 1
+        for surface in surfaces:
+            if self.hitbox.colliderect(surface.hitbox) == 1 and self.hitbox.y - 1 + self.hitbox.height >= surface.hitbox.y > self.hitbox.y:
+                print(surface.hitbox.y)
+                print(self.hitbox.y)
+                self.setPos(self.x, surface.hitbox.y - 63, sizePersonnage)
+                self.attaqueAnim()
+                if self.sword is not None:
+                    self.sword.setPos(self.sword.x, self.y + 10, (44, 10))
+                self.animJumpCounter = 0
+                self.fall = 0
+                return 0
+        self.setPos(self.x, self.y + 10, sizePersonnage)
+        self.animJumpCounter += 1
 
     def setCtrlPlayer(self, jCtrl, lCtrl, rCtrl, tCtrl):
         self.jumpCtrl = jCtrl
@@ -94,7 +97,7 @@ class personnage:
         self.rightCtrl = rCtrl
         self.throwCtrl = tCtrl
 
-    def movePlayer(self, key, opponent, listHb):
+    def movePlayer(self, key, opponent, surfaces):
         if not self.timingRespawn:
             if key[self.throwCtrl] and self.sword is not None:
                 self.sword.throw = 1, self.position, self.numberPlayer
@@ -105,12 +108,10 @@ class personnage:
                 self.jumpHeight = self.y - 140
             elif key[self.leftCtrl] and self.x > 0:
                 collision = False
-                if len(self.hitbox.collidelistall(listHb)) == 1 and self.hitbox.collidelistall(listHb)[0] != 0 and listHb[self.hitbox.collidelistall(listHb)[0]].top < (self.y + self.hitbox.height-5):
-                    collision = True
-                elif len(self.hitbox.collidelistall(listHb)) > 1:
-                    for hb in self.hitbox.collidelistall(listHb)[1:]:
-                        if listHb[hb].top <= (self.y + self.hitbox.height) and listHb[hb].right - 5 <= self.hitbox.left <= listHb[hb].right + 5:
-                            collision = True
+                for surface in surfaces:
+                    if self.hitbox.colliderect(surface.hitbox) == 1 and self.hitbox.y-1 + self.hitbox.height != surface.hitbox.y and \
+                            self.hitbox.x <= surface.hitbox.x-1 + surface.hitbox.width and self.hitbox.x-1+self.hitbox.width > surface.hitbox.x + 10:
+                        collision = True
                 if not collision:
                     self.position = "left"
                     if self.sword is not None:
@@ -140,13 +141,10 @@ class personnage:
             elif key[self.rightCtrl] and self.x < 756:
                 self.position = "right"
                 collision = False
-                if len(self.hitbox.collidelistall(listHb)) == 1 and self.hitbox.collidelistall(listHb)[0] != 0 and \
-                        listHb[self.hitbox.collidelistall(listHb)[0]].top < (self.y + self.hitbox.height - 5):
-                    collision = True
-                elif len(self.hitbox.collidelistall(listHb)) > 1:
-                    for hb in self.hitbox.collidelistall(listHb)[1:]:
-                        if listHb[hb].top <= (self.y + self.hitbox.height) and listHb[hb].left - 5 <= self.hitbox.right <= listHb[hb].left + 5:
-                            collision = True
+                for surface in surfaces:
+                    if self.hitbox.colliderect(surface.hitbox) == 1 and self.hitbox.y-1 + self.hitbox.height != surface.hitbox.y and \
+                            self.hitbox.x-1+self.hitbox.width >= surface.hitbox.x and self.hitbox.x < surface.hitbox.x-1 + surface.hitbox.width - 10:
+                        collision = True
                 if not collision:
                     self.position = "right"
                     if self.sword is not None:
@@ -174,11 +172,16 @@ class personnage:
                             self.attaqueAnim()
                             self.setPos(self.x + self.speed, self.y, sizePersonnage)
         if self.jump:
-            self.jumps(listHb)
-        if self.hitbox.collidelist(listHb) == -1 and not self.jump:
+            self.jumps(surfaces)
+        f = False
+        for surface in surfaces :
+            if self.hitbox.colliderect(surface.hitbox):
+                f = True
+                break
+        if not f and not self.jump:
             self.fall = 1
         if self.fall:
-            self.falling(listHb)
+            self.falling(surfaces)
 
     def dieP(self, x, y, direction, sword_list, swordNumber):
         if self.sword != None:

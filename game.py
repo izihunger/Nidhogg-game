@@ -69,8 +69,7 @@ class game:
         self.cameraX = 0
         self.map = 1
         self.level = 2
-        self.listHitbox = [pygame.Rect((0, 479), (map[self.map][self.level].get_width(), 161))]
-        self.plateform = []
+        self.plateform = [surface(pygame.Rect((0, 479), (map[self.map][self.level].get_width(), 161)), None)]
         self.menu = 1
         self.menuTimer = 0
         self.isGameStarted = 0
@@ -369,8 +368,7 @@ class game:
 
     def startGame(self):
         self.sword_list = []
-        self.listHitbox = [pygame.Rect((0, 479), (map[self.map][self.level].get_width(), 161))]
-        self.plateform = []
+        self.plateform = [self.plateform[0]]
         self.cameraX = -(map[self.map][self.level].get_width()/2 - 400)
         self.swordNumber = 0
         # Create player 1
@@ -391,33 +389,29 @@ class game:
         self.displayPlayers()
         self.displaySword()
         if self.map == 1:
-            self.listHitbox = [pygame.Rect((0, 479), (map[self.map][self.level].get_width(), 161)),
-                               pygame.Rect((0+self.cameraX, 415), (plateforme2.get_width(), plateforme2.get_height()))]
             self.plateform = [
-                surface(pygame.Rect((0+self.cameraX, 415), (plateforme2.get_width(), plateforme2.get_height())), plateforme2)]
+                surface(pygame.Rect((0, 479), (map[self.map][self.level].get_width(), 161)), None),
+                surface(pygame.Rect((0+self.cameraX, 415), (plateforme2.get_width(), plateforme2.get_height())), plateforme2),
+                surface(pygame.Rect((plateforme2.get_width()+ 100 + self.cameraX, 390), (plateforme.get_width(), plateforme.get_height())), plateforme)]
 
     def changeLevel(self, nextLevel, player):
         self.level += nextLevel
         self.swordNumber = 0
         self.sword_list = []
-        self.plateform = []
+        self.plateform = [self.plateform[0]]
         if player == 1:
             self.cameraX = 0
         else:
             self.cameraX = -(map[self.map][self.level].get_width() - 800)
         if self.map == 1:
-            if len(self.listHitbox) > 1:
-                self.listHitbox = [self.listHitbox[0]]
             if self.level in [0, 1, 2, 3]:
-                self.listHitbox.append(pygame.Rect((200 + self.cameraX, 390), (100, 20)))
                 self.plateform.append(surface(pygame.Rect((200 + self.cameraX, 390), (100, 20)), plateforme))
-        else:
-            if len(self.listHitbox) > 1:
-                self.listHitbox = [self.listHitbox[0]]
         self.p1.timingRespawn = 0
         self.p1.setPos(200, 300, sizeSprites)
+        self.p1.position = "right"
         self.p2.timingRespawn = 0
         self.p2.setPos(600, 300, sizeSprites)
+        self.p2.position = "left"
         # Create sword 1 for player 1 when spawn
         s1 = sword(self.p1.x + 35, self.p1.y + 10, swordRight)
         s1.hitbox = pygame.Rect(s1.x, s1.y, 44, 10)
@@ -441,9 +435,9 @@ class game:
         self.screen.blit(map[self.map][self.level], (self.cameraX, 0))
         if self.plateform != []:
             for plat in self.plateform:
-                self.screen.blit(plat.background, (plat.hitbox.x, plat.hitbox.y))
-        for hb in self.listHitbox:
-            pygame.draw.rect(self.screen, (0, 255, 0), hb, 1)
+                pygame.draw.rect(self.screen, (0, 255, 0), plat.hitbox, 1)
+                if plat.background is not None:
+                    self.screen.blit(plat.background, (plat.hitbox.x, plat.hitbox.y))
 
     def displayPlayers(self):
         self.p1.displayPlayer(self.screen)
@@ -477,10 +471,10 @@ class game:
         else:
             self.timerPickUpSword()
             self.timingRespawn()
-            self.p1.movePlayer(key, self.p2, self.listHitbox)
+            self.p1.movePlayer(key, self.p2, self.plateform)
             if self.p1.x >= 750 and self.level < len(map[self.map]) - 1:
                 self.changeLevel(1, 1)
-            self.p2.movePlayer(key, self.p1, self.listHitbox)
+            self.p2.movePlayer(key, self.p1, self.plateform)
             if self.p2.x <= 5 and self.level > 0:
                 self.changeLevel(-1, 2)
 
@@ -538,10 +532,11 @@ class game:
                 self.p2.pickUpSword(s, self.p2.position)
 
     def changeCamera(self):
+        #if not self.p1.timingRespawn and not self.p2.timingRespawn:
         if self.p1.x >= self.p2.x:
-            centerBetweenPlayers = abs(self.p1.x - self.p2.x + self.p2.hitbox.width) / 2
+            centerBetweenPlayers = abs(self.p1.x + self.p1.hitbox.width - self.p2.x) / 2
         else:
-            centerBetweenPlayers = abs(self.p2.x - self.p1.x + self.p1.hitbox.width) / 2
+            centerBetweenPlayers = abs(self.p2.x + self.p2.hitbox.width - self.p1.x) / 2
         p1Globalx = self.p1.x + abs(self.cameraX)
         p2Globalx = self.p2.x + abs(self.cameraX)
         if p1Globalx > p2Globalx:
@@ -564,8 +559,5 @@ class game:
                     if (s.throw == (1, "left", 1) or s.throw == (1, "right", 1) or s.throw == (1, "left", 2) \
                         or s.throw == (1, "right", 2)) or (s != self.p1.sword and s != self.p2.sword):
                         s.setPos(s.x - move, s.y, s.size)
-                if len(self.listHitbox) > 1:
-                    for hb in self.listHitbox[1:]:
-                        hb.x = hb.left - move
-                for plateforme in self.plateform:
-                    plateforme.hitbox.x = plateforme.hitbox.left - move
+                for plateforme in self.plateform[1:]:
+                    plateforme.hitbox.x -= move
