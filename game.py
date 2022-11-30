@@ -8,7 +8,7 @@ bg2 = pygame.image.load("image/bg2.png")
 bg3 = pygame.image.load("image/bg3.jpg")
 bg4 = pygame.image.load("image/bg4.png")
 
-map = [[bg, bg, bg, bg], [bg2, bg2, bg2, bg2], [bg3, bg3, bg3, bg3], [bg4, bg4, bg4, bg4]]
+map = [[bg, bg, bg, bg, bg], [bg2, bg2, bg2, bg2, bg2], [bg3, bg3, bg3, bg3, bg3], [bg4, bg4, bg4, bg4, bg4]]
 
 miniaMap1 = pygame.transform.scale(pygame.image.load("image/bg1Minia.png"), (300, 150))
 miniaMap2 = pygame.transform.scale(pygame.image.load("image/bg2Minia.png"), (300, 150))
@@ -68,11 +68,9 @@ class game:
         self.screen = screen
         self.cameraX = 0
         self.map = 1
-        self.level = 1
-        self.listHitbox = [pygame.Rect((0, 479), (map[self.map][self.level].get_width(), 161)),
-                           pygame.Rect((0, 415), (plateforme2.get_width(), plateforme2.get_height()))]
-        self.plateform = [
-            surface(pygame.Rect((0, 415), (plateforme2.get_width(), plateforme2.get_height())), plateforme2)]
+        self.level = 2
+        self.listHitbox = [pygame.Rect((0, 479), (map[self.map][self.level].get_width(), 161))]
+        self.plateform = []
         self.menu = 1
         self.menuTimer = 0
         self.isGameStarted = 0
@@ -371,6 +369,9 @@ class game:
 
     def startGame(self):
         self.sword_list = []
+        self.listHitbox = [pygame.Rect((0, 479), (map[self.map][self.level].get_width(), 161))]
+        self.plateform = []
+        self.cameraX = -(map[self.map][self.level].get_width()/2 - 400)
         self.swordNumber = 0
         # Create player 1
         self.p1 = personnage(1, 200, 300, "right", attaqueRight, swordRight)
@@ -394,9 +395,15 @@ class game:
         self.displayBg()
         self.displayPlayers()
         self.displaySword()
+        if self.map == 1:
+            self.listHitbox = [pygame.Rect((0, 479), (map[self.map][self.level].get_width(), 161)),
+                               pygame.Rect((0, 415), (plateforme2.get_width(), plateforme2.get_height()))]
+            self.plateform = [
+                surface(pygame.Rect((0, 415), (plateforme2.get_width(), plateforme2.get_height())), plateforme2)]
 
-    def changeMap(self, nextMap, player):
-        self.level += nextMap
+
+    def changeLevel(self, nextLevel, player):
+        self.level += nextLevel
         self.swordNumber = 0
         self.sword_list = []
         self.plateform = []
@@ -404,11 +411,15 @@ class game:
             self.cameraX = 0
         else:
             self.cameraX = -(map[self.map][self.level].get_width() - 800)
-        if len(self.listHitbox) > 1:
-            self.listHitbox = [self.listHitbox[0]]
-        if self.level in [0, 1, 2, 3]:
-            self.listHitbox.append(pygame.Rect((200 + self.cameraX, 390), (100, 20)))
-            self.plateform.append(surface(pygame.Rect((200 + self.cameraX, 390), (100, 20)), plateforme))
+        if self.map == 1:
+            if len(self.listHitbox) > 1:
+                self.listHitbox = [self.listHitbox[0]]
+            if self.level in [0, 1, 2, 3]:
+                self.listHitbox.append(pygame.Rect((200 + self.cameraX, 390), (100, 20)))
+                self.plateform.append(surface(pygame.Rect((200 + self.cameraX, 390), (100, 20)), plateforme))
+        else:
+            if len(self.listHitbox) > 1:
+                self.listHitbox = [self.listHitbox[0]]
         self.p1.timingRespawn = 0
         self.p1.setPos(200, 300, sizeSprites)
         self.p2.timingRespawn = 0
@@ -474,10 +485,10 @@ class game:
             self.timingRespawn()
             self.p1.movePlayer(key, self.p2, self.listHitbox)
             if self.p1.x >= 750 and self.level < len(map[self.map]) - 1:
-                self.changeMap(1, 1)
+                self.changeLevel(1, 1)
             self.p2.movePlayer(key, self.p1, self.listHitbox)
             if self.p2.x <= 5 and self.level > 0:
-                self.changeMap(-1, 2)
+                self.changeLevel(-1, 2)
 
     def testKillPlayer(self):
         if self.p1.sword is not None and pygame.Rect.colliderect(self.p2.hitbox,
