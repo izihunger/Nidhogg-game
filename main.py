@@ -4,13 +4,11 @@ from game import game
 if __name__ == "__main__":
         pygame.init()
         screen = pygame.display.set_mode((800, 576))
-        bg = pygame.image.load("image/background.png")
         pygame.mouse.set_visible(True)
 
         pygame.key.set_repeat(1, 1)
 
         game = game(screen)
-        game.startGame()
 
         counter = 0
 
