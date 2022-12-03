@@ -483,10 +483,10 @@ class game:
             self.timerPickUpSword()
             self.timingRespawn()
             self.p1.movePlayer(key, self.p2, self.plateform)
-            if self.p1.x >= 750 and self.level < len(map[self.map]) - 1:
+            if self.p1.x+abs(self.cameraX) >= map[self.map][self.level].get_width()-self.p1.hitbox.width-10 and self.level < len(map[self.map]) - 1:
                 self.changeLevel(1, 1)
             self.p2.movePlayer(key, self.p1, self.plateform)
-            if self.p2.x <= 5 and self.level > 0:
+            if self.p2.x+abs(self.cameraX) <= 10 and self.level > 0:
                 self.changeLevel(-1, 2)
 
     def testKillPlayer(self):

@@ -301,7 +301,7 @@ class personnage:
 
     def dieP(self, x, y, direction, sword_list, swordNumber):
         if self.sword != None:
-            self.sword.setPos(self.sword.x, 470, (self.sword.hitbox.width, self.sword.hitbox.height))
+            self.sword.setPos(self.sword.x, self.hitbox.y + self.hitbox.height - self.sword.hitbox.height, (self.sword.hitbox.width, self.sword.hitbox.height))
         self.setPos(x, 250, self.size)
         if direction:
             self.sprite = self.moveRight
