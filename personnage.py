@@ -97,8 +97,9 @@ class personnage:
                 self.fall = 0
                 return 0
         self.setPos(self.x, self.y + 10, (35, 38))
+        if self.sword is not None:
+            self.sword.setPos(self.sword.x, self.sword.y + 10, (self.sword.hitbox.width, self.sword.hitbox.height))
         self.animJumpCounter += 1
-
     def setCtrlPlayer(self, jCtrl, lCtrl, rCtrl, tCtrl, aCtrl):
         self.jumpCtrl = jCtrl
         self.leftCtrl = lCtrl
@@ -146,7 +147,7 @@ class personnage:
                             self.moveAnimation()
                             self.setPos(self.x - self.speed, self.y, sizePersonnage)
                             self.sword.sprite = swordLeft
-                            self.sword.setPos(self.x - 48, self.sword.yy, (self.sword.hitbox.width, self.sword.hitbox.height))
+                            self.sword.setPos(self.x - 48, self.sword.y, (self.sword.hitbox.width, self.sword.hitbox.height))
                     else:
                         if self.fall:
                             self.setPos(self.x - self.speed, self.y, (35, 38))
@@ -247,7 +248,7 @@ class personnage:
                 self.attaque = False
                 if self.position == "left":
                     self.sprite = animationMoveLeft[self.animMove]
-                    self.setPos(self.x, self.y, self.size)
+                    self.setPos(self.x + 18, self.y, self.size)
                     self.sword.setPos(self.x - 48, self.y + 15, (self.sword.hitbox.width, self.sword.hitbox.height))
                 else:
                     self.sprite = animationMoveRight[self.animMove]
@@ -259,10 +260,11 @@ class personnage:
             if self.position == "left":
                 self.sprite = animationAttaqueLeft[self.animAttaque]
                 self.sword.setPos(self.sword.x-1, self.y + 19, (self.sword.hitbox.width, self.sword.hitbox.height))
+                self.setPos(self.x-1, self.y, (self.sprite.get_width(), self.sprite.get_height()))
             else:
                 self.sprite = animationAttaqueRight[self.animAttaque]
                 self.sword.setPos(self.sword.x+1, self.y + 19, (self.sword.hitbox.width, self.sword.hitbox.height))
-            self.setPos(self.x, self.y, (self.sprite.get_width(), self.sprite.get_height()))
+                self.setPos(self.x, self.y, (self.sprite.get_width(), self.sprite.get_height()))
 
     def jumpAnim(self):
         if self.animJumpCounter == 5:
