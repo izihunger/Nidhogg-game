@@ -1,22 +1,37 @@
 import pygame
 from sword import sword
 
-sizePersonnage = height, width = 55, 80
-moveRight = pygame.transform.scale(pygame.image.load("image/moveFrame.png"), sizePersonnage)
+"""moveRight = pygame.transform.scale(pygame.image.load("image/moveFrame.png"), sizePersonnage)
 moveLeft = pygame.transform.flip(moveRight, True, False)
 moveRight2 = pygame.transform.scale(pygame.image.load("image/moveFrame2.png"), sizePersonnage)
 moveLeft2 = pygame.transform.flip(moveRight2, True, False)
+moveRight3 = pygame.transform.scale(pygame.image.load("image/moveFrame3.png"), sizePersonnage)
+moveLeft3 = pygame.transform.flip(moveRight3, True, False)
+moveRight4 = pygame.transform.scale(pygame.image.load("image/moveFrame4.png"), sizePersonnage)
+moveLeft4 = pygame.transform.flip(moveRight4, True, False)
+moveRight5 = pygame.transform.scale(pygame.image.load("image/moveFrame5.png"), sizePersonnage)
+moveLeft5 = pygame.transform.flip(moveRight5, True, False)
 
-animationMoveRight = [moveRight, moveRight, moveRight, moveRight, moveRight, moveRight, moveRight, moveRight, moveRight2, moveRight2, moveRight2, moveRight2, moveRight2, moveRight2, moveRight2, moveRight2]
-animationMoveLeft = [moveLeft, moveLeft, moveLeft, moveLeft, moveLeft, moveLeft, moveLeft, moveLeft, moveLeft2, moveLeft2, moveLeft2, moveLeft2, moveLeft2, moveLeft2, moveLeft2, moveLeft2]
+animationMoveRightWithSword = [moveRight, moveRight, moveRight, moveRight, moveRight, moveRight, moveRight, moveRight, moveRight2, moveRight2, moveRight2, moveRight2, moveRight2, moveRight2, moveRight2, moveRight2]
+animationMoveLeftWithSword = [moveLeft, moveLeft, moveLeft, moveLeft, moveLeft, moveLeft, moveLeft, moveLeft, moveLeft2, moveLeft2, moveLeft2, moveLeft2, moveLeft2, moveLeft2, moveLeft2, moveLeft2]
+
+animationMoveRight = [moveRight3, moveRight3, moveRight3, moveRight3, moveRight3, moveRight3, moveRight3, moveRight3, moveRight3, moveRight4, moveRight4, moveRight4, moveRight4, moveRight4, moveRight4, moveRight4, moveRight4, moveRight5, moveRight5, moveRight5, moveRight5, moveRight5, moveRight5, moveRight5, moveRight5]
+animationMoveLeft = [moveLeft3, moveLeft3, moveLeft3, moveLeft3, moveLeft3, moveLeft3, moveLeft3, moveLeft3, moveLeft3, moveLeft4, moveLeft4, moveLeft4, moveLeft4, moveLeft4, moveLeft4, moveLeft4, moveLeft4, moveLeft5, moveLeft5, moveLeft5, moveLeft5, moveLeft5, moveLeft5, moveLeft5, moveLeft5]
 
 attaqueRight = pygame.transform.scale(pygame.image.load("image/attaqueFrame.png"), (63, 80))
 attaqueRight2 = pygame.transform.scale(pygame.image.load("image/attaqueFrame2.png"), (70, 80))
 attaqueLeft = pygame.transform.flip(attaqueRight, True, False)
 attaqueLeft2 = pygame.transform.flip(attaqueRight2, True, False)
+attaqueRight3 = pygame.transform.scale(pygame.image.load("image/attaqueFrame3.png"), (63, 80))
+attaqueLeft3 = pygame.transform.flip(attaqueRight3, True, False)
+attaqueRight4 = pygame.transform.scale(pygame.image.load("image/attaqueFrame4.png"), (65, 80))
+attaqueLeft4 = pygame.transform.flip(attaqueRight4, True, False)
 
-animationAttaqueRight = [attaqueRight, attaqueRight, attaqueRight, attaqueRight, attaqueRight, attaqueRight, attaqueRight, attaqueRight, attaqueRight2, attaqueRight2, attaqueRight2, attaqueRight2, attaqueRight2, attaqueRight2, attaqueRight2, attaqueRight2, attaqueRight2, attaqueRight2, attaqueRight2, attaqueRight2]
-animationAttaqueLeft = [attaqueLeft, attaqueLeft, attaqueLeft, attaqueLeft, attaqueLeft, attaqueLeft, attaqueLeft, attaqueLeft, attaqueLeft2, attaqueLeft2, attaqueLeft2, attaqueLeft2, attaqueLeft2, attaqueLeft2, attaqueLeft2, attaqueLeft2, attaqueLeft2, attaqueLeft2, attaqueLeft2, attaqueLeft2]
+animationSwordAttaqueRight = [attaqueRight, attaqueRight, attaqueRight, attaqueRight, attaqueRight, attaqueRight, attaqueRight, attaqueRight, attaqueRight2, attaqueRight2, attaqueRight2, attaqueRight2, attaqueRight2, attaqueRight2, attaqueRight2, attaqueRight2, attaqueRight2, attaqueRight2, attaqueRight2, attaqueRight2]
+animationSwordAttaqueLeft = [attaqueLeft, attaqueLeft, attaqueLeft, attaqueLeft, attaqueLeft, attaqueLeft, attaqueLeft, attaqueLeft, attaqueLeft2, attaqueLeft2, attaqueLeft2, attaqueLeft2, attaqueLeft2, attaqueLeft2, attaqueLeft2, attaqueLeft2, attaqueLeft2, attaqueLeft2, attaqueLeft2, attaqueLeft2]
+
+animationAttaqueRight = [attaqueRight3, attaqueRight3, attaqueRight3, attaqueRight3, attaqueRight3, attaqueRight3, attaqueRight3, attaqueRight4, attaqueRight4, attaqueRight4, attaqueRight4, attaqueRight4, attaqueRight4, attaqueRight4, attaqueRight4, attaqueRight4, attaqueRight4, attaqueRight4, attaqueRight4, attaqueRight4]
+animationAttaqueLeft = [attaqueLeft3, attaqueLeft3, attaqueLeft3, attaqueLeft3, attaqueLeft3, attaqueLeft3, attaqueLeft3, attaqueLeft3, attaqueLeft4, attaqueLeft4, attaqueLeft4, attaqueLeft4, attaqueLeft4, attaqueLeft4, attaqueLeft4, attaqueLeft4, attaqueLeft4, attaqueLeft4, attaqueLeft4, attaqueLeft4]
 
 jumpRight1 = pygame.transform.scale(pygame.image.load("image/jumpFrame1.png"), sizePersonnage)
 jumpLeft1 = pygame.transform.flip(jumpRight1, True, False)
@@ -30,7 +45,7 @@ jumpRight5 = pygame.transform.rotate(jumpRight4, 90)
 jumpLeft5 = pygame.transform.flip(jumpRight5, True, False)
 
 animationJumpRight = [jumpRight1, jumpRight2, jumpRight3, jumpRight4, jumpRight5]
-animationJumpLeft = [jumpLeft1, jumpLeft2, jumpLeft3, jumpLeft4, jumpLeft5]
+animationJumpLeft = [jumpLeft1, jumpLeft2, jumpLeft3, jumpLeft4, jumpLeft5]"""
 
 swordRight = pygame.image.load("image/Sword.png")
 swordRight = pygame.transform.scale(swordRight, (55, 13))
@@ -40,6 +55,76 @@ swordTop = pygame.transform.rotate(swordLeft, 270)
 
 class personnage:
     def __init__(self,numberP, x, y, position, psprite, ssprites):
+        self.size = (55, 80)
+        self.moveRight = pygame.transform.scale(pygame.image.load("image/moveFrame.png"), self.size)
+        self.moveLeft = pygame.transform.flip(self.moveRight, True, False)
+        self.moveRight2 = pygame.transform.scale(pygame.image.load("image/moveFrame2.png"), self.size)
+        self.moveLeft2 = pygame.transform.flip(self.moveRight2, True, False)
+        self.moveRight3 = pygame.transform.scale(pygame.image.load("image/moveFrame3.png"), self.size)
+        self.moveLeft3 = pygame.transform.flip(self.moveRight3, True, False)
+        self.moveRight4 = pygame.transform.scale(pygame.image.load("image/moveFrame4.png"), self.size)
+        self.moveLeft4 = pygame.transform.flip(self.moveRight4, True, False)
+        self.moveRight5 = pygame.transform.scale(pygame.image.load("image/moveFrame5.png"), self.size)
+        self.moveLeft5 = pygame.transform.flip(self.moveRight5, True, False)
+        self.attaqueRight = pygame.transform.scale(pygame.image.load("image/attaqueFrame.png"), (63, 80))
+        self.attaqueRight2 = pygame.transform.scale(pygame.image.load("image/attaqueFrame2.png"), (70, 80))
+        self.attaqueLeft = pygame.transform.flip(self.attaqueRight, True, False)
+        self.attaqueLeft2 = pygame.transform.flip(self.attaqueRight2, True, False)
+        self.attaqueRight3 = pygame.transform.scale(pygame.image.load("image/attaqueFrame3.png"), (63, 80))
+        self.attaqueLeft3 = pygame.transform.flip(self.attaqueRight3, True, False)
+        self.attaqueRight4 = pygame.transform.scale(pygame.image.load("image/attaqueFrame4.png"), (65, 80))
+        self.attaqueLeft4 = pygame.transform.flip(self.attaqueRight4, True, False)
+        self.jumpRight1 = pygame.transform.scale(pygame.image.load("image/jumpFrame1.png"), self.size)
+        self.jumpLeft1 = pygame.transform.flip(self.jumpRight1, True, False)
+        self.jumpRight2 = pygame.transform.scale(pygame.image.load("image/jumpFrame2.png"), (35, 38))
+        self.jumpLeft2 = pygame.transform.flip(self.jumpRight2, True, False)
+        self.jumpRight3 = pygame.transform.rotate(self.jumpRight2, 90)
+        self.jumpLeft3 = pygame.transform.flip(self.jumpRight3, True, False)
+        self.jumpRight4 = pygame.transform.rotate(self.jumpRight3, 90)
+        self.jumpLeft4 = pygame.transform.flip(self.jumpRight4, True, False)
+        self.jumpRight5 = pygame.transform.rotate(self.jumpRight4, 90)
+        self.jumpLeft5 = pygame.transform.flip(self.jumpRight5, True, False)
+        self.allSprites = [self.moveRight, self.moveRight2, self.moveRight3, self.moveRight4, self.moveRight5,
+                           self.moveLeft, self.moveLeft2, self.moveLeft3, self.moveLeft4, self.moveLeft5,
+                           self.attaqueRight,  self.attaqueRight2,  self.attaqueRight3,  self.attaqueRight4,
+                           self.attaqueLeft, self.attaqueLeft2, self.attaqueLeft3, self.attaqueLeft4,
+                           self.jumpRight1, self.jumpRight2, self.jumpRight3, self.jumpRight4, self.jumpRight5,
+                           self.jumpLeft1, self.jumpLeft2, self.jumpLeft3, self.jumpLeft4, self.jumpLeft5]
+        self.animationMoveRightWithSword = [self.moveRight, self.moveRight, self.moveRight, self.moveRight, self.moveRight, self.moveRight, self.moveRight,
+                                       self.moveRight, self.moveRight2, self.moveRight2, self.moveRight2, self.moveRight2, self.moveRight2,
+                                       self.moveRight2, self.moveRight2, self.moveRight2]
+        self.animationMoveLeftWithSword = [self.moveLeft, self.moveLeft, self.moveLeft, self.moveLeft, self.moveLeft, self.moveLeft, self.moveLeft, self.moveLeft,
+                                      self.moveLeft2, self.moveLeft2, self.moveLeft2, self.moveLeft2, self.moveLeft2, self.moveLeft2, self.moveLeft2,
+                                      self.moveLeft2]
+
+        self.animationMoveRight = [self.moveRight3, self.moveRight3, self.moveRight3, self.moveRight3, self.moveRight3, self.moveRight3, self.moveRight3,
+                              self.moveRight3, self.moveRight3, self.moveRight4, self.moveRight4, self.moveRight4, self.moveRight4, self.moveRight4,
+                              self.moveRight4, self.moveRight4, self.moveRight4, self.moveRight5, self.moveRight5, self.moveRight5, self.moveRight5,
+                              self.moveRight5, self.moveRight5, self.moveRight5, self.moveRight5]
+        self.animationMoveLeft = [self.moveLeft3, self.moveLeft3, self.moveLeft3, self.moveLeft3, self.moveLeft3, self.moveLeft3, self.moveLeft3, self.moveLeft3,
+                             self.moveLeft3, self.moveLeft4, self.moveLeft4, self.moveLeft4, self.moveLeft4, self.moveLeft4, self.moveLeft4, self.moveLeft4,
+                             self.moveLeft4, self.moveLeft5, self.moveLeft5, self.moveLeft5, self.moveLeft5, self.moveLeft5, self.moveLeft5, self.moveLeft5,
+                             self.moveLeft5]
+
+        self.animationSwordAttaqueRight = [self.attaqueRight, self.attaqueRight, self.attaqueRight, self.attaqueRight, self.attaqueRight,
+                                      self.attaqueRight, self.attaqueRight, self.attaqueRight, self.attaqueRight2, self.attaqueRight2,
+                                      self.attaqueRight2, self.attaqueRight2, self.attaqueRight2, self.attaqueRight2, self.attaqueRight2,
+                                      self.attaqueRight2, self.attaqueRight2, self.attaqueRight2, self.attaqueRight2, self.attaqueRight2]
+        self.animationSwordAttaqueLeft = [self.attaqueLeft, self.attaqueLeft, self.attaqueLeft, self.attaqueLeft, self.attaqueLeft, self.attaqueLeft,
+                                     self.attaqueLeft, self.attaqueLeft, self.attaqueLeft2, self.attaqueLeft2, self.attaqueLeft2, self.attaqueLeft2,
+                                     self.attaqueLeft2, self.attaqueLeft2, self.attaqueLeft2, self.attaqueLeft2, self.attaqueLeft2, self.attaqueLeft2,
+                                     self.attaqueLeft2, self.attaqueLeft2]
+
+        self.animationAttaqueRight = [self.attaqueRight3, self.attaqueRight3, self.attaqueRight3, self.attaqueRight3, self.attaqueRight3,
+                                 self.attaqueRight3, self.attaqueRight3, self.attaqueRight4, self.attaqueRight4, self.attaqueRight4,
+                                 self.attaqueRight4, self.attaqueRight4, self.attaqueRight4, self.attaqueRight4, self.attaqueRight4,
+                                 self.attaqueRight4, self.attaqueRight4, self.attaqueRight4, self.attaqueRight4, self.attaqueRight4]
+        self.animationAttaqueLeft = [self.attaqueLeft3, self.attaqueLeft3, self.attaqueLeft3, self.attaqueLeft3, self.attaqueLeft3, self.attaqueLeft3,
+                                self.attaqueLeft3, self.attaqueLeft3, self.attaqueLeft4, self.attaqueLeft4, self.attaqueLeft4, self.attaqueLeft4,
+                                self.attaqueLeft4, self.attaqueLeft4, self.attaqueLeft4, self.attaqueLeft4, self.attaqueLeft4, self.attaqueLeft4,
+                                self.attaqueLeft4, self.attaqueLeft4]
+        self.animationJumpRight = [self.jumpRight1, self.jumpRight2, self.jumpRight3, self.jumpRight4, self.jumpRight5]
+        self.animationJumpLeft = [self.jumpLeft1, self.jumpLeft2, self.jumpLeft3, self.jumpLeft4, self.jumpLeft5]
         self.x = x
         self.y = y
         self.jumpCtrl = None
@@ -50,7 +135,6 @@ class personnage:
         self.numberPlayer = numberP
         self.sprite = psprite
         self.hitbox = pygame.Rect(0,0,0,0)
-        self.size = (55, 80)
         self.jump = 0
         self.jumpHeight = 0
         self.fall = 0
@@ -65,6 +149,18 @@ class personnage:
         self.animJumpCounter = 0
         self.speed = 6
 
+    def fill(self, image, color):
+        """Fill all pixels of the surface with color, preserve transparency."""
+        w, h = image.get_size()
+        r, g, b, _ = color
+        for x in range(w):
+            for y in range(h):
+                a = image.get_at((x, y))[3]
+                image.set_at((x, y), pygame.Color(r, g, b, a))
+
+    def fillAllSprite(self, color):
+        for sprite in self.allSprites:
+            self.fill(sprite, color)
     def setPos(self, x, y, sizePers):
         self.x = x
         self.y = y
@@ -78,7 +174,7 @@ class personnage:
                     and self.hitbox.top <= surfaces.hitbox.bottom < self.hitbox.bottom:
                 collision = True
         if self.y > self.jumpHeight and not collision:
-            self.setPos(self.x, self.y - 10, sizePersonnage)
+            self.setPos(self.x, self.y - 10, self.size)
             if self.sword is not None:
                 self.sword.setPos(self.sword.x, self.y + 15, (self.sword.hitbox.width, self.sword.hitbox.height))
         else:
@@ -89,7 +185,7 @@ class personnage:
         self.jumpAnim()
         for surface in surfaces:
             if self.hitbox.colliderect(surface.hitbox) == 1 and self.hitbox.y - 1 + self.hitbox.height >= surface.hitbox.y > self.hitbox.y:
-                self.setPos(self.x, surface.hitbox.y - 79, sizePersonnage)
+                self.setPos(self.x, surface.hitbox.y - 79, self.size)
                 self.moveAnimation()
                 if self.sword is not None:
                     self.sword.setPos(self.sword.x, self.y + 15, (self.sword.hitbox.width, self.sword.hitbox.height))
@@ -113,10 +209,9 @@ class personnage:
                 self.sword.throw = 1, self.position, self.numberPlayer
                 self.timerpickUp = 50
                 self.sword = None
+                self.moveAnimation()
             elif key[self.attaqueCtrl] and not self.attaque:
                 self.attaque = True
-                self.sprite = attaqueRight2
-                self.setPos(self.x, self.y, (attaqueRight2.get_width(), attaqueRight2.get_height()))
             elif key[self.jumpCtrl] and not self.jump and not self.fall:
                 self.jump = 1
                 self.jumpHeight = self.y - 140
@@ -139,13 +234,13 @@ class personnage:
                             if not pygame.Rect.colliderect(hb, opponent.sword.hitbox) or \
                                     (pygame.Rect.colliderect(hb, opponent.sword.hitbox) and opponent.timingRespawn):
                                 self.moveAnimation()
-                                self.setPos(self.x - self.speed, self.y, sizePersonnage)
+                                self.setPos(self.x - self.speed, self.y, self.size)
                                 self.sword.sprite = swordLeft
                                 self.sword.setPos(self.x - 48, self.sword.y,
                                                   (self.sword.hitbox.width, self.sword.hitbox.height))
                         else:
                             self.moveAnimation()
-                            self.setPos(self.x - self.speed, self.y, sizePersonnage)
+                            self.setPos(self.x - self.speed, self.y, self.size)
                             self.sword.sprite = swordLeft
                             self.sword.setPos(self.x - 48, self.sword.y, (self.sword.hitbox.width, self.sword.hitbox.height))
                     else:
@@ -153,7 +248,7 @@ class personnage:
                             self.setPos(self.x - self.speed, self.y, (35, 38))
                         else:
                             self.moveAnimation()
-                            self.setPos(self.x - self.speed, self.y, sizePersonnage)
+                            self.setPos(self.x - self.speed, self.y, self.size)
             elif key[self.rightCtrl] and self.x < 756:
                 self.position = "right"
                 collision = False
@@ -174,13 +269,13 @@ class personnage:
                             if not pygame.Rect.colliderect(hb, opponent.sword.hitbox) or \
                                     (pygame.Rect.colliderect(hb, opponent.sword.hitbox) and opponent.timingRespawn):
                                 self.moveAnimation()
-                                self.setPos(self.x + self.speed, self.y, sizePersonnage)
+                                self.setPos(self.x + self.speed, self.y, self.size)
                                 self.sword.sprite = swordRight
                                 self.sword.setPos(self.x + 48, self.sword.y,
                                                   (self.sword.hitbox.width, self.sword.hitbox.height))
                         else:
                             self.moveAnimation()
-                            self.setPos(self.x + self.speed, self.y, sizePersonnage)
+                            self.setPos(self.x + self.speed, self.y, self.size)
                             self.sword.sprite = swordRight
                             self.sword.setPos(self.x + 48, self.sword.y,
                                               (self.sword.hitbox.width, self.sword.hitbox.height))
@@ -189,7 +284,7 @@ class personnage:
                             self.setPos(self.x + self.speed, self.y, (30, 30))
                         else:
                             self.moveAnimation()
-                            self.setPos(self.x + self.speed, self.y, sizePersonnage)
+                            self.setPos(self.x + self.speed, self.y, self.size)
         if self.jump:
             self.jumps(surfaces)
         f = False
@@ -207,13 +302,13 @@ class personnage:
     def dieP(self, x, y, direction, sword_list, swordNumber):
         if self.sword != None:
             self.sword.setPos(self.sword.x, 470, (self.sword.hitbox.width, self.sword.hitbox.height))
-        self.setPos(x, 250, sizePersonnage)
+        self.setPos(x, 250, self.size)
         if direction:
-            self.sprite = moveRight
+            self.sprite = self.moveRight
             self.position = "right"
             sword_list.append(sword(self.x + 48, self.y + 15, swordRight))
         else:
-            self.sprite = moveLeft
+            self.sprite = self.moveLeft
             self.position = "left"
             sword_list.append(sword(self.x - 48, self.y + 15, swordLeft))
         self.sword = sword_list[swordNumber]
@@ -232,54 +327,81 @@ class personnage:
                               (self.sword.hitbox.width, self.sword.hitbox.height))
 
     def moveAnimation(self):
-        if self.animMove == 15:
-            self.animMove = 0
+        if self.sword is None:
+            if self.animMove >= 23:
+                self.animMove = 0
+            else:
+                self.animMove += 1
+            if self.position == "left":
+                self.sprite = self.animationMoveLeft[self.animMove]
+            else:
+                self.sprite = self.animationMoveRight[self.animMove]
         else:
-            self.animMove += 1
-        if self.position == "left":
-            self.sprite = animationMoveLeft[self.animMove]
-        else:
-            self.sprite = animationMoveRight[self.animMove]
+            if self.animMove >= 15:
+                self.animMove = 0
+            else:
+                self.animMove += 1
+            if self.position == "left":
+                self.sprite = self.animationMoveLeftWithSword[self.animMove]
+            else:
+                self.sprite = self.animationMoveRightWithSword[self.animMove]
 
     def attaqueAnimation(self):
         if self.sword is not None:
             if self.animAttaque == 19:
                 self.animAttaque = 0
-                self.attaque = False
                 if self.position == "left":
-                    self.sprite = animationMoveLeft[self.animMove]
-                    self.setPos(self.x + 18, self.y, self.size)
+                    self.sprite = self.animationMoveLeftWithSword[self.animMove]
+                    self.setPos(self.x + 19, self.y, self.size)
                     self.sword.setPos(self.x - 48, self.y + 15, (self.sword.hitbox.width, self.sword.hitbox.height))
                 else:
-                    self.sprite = animationMoveRight[self.animMove]
+                    self.sprite = self.animationMoveRightWithSword[self.animMove]
                     self.setPos(self.x, self.y, self.size)
                     self.sword.setPos(self.x + 48, self.y + 15, (self.sword.hitbox.width, self.sword.hitbox.height))
+                self.attaque = False
                 return 0
             else:
                 self.animAttaque += 1
-            if self.position == "left":
-                self.sprite = animationAttaqueLeft[self.animAttaque]
-                self.sword.setPos(self.sword.x-1, self.y + 19, (self.sword.hitbox.width, self.sword.hitbox.height))
-                self.setPos(self.x-1, self.y, (self.sprite.get_width(), self.sprite.get_height()))
+                if self.position == "left":
+                    self.sprite = self.animationSwordAttaqueLeft[self.animAttaque]
+                    self.sword.setPos(self.sword.x-1, self.y + 19, (self.sword.hitbox.width, self.sword.hitbox.height))
+                    self.setPos(self.x-1, self.y, (self.sprite.get_width(), self.sprite.get_height()))
+                else:
+                    self.sprite = self.animationSwordAttaqueRight[self.animAttaque]
+                    self.sword.setPos(self.sword.x+1, self.y + 19, (self.sword.hitbox.width, self.sword.hitbox.height))
+                    self.setPos(self.x, self.y, (self.sprite.get_width(), self.sprite.get_height()))
+        else:
+            if self.animAttaque == 19:
+                self.animAttaque = 0
+                if self.position == "left":
+                    self.sprite = self.animationMoveLeft[0]
+                    self.setPos(self.x + 19, self.y, self.size)
+                else:
+                    self.sprite = self.animationMoveRight[0]
+                    self.setPos(self.x, self.y, self.size)
+                self.attaque = False
+                return 0
             else:
-                self.sprite = animationAttaqueRight[self.animAttaque]
-                self.sword.setPos(self.sword.x+1, self.y + 19, (self.sword.hitbox.width, self.sword.hitbox.height))
-                self.setPos(self.x, self.y, (self.sprite.get_width(), self.sprite.get_height()))
+                self.animAttaque += 1
+                if self.position == "left":
+                    self.sprite = self.animationAttaqueLeft[self.animAttaque]
+                    self.setPos(self.x-1, self.y, (self.sprite.get_width(), self.sprite.get_height()))
+                else:
+                    self.sprite = self.animationAttaqueRight[self.animAttaque]
+                    self.setPos(self.x, self.y, (self.sprite.get_width(), self.sprite.get_height()))
 
     def jumpAnim(self):
         if self.animJumpCounter == 5:
             self.animJumpCounter = 1
         if self.position == "left":
-            self.sprite = animationJumpLeft[self.animJumpCounter]
+            self.sprite = self.animationJumpLeft[self.animJumpCounter]
             self.hitbox = pygame.Rect(self.x, self.y, 35, 38)
         else:
-            self.sprite = animationJumpRight[self.animJumpCounter]
+            self.sprite = self.animationJumpRight[self.animJumpCounter]
             self.hitbox = pygame.Rect(self.x, self.y, 35, 38)
 
     def displayPlayer(self, screen):
         if not self.timingRespawn:
-            if self.sprite is None:
-                self.moveAnimation()
             screen.blit(self.sprite, (self.x, self.y))
             pygame.draw.rect(screen, (0, 0, 255), self.hitbox, 1)
             if self.sword is not None and self.fall == 0:

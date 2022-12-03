@@ -1,6 +1,5 @@
 from personnage import personnage
 from sword import sword
-from surface import surface
 import pygame
 
 bg = pygame.image.load("image/backgroundComp.png")
@@ -31,6 +30,10 @@ swordLeft = pygame.transform.flip(swordRight, True, False)
 swordBot = pygame.transform.rotate(swordLeft, 90)
 swordTop = pygame.transform.rotate(swordLeft, 270)
 
+class surface:
+    def __init__(self, hitbox, background):
+        self.hitbox = hitbox
+        self.background = background
 
 class label:
     def __init__(self, screen, x, y, width, height, text, textcolor=(255, 255, 255), textsize=32, bgcolor=(0, 0, 0)):
@@ -370,8 +373,10 @@ class game:
         self.cameraX = -(map[self.map][self.level].get_width() / 2 - 400)
         self.swordNumber = 0
         # Create player 1
+        self.p1.fillAllSprite(pygame.Color(238, 182, 61))
         self.p1.hitbox = pygame.Rect((self.p1.x, self.p1.y), sizeSprites)
         # Create player 2
+        self.p2.fillAllSprite(pygame.Color(202, 80, 203))
         self.p2.hitbox = pygame.Rect((self.p2.x, self.p2.y), sizeSprites)
         # Create sword 1 for player 1 when spawn
         s1 = sword(self.p1.x + 48, self.p1.y + 15, swordRight)
@@ -491,6 +496,14 @@ class game:
         elif self.p2.sword is not None and pygame.Rect.colliderect(self.p1.hitbox,
                                                                    self.p2.sword.hitbox) and not self.p1.timingRespawn and not self.p2.timingRespawn:
             self.swordNumber = self.p1.dieP(200, 415, 1, self.sword_list, self.swordNumber)
+        elif self.p1.attaque and self.p1.hitbox.x < self.p2.hitbox.x <= self.p1.hitbox.x + self.p1.hitbox.width - 1:
+            self.swordNumber = self.p2.dieP(600, 415, 0, self.sword_list, self.swordNumber)
+        elif self.p1.attaque and self.p1.hitbox.x + self.p1.hitbox.width > self.p2.hitbox.x + self.p2.hitbox.width >= self.p1.hitbox.x:
+            self.swordNumber = self.p2.dieP(600, 415, 0, self.sword_list, self.swordNumber)
+        elif self.p2.attaque and self.p2.hitbox.x < self.p1.hitbox.x <= self.p2.hitbox.x + self.p2.hitbox.width - 1:
+            self.swordNumber = self.p1.dieP(200, 415, 1, self.sword_list, self.swordNumber)
+        elif self.p2.attaque and self.p2.hitbox.x + self.p2.hitbox.width > self.p1.hitbox.x + self.p1.hitbox.width >= self.p2.hitbox.x:
+            self.swordNumber = self.p1.dieP(200, 415, 1, self.sword_list, self.swordNumber)
 
     def swordInteractions(self):
         for s in self.sword_list:
@@ -551,7 +564,7 @@ class game:
             centerMap = p2Globalx - centerBetweenPlayers
         move = ((centerMap - 400) - abs(self.cameraX))
         if -(map[self.map][self.level].get_width() - 800) <= self.cameraX - move <= 0:
-            if move:
+            if move and not self.p2.attaque:
                 self.cameraX -= move
                 self.p1.setPos(self.p1.x - move, self.p1.y, self.p1.size)
                 if self.p1.sword is not None:
