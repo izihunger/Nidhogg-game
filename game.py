@@ -31,7 +31,8 @@ swordBot = pygame.transform.rotate(swordLeft, 90)
 swordTop = pygame.transform.rotate(swordLeft, 270)
 
 class surface:
-    def __init__(self, hitbox, background):
+    def __init__(self, hitbox, background, x):
+        self.x = x
         self.hitbox = hitbox
         self.background = background
 
@@ -70,7 +71,7 @@ class game:
         self.cameraX = 0
         self.map = 1
         self.level = 2
-        self.plateform = [surface(pygame.Rect((0, 479), (map[self.map][self.level].get_width(), 161)), None)]
+        self.plateform = [surface(pygame.Rect((0, 479), (map[self.map][self.level].get_width(), 161)), None, 0)]
         self.menu = 1
         self.menuTimer = 0
         self.isGameStarted = 0
@@ -393,11 +394,11 @@ class game:
         self.displaySword()
         if self.map == 1:
             self.plateform = [
-                surface(pygame.Rect((0, 479), (map[self.map][self.level].get_width(), 161)), None),
+                surface(pygame.Rect((0, 479), (map[self.map][self.level].get_width(), 161)), None, 0),
                 surface(pygame.Rect((0 + self.cameraX, 415), (plateforme2.get_width(), plateforme2.get_height())),
-                        plateforme2),
+                        plateforme2, 0),
                 surface(pygame.Rect((plateforme2.get_width() + 100 + self.cameraX, 350),
-                                    (plateforme.get_width(), plateforme.get_height())), plateforme)]
+                                    (plateforme.get_width(), plateforme.get_height())), plateforme, plateforme2.get_width() + 100)]
 
     def changeLevel(self, nextLevel, player):
         self.level += nextLevel
@@ -410,7 +411,7 @@ class game:
             self.cameraX = -(map[self.map][self.level].get_width() - 800)
         if self.map == 1:
             if self.level in [0, 1, 2, 3]:
-                self.plateform.append(surface(pygame.Rect((200 + self.cameraX, 350), (100, 20)), plateforme))
+                self.plateform.append(surface(pygame.Rect((200 + self.cameraX, 350), (100, 20)), plateforme, 200))
         self.p1.timingRespawn = 0
         self.p1.setPos(200, 300, sizeSprites)
         self.p1.position = "right"
@@ -577,4 +578,4 @@ class game:
                             s.throw == (1, "right", 2)) or (s != self.p1.sword and s != self.p2.sword):
                         s.setPos(s.x - move, s.y, s.size)
                 for plateform in self.plateform[1:]:
-                    plateform.hitbox.x -= move
+                    plateform.hitbox.x = plateform.x + self.cameraX

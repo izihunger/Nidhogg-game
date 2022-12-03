@@ -147,7 +147,8 @@ class personnage:
         self.attaque = False
         self.animAttaque = 0
         self.animJumpCounter = 0
-        self.speed = 6
+        self.speed = 5
+        self.lastFloorHitbox = None
 
     def fill(self, image, color):
         """Fill all pixels of the surface with color, preserve transparency."""
@@ -191,6 +192,7 @@ class personnage:
                     self.sword.setPos(self.sword.x, self.y + 15, (self.sword.hitbox.width, self.sword.hitbox.height))
                 self.animJumpCounter = 0
                 self.fall = 0
+                self.lastFloorHitbox = surface.hitbox
                 return 0
         self.setPos(self.x, self.y + 10, (35, 38))
         if self.sword is not None:
@@ -301,7 +303,7 @@ class personnage:
 
     def dieP(self, x, y, direction, sword_list, swordNumber):
         if self.sword != None:
-            self.sword.setPos(self.sword.x, self.hitbox.y + self.hitbox.height - self.sword.hitbox.height, (self.sword.hitbox.width, self.sword.hitbox.height))
+            self.sword.setPos(self.sword.x, self.lastFloorHitbox.y - self.sword.hitbox.height, (self.sword.hitbox.width, self.sword.hitbox.height))
         self.setPos(x, 250, self.size)
         if direction:
             self.sprite = self.moveRight

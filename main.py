@@ -30,8 +30,8 @@ if __name__ == "__main__":
                         game.swordInteractions()
                         game.changeCamera()
                         game.displayBg()
-                        game.displayPlayers()
                         game.displaySword()
+                        game.displayPlayers()
                 pygame.display.update()
 
         pygame.quit()
