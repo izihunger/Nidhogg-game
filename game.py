@@ -76,8 +76,8 @@ class game:
         self.menu = 1
         self.menuTimer = 0
         self.isGameStarted = 0
-        self.cliqueSoundEffect = pygame.mixer.Sound("musique/cliqueSoundEffect.mp3")
-        self.musiqueBackground = pygame.mixer.Sound("musique/nidhoggOSTWild.mp3")
+        self.cliqueSoundEffect = pygame.mixer.Sound("musique/cliqueSoundEffect.wav")
+        self.musiqueBackground = pygame.mixer.Sound("musique/nidhoggOSTCastle.mp3")
 
     def displayMenu(self, mouse):
         if self.menuTimer:
@@ -111,6 +111,7 @@ class game:
                             and resumeButton.y <= pygame.mouse.get_pos()[
                         1] <= resumeButton.y + resumeButton.height:
                         self.cliqueSoundEffect.play()
+                        self.musiqueBackground.set_volume(0.4)
                         self.menu = 0
                     elif mouse[0] and startgameButton.x <= pygame.mouse.get_pos()[
                         0] <= startgameButton.x + startgameButton.width \
@@ -430,6 +431,7 @@ class game:
                     self.menuTimer = 30
 
     def startGame(self):
+        self.musiqueBackground.set_volume(0.4)
         self.musiqueBackground.play(loops=-1)
         self.sword_list = []
         self.plateformes = [self.plateformes[0]]
