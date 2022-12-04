@@ -16,6 +16,7 @@ class sword:
         self.size = (55, 13)
         self.throw = 0, "", 0
         self.animCounter = 0
+        self.falling = False
 
     def setPos(self, x, y, sizeSword):
         self.x = x
@@ -50,3 +51,11 @@ class sword:
         self.setPos(self.x, 470, self.size)
         self.rotation = 0
         self.sprite = sprite
+
+    def fallingSword(self, plateformes):
+        for plateforme in plateformes:
+            if self.hitbox.x > plateforme.hitbox.x and self.hitbox.colliderect(plateforme.hitbox):
+                self.setPos(self.x, plateforme.hitbox.y - self.hitbox.height, (self.sprite.get_width(), self.sprite.get_height()))
+                self.falling = False
+                return 0
+        self.setPos(self.x, self.y + 10, (self.sprite.get_width(), self.sprite.get_height()))

@@ -54,7 +54,7 @@ swordBot = pygame.transform.rotate(swordLeft, 90)
 swordTop = pygame.transform.rotate(swordLeft, 270)
 
 class personnage:
-    def __init__(self,numberP, x, y, position, psprite, ssprites):
+    def __init__(self,numberP, x, y, position, psprite):
         self.size = (55, 80)
         self.moveRight = pygame.transform.scale(pygame.image.load("image/moveFrame.png"), self.size)
         self.moveLeft = pygame.transform.flip(self.moveRight, True, False)
@@ -147,8 +147,9 @@ class personnage:
         self.attaque = False
         self.animAttaque = 0
         self.animJumpCounter = 0
-        self.speed = 5
+        self.speed = 6
         self.lastFloorHitbox = None
+        self.numberOfDeath = 0
 
     def fill(self, image, color):
         """Fill all pixels of the surface with color, preserve transparency."""
@@ -303,7 +304,7 @@ class personnage:
 
     def dieP(self, x, y, direction, sword_list, swordNumber):
         if self.sword != None:
-            self.sword.setPos(self.sword.x, self.lastFloorHitbox.y - self.sword.hitbox.height, (self.sword.hitbox.width, self.sword.hitbox.height))
+            self.sword.falling = True
         self.setPos(x, 250, self.size)
         if direction:
             self.sprite = self.moveRight
@@ -315,6 +316,7 @@ class personnage:
             sword_list.append(sword(self.x - 48, self.y + 15, swordLeft))
         self.sword = sword_list[swordNumber]
         self.timingRespawn = 80
+        self.numberOfDeath += 1
         return swordNumber + 1
 
     def pickUpSword(self, sword, direction):
