@@ -14,8 +14,8 @@ miniaMap2 = pygame.transform.scale(pygame.image.load("image/bg2Minia.png"), (300
 miniaMap3 = pygame.transform.scale(pygame.image.load("image/bg3Minia.jpg"), (300, 150))
 miniaMap4 = pygame.transform.scale(pygame.image.load("image/bg4Minia.png"), (300, 150))
 
-plateforme = pygame.transform.scale(pygame.image.load("image/plateforme.PNG"), (100, 20))
-plateforme2 = pygame.transform.scale(pygame.image.load("image/plateforme2.PNG"), (460, 76))
+plateformeMap1 = pygame.transform.scale(pygame.image.load("image/plateformeMap1.PNG"), (100, 20))
+plateformeMap1_2 = pygame.transform.scale(pygame.image.load("image/plateformeMap1_2.png"), (460, 76))
 
 sizeSprites = height, width = 55, 80
 
@@ -31,9 +31,9 @@ swordBot = pygame.transform.rotate(swordLeft, 90)
 swordTop = pygame.transform.rotate(swordLeft, 270)
 
 class surface:
-    def __init__(self, hitbox, background, x):
+    def __init__(self,camera, x, y, width, height, background):
         self.x = x
-        self.hitbox = hitbox
+        self.hitbox = pygame.Rect((x + camera, y), (width, height))
         self.background = background
 
 class label:
@@ -71,16 +71,16 @@ class game:
         self.screen = screen
         self.cameraX = 0
         self.map = 1
-        self.level = 0
-        self.plateformes = [surface(pygame.Rect((0, 479), (map[self.map][self.level].get_width(), 161)), None, 0)]
+        self.level = 2
+        self.plateformes = [surface(self.cameraX, 0, 479, map[self.map][self.level].get_width(), 161, None)]
         self.menu = 1
         self.menuTimer = 0
         self.isGameStarted = 0
         self.cliqueSoundEffect = pygame.mixer.Sound("musique/cliqueSoundEffect.wav")
         self.musiqueBackground = pygame.mixer.Sound("musique/nidhoggOSTCastle.mp3")
         self.musiqueMenu = pygame.mixer.Sound("musique/menuMusic.mp3")
-        self.volumeMusic = 0.1
-        self.volumeSoundEffect = 0.1
+        self.volumeMusic = 0.05
+        self.volumeSoundEffect = 0.05
 
     def displayMenu(self, mouse):
         if self.menuTimer:
@@ -200,7 +200,7 @@ class game:
             map1.pygamePrint()
             # map2
             self.screen.blit(miniaMap2, (450, 125))
-            map2 = label(self.screen, 200, 50, 800, 500, "Map 2 : Title")
+            map2 = label(self.screen, 200, 50, 800, 500, "Map 2 : Default")
             map2.pygamePrint()
             # map3
             self.screen.blit(miniaMap3, (50, 350))
@@ -541,17 +541,30 @@ class game:
         # Affectation
         self.addSword(self.p1, s1)
         self.addSword(self.p2, s2)
+        # create first level
+        if self.map == 0:
+            print("map 0")
+        elif self.map == 1:
+            self.plateformes = [
+                surface(self.cameraX, 0, 479, map[self.map][self.level].get_width(), 161, None),
+                surface(self.cameraX, map[self.map][self.level].get_width()-400 , 415, plateformeMap1_2.get_width(), plateformeMap1_2.get_height(),
+                        plateformeMap1_2),
+                surface(self.cameraX, map[self.map][self.level].get_width()/3 , 350,
+                                    plateformeMap1.get_width(), plateformeMap1.get_height(), plateformeMap1),
+                surface(self.cameraX, map[self.map][self.level].get_width() / 3 + plateformeMap1.get_width(), 350,
+                                    plateformeMap1.get_width(), plateformeMap1.get_height(), plateformeMap1),
+                surface(self.cameraX, map[self.map][self.level].get_width() / 3 * 2, 350,
+                                    plateformeMap1.get_width(), plateformeMap1.get_height(), plateformeMap1),
+                surface(self.cameraX, map[self.map][self.level].get_width() / 3 * 2+plateformeMap1.get_width(), 350,
+                                    plateformeMap1.get_width(), plateformeMap1.get_height(), plateformeMap1)]
+        elif self.map == 2:
+            print("map 2")
+        elif self.map == 3:
+            print("map 3")
         # Display the game
         self.displayBg()
         self.displayPlayers()
         self.displaySword()
-        if self.map == 1:
-            self.plateformes = [
-                surface(pygame.Rect((0, 479), (map[self.map][self.level].get_width(), 161)), None, 0),
-                surface(pygame.Rect((0 + self.cameraX, 415), (plateforme2.get_width(), plateforme2.get_height())),
-                        plateforme2, 0),
-                surface(pygame.Rect((plateforme2.get_width() + 100 + self.cameraX, 350),
-                                    (plateforme.get_width(), plateforme.get_height())), plateforme, plateforme2.get_width() + 100)]
 
     def changeLevel(self, nextLevel, player):
         self.level += nextLevel
@@ -563,8 +576,92 @@ class game:
         else:
             self.cameraX = -(map[self.map][self.level].get_width() - 800)
         if self.map == 1:
-            if self.level in [0, 1, 2, 3]:
-                self.plateformes.append(surface(pygame.Rect((200 + self.cameraX, 350), (100, 20)), plateforme, 200))
+            if self.level == 0:
+                self.plateformes = [
+                    self.plateformes[0],
+                    surface(self.cameraX, map[self.map][self.level].get_width() / 8, 350,
+                                        plateformeMap1.get_width(), plateformeMap1.get_height(), plateformeMap1),
+                    surface(self.cameraX, map[self.map][self.level].get_width() / 5, 350,
+                                        plateformeMap1.get_width(), plateformeMap1.get_height(), plateformeMap1),
+                    surface(self.cameraX, map[self.map][self.level].get_width() / 3, 415, plateformeMap1_2.get_width(), plateformeMap1_2.get_height(),
+                            plateformeMap1_2),
+                    surface(self.cameraX, map[self.map][self.level].get_width() / 3 + plateformeMap1_2.get_width(), 415, plateformeMap1_2.get_width(), plateformeMap1_2.get_height(),
+                            plateformeMap1_2),
+                    surface(self.cameraX, map[self.map][self.level].get_width() / 3 * 2 + 200, 350,
+                                        plateformeMap1.get_width(), plateformeMap1.get_height(), plateformeMap1)
+                ]
+            elif self.level == 1:
+                self.plateformes = [
+                    self.plateformes[0],
+                    surface(self.cameraX, map[self.map][self.level].get_width() / 6, 350,
+                                        plateformeMap1.get_width(), plateformeMap1.get_height(), plateformeMap1),
+                    surface(self.cameraX, map[self.map][self.level].get_width() / 6 + plateformeMap1.get_width(), 350,
+                                        plateformeMap1.get_width(), plateformeMap1.get_height(), plateformeMap1),
+                    surface(self.cameraX, map[self.map][self.level].get_width() / 3, 415, plateformeMap1_2.get_width(), plateformeMap1_2.get_height(),
+                            plateformeMap1_2),
+                    surface(self.cameraX, map[self.map][self.level].get_width() / 3 + plateformeMap1_2.get_width(), 415, plateformeMap1_2.get_width(), plateformeMap1_2.get_height(),
+                            plateformeMap1_2),
+                    surface(self.cameraX, map[self.map][self.level].get_width() / 3 * 2 + 200, 350,
+                                        plateformeMap1.get_width(), plateformeMap1.get_height(), plateformeMap1),
+                    surface(self.cameraX, map[self.map][self.level].get_width() / 3 * 2 + plateformeMap1.get_width() + 200 + 100, 350,
+                                        plateformeMap1.get_width(), plateformeMap1.get_height(), plateformeMap1)
+                ]
+            elif self.level == 2:
+                self.plateformes = [
+                    self.plateformes[0],
+                    surface(self.cameraX, map[self.map][self.level].get_width() - 400, 415,
+                            plateformeMap1_2.get_width(), plateformeMap1_2.get_height(),
+                            plateformeMap1_2),
+                    surface(self.cameraX, map[self.map][self.level].get_width() / 3, 350,
+                            plateformeMap1.get_width(), plateformeMap1.get_height(), plateformeMap1),
+                    surface(self.cameraX, map[self.map][self.level].get_width() / 3 + plateformeMap1.get_width(), 350,
+                            plateformeMap1.get_width(), plateformeMap1.get_height(), plateformeMap1),
+                    surface(self.cameraX, map[self.map][self.level].get_width() / 3 * 2, 350,
+                            plateformeMap1.get_width(), plateformeMap1.get_height(), plateformeMap1),
+                    surface(self.cameraX, map[self.map][self.level].get_width() / 3 * 2 + plateformeMap1.get_width(),
+                            350,
+                            plateformeMap1.get_width(), plateformeMap1.get_height(), plateformeMap1)]
+            elif self.level == 3:
+                self.plateformes = [
+                    self.plateformes[0],
+                    surface(self.cameraX, 0, 415, plateformeMap1_2.get_width(),
+                            plateformeMap1_2.get_height(),
+                            plateformeMap1_2),
+                    surface(self.cameraX, map[self.map][self.level].get_width() / 5 + 100, 350,
+                            plateformeMap1.get_width(), plateformeMap1.get_height(), plateformeMap1),
+                    surface(self.cameraX, map[self.map][self.level].get_width() / 3, 415, plateformeMap1_2.get_width(),
+                            plateformeMap1_2.get_height(),
+                            plateformeMap1_2),
+                    surface(self.cameraX, map[self.map][self.level].get_width() / 3 + plateformeMap1_2.get_width(), 415,
+                            plateformeMap1_2.get_width(), plateformeMap1_2.get_height(),
+                            plateformeMap1_2),
+                    surface(self.cameraX,
+                            map[self.map][self.level].get_width() / 3 * 2 + 200 + 100, 350,
+                            plateformeMap1.get_width(), plateformeMap1.get_height(), plateformeMap1),
+                    surface(self.cameraX,
+                            map[self.map][self.level].get_width() / 3 * 2 + plateformeMap1.get_width() + 200 + 100, 350,
+                            plateformeMap1.get_width(), plateformeMap1.get_height(), plateformeMap1)
+                ]
+            elif self.level == 4:
+                self.plateformes = [
+                    self.plateformes[0],
+                    surface(self.cameraX, 0, 415, plateformeMap1_2.get_width(),
+                            plateformeMap1_2.get_height(),
+                            plateformeMap1_2),
+                    surface(self.cameraX, plateformeMap1_2.get_width() + 200, 415, plateformeMap1_2.get_width(),
+                            plateformeMap1_2.get_height(),
+                            plateformeMap1_2),
+                    surface(self.cameraX, map[self.map][self.level].get_width() / 2 + 100, 350,
+                            plateformeMap1.get_width(), plateformeMap1.get_height(), plateformeMap1),
+                    surface(self.cameraX, map[self.map][self.level].get_width() / 2 + 100 + plateformeMap1.get_width(), 350,
+                            plateformeMap1.get_width(), plateformeMap1.get_height(), plateformeMap1),
+                    surface(self.cameraX,
+                            map[self.map][self.level].get_width() / 3 * 2 + 200, 350,
+                            plateformeMap1.get_width(), plateformeMap1.get_height(), plateformeMap1),
+                    surface(self.cameraX,
+                            map[self.map][self.level].get_width() / 3 * 2 + plateformeMap1.get_width() + 200, 350,
+                            plateformeMap1.get_width(), plateformeMap1.get_height(), plateformeMap1)
+                ]
         self.p1.timingRespawn = 0
         self.p1.setPos(200, 300, sizeSprites)
         self.p1.position = "right"
@@ -781,7 +878,11 @@ class game:
                 and menuButton.y <= pygame.mouse.get_pos()[
             1] <= menuButton.y + menuButton.height:
             self.cliqueSoundEffect.play()
+            self.musiqueBackground.fadeout(100)
+            self.musiqueMenu.play(loops=-1)
             self.menu = 1
+            self.level = 2
+            self.menuTimer = 30
         elif mouse[0] and exitButton.x <= pygame.mouse.get_pos()[
             0] <= exitButton.x + exitButton.width \
              and exitButton.y <= pygame.mouse.get_pos()[
