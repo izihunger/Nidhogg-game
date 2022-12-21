@@ -16,6 +16,8 @@ miniaMap4 = pygame.transform.scale(pygame.image.load("image/bg4Minia.png"), (300
 
 plateformeMap1 = pygame.transform.scale(pygame.image.load("image/plateformeMap1.PNG"), (100, 20))
 plateformeMap1_2 = pygame.transform.scale(pygame.image.load("image/plateformeMap1_2.png"), (460, 76))
+plateformeMap2 =  pygame.transform.scale(pygame.image.load("image/plateformeMap2.png"), (142, 28))
+plateformeMap2_2 = pygame.transform.scale(pygame.image.load("image/plateformeMap2_2.png"), (350, 95))
 
 sizeSprites = height, width = 55, 80
 
@@ -523,12 +525,12 @@ class game:
         self.cameraX = -(map[self.map][self.level].get_width() / 2 - 400)
         self.swordNumber = 0
         # Create player 1
-        self.p1 = personnage(1, 200, 300, "right", moveRight)
+        self.p1 = personnage(1, 200, 200, "right", moveRight)
         self.p1.setCtrlPlayer(pygame.K_z, pygame.K_q, pygame.K_d, pygame.K_e, pygame.K_SPACE)
         self.p1.fillAllSprite(pygame.Color(238, 182, 61))
         self.p1.hitbox = pygame.Rect((self.p1.x, self.p1.y), self.p1.size)
         # Create player 2
-        self.p2 = personnage(2, 600, 300, "left", moveRight2)
+        self.p2 = personnage(2, 600, 200, "left", moveRight2)
         self.p2.setCtrlPlayer(pygame.K_UP, pygame.K_LEFT, pygame.K_RIGHT, pygame.K_RSHIFT, pygame.K_RCTRL)
         self.p2.fillAllSprite(pygame.Color(202, 80, 203))
         self.p2.hitbox = pygame.Rect((self.p2.x, self.p2.y), self.p2.size)
@@ -543,7 +545,20 @@ class game:
         self.addSword(self.p2, s2)
         # create first level
         if self.map == 0:
-            print("map 0")
+            self.plateformes = [
+                surface(self.cameraX, 0, 479, map[self.map][self.level].get_width(), 161, None),
+                surface(self.cameraX, 0, 415, plateformeMap2_2.get_width(),
+                        plateformeMap2_2.get_height(),
+                        plateformeMap2_2),
+                surface(self.cameraX, map[self.map][self.level].get_width() / 8 * 3 - 50, 350,
+                        plateformeMap2.get_width(), plateformeMap2.get_height(), plateformeMap2),
+                surface(self.cameraX, map[self.map][self.level].get_width() / 8 * 4 - 50, 225,
+                        plateformeMap2.get_width(), plateformeMap2.get_height(), plateformeMap2),
+                surface(self.cameraX, map[self.map][self.level].get_width() / 8 * 5 - 50, 350,
+                        plateformeMap2.get_width(), plateformeMap2.get_height(), plateformeMap2),
+                surface(self.cameraX, map[self.map][self.level].get_width() - 350, 415, plateformeMap2_2.get_width(),
+                        plateformeMap2_2.get_height(),
+                        plateformeMap2_2)]
         elif self.map == 1:
             self.plateformes = [
                 surface(self.cameraX, 0, 479, map[self.map][self.level].get_width(), 161, None),
@@ -575,7 +590,101 @@ class game:
             self.cameraX = 0
         else:
             self.cameraX = -(map[self.map][self.level].get_width() - 800)
-        if self.map == 1:
+        if self.map == 0:
+            if self.level == 0:
+                self.plateformes = [
+                    self.plateformes[0],
+                    surface(self.cameraX, map[self.map][self.level].get_width() / 8 * 1, 350,
+                            plateformeMap2.get_width(), plateformeMap2.get_height(), plateformeMap2),
+                    surface(self.cameraX, map[self.map][self.level].get_width() / 8 * 1 + plateformeMap2.get_width(),
+                            350,
+                            plateformeMap2.get_width(), plateformeMap2.get_height(), plateformeMap2),
+                    surface(self.cameraX, map[self.map][self.level].get_width() / 8 * 1 + 2*plateformeMap2.get_width() + 150, 415,
+                            plateformeMap2_2.get_width(),
+                            plateformeMap2_2.get_height(),
+                            plateformeMap2_2),
+                    surface(self.cameraX, map[self.map][self.level].get_width() / 8 * 4 + 100, 225,
+                            plateformeMap2.get_width(), plateformeMap2.get_height(), plateformeMap2),
+                    surface(self.cameraX, map[self.map][self.level].get_width() / 8 * 4 + 100 + plateformeMap2.get_width(), 225,
+                            plateformeMap2.get_width(), plateformeMap2.get_height(), plateformeMap2),
+                    surface(self.cameraX, map[self.map][self.level].get_width() / 8 * 6, 350,
+                            plateformeMap2.get_width(), plateformeMap2.get_height(), plateformeMap2),
+                    surface(self.cameraX, map[self.map][self.level].get_width() / 8 * 6 + plateformeMap2.get_width(), 350,
+                            plateformeMap2.get_width(), plateformeMap2.get_height(), plateformeMap2)]
+            elif self.level == 1:
+                self.plateformes = [
+                    self.plateformes[0],
+                    surface(self.cameraX, map[self.map][self.level].get_width() / 8 * 1, 350,
+                            plateformeMap2.get_width(), plateformeMap2.get_height(), plateformeMap2),
+                    surface(self.cameraX, map[self.map][self.level].get_width() / 8 * 1 + plateformeMap2.get_width(), 350,
+                            plateformeMap2.get_width(), plateformeMap2.get_height(), plateformeMap2),
+                    surface(self.cameraX, map[self.map][self.level].get_width() / 8 * 3, 350,
+                            plateformeMap2.get_width(), plateformeMap2.get_height(), plateformeMap2),
+                    surface(self.cameraX, map[self.map][self.level].get_width() / 8 * 3 + plateformeMap2.get_width(), 350,
+                            plateformeMap2.get_width(), plateformeMap2.get_height(), plateformeMap2),
+                    surface(self.cameraX, map[self.map][self.level].get_width() / 8 * 5, 350,
+                            plateformeMap2.get_width(), plateformeMap2.get_height(), plateformeMap2),
+                    surface(self.cameraX, map[self.map][self.level].get_width() / 8 * 5 + plateformeMap2.get_width(), 350,
+                            plateformeMap2.get_width(), plateformeMap2.get_height(), plateformeMap2),
+                    surface(self.cameraX, map[self.map][self.level].get_width() - 350, 415,
+                            plateformeMap2_2.get_width(),
+                            plateformeMap2_2.get_height(),
+                            plateformeMap2_2)]
+            elif self.level == 2:
+                self.plateformes = [
+                    self.plateformes[0],
+                    surface(self.cameraX, 0, 415, plateformeMap2_2.get_width(),
+                            plateformeMap2_2.get_height(),
+                            plateformeMap2_2),
+                    surface(self.cameraX, map[self.map][self.level].get_width() / 8 * 3 - 50, 350,
+                            plateformeMap2.get_width(), plateformeMap2.get_height(), plateformeMap2),
+                    surface(self.cameraX, map[self.map][self.level].get_width() / 8 * 4 - 50, 225,
+                            plateformeMap2.get_width(), plateformeMap2.get_height(), plateformeMap2),
+                    surface(self.cameraX, map[self.map][self.level].get_width() / 8 * 5 - 50, 350,
+                            plateformeMap2.get_width(), plateformeMap2.get_height(), plateformeMap2),
+                    surface(self.cameraX, map[self.map][self.level].get_width() - 350, 415,
+                            plateformeMap2_2.get_width(),
+                            plateformeMap2_2.get_height(),
+                            plateformeMap2_2)]
+            elif self.level == 3:
+                self.plateformes = [
+                    self.plateformes[0],
+                    surface(self.cameraX, 0, 415, plateformeMap2_2.get_width(), plateformeMap2_2.get_height(),
+                            plateformeMap2_2),
+                    surface(self.cameraX, map[self.map][self.level].get_width() / 8 * 2, 350,
+                            plateformeMap2.get_width(), plateformeMap2.get_height(), plateformeMap2),
+                    surface(self.cameraX, map[self.map][self.level].get_width() / 8 * 2 + plateformeMap2.get_width(), 350,
+                            plateformeMap2.get_width(), plateformeMap2.get_height(), plateformeMap2),
+                    surface(self.cameraX, map[self.map][self.level].get_width() / 8 * 4, 350,
+                            plateformeMap2.get_width(), plateformeMap2.get_height(), plateformeMap2),
+                    surface(self.cameraX, map[self.map][self.level].get_width() / 8 * 4 + plateformeMap2.get_width(), 350,
+                            plateformeMap2.get_width(), plateformeMap2.get_height(), plateformeMap2),
+                    surface(self.cameraX, map[self.map][self.level].get_width() / 8 * 6, 350,
+                            plateformeMap2.get_width(), plateformeMap2.get_height(), plateformeMap2),
+                    surface(self.cameraX, map[self.map][self.level].get_width() / 8 * 6 + plateformeMap2.get_width(), 350,
+                            plateformeMap2.get_width(), plateformeMap2.get_height(), plateformeMap2)]
+            elif self.level == 4:
+                self.plateformes = [
+                    self.plateformes[0],
+                    surface(self.cameraX, map[self.map][self.level].get_width() / 8 * 1, 350,
+                            plateformeMap2.get_width(), plateformeMap2.get_height(), plateformeMap2),
+                    surface(self.cameraX, map[self.map][self.level].get_width() / 8 * 1 + plateformeMap2.get_width(), 350,
+                            plateformeMap2.get_width(), plateformeMap2.get_height(), plateformeMap2),
+                    surface(self.cameraX, map[self.map][self.level].get_width() / 8 * 3 - 100, 225,
+                            plateformeMap2.get_width(), plateformeMap2.get_height(), plateformeMap2),
+                    surface(self.cameraX,
+                            map[self.map][self.level].get_width() / 8 * 3 - 100 + plateformeMap2.get_width(), 225,
+                            plateformeMap2.get_width(), plateformeMap2.get_height(), plateformeMap2),
+                    surface(self.cameraX,
+                            map[self.map][self.level].get_width() / 8 * 4,
+                            415,
+                            plateformeMap2_2.get_width(), plateformeMap2_2.get_height(), plateformeMap2_2),
+                    surface(self.cameraX, map[self.map][self.level].get_width() / 8 * 6, 350,
+                            plateformeMap2.get_width(), plateformeMap2.get_height(), plateformeMap2),
+                    surface(self.cameraX,
+                            map[self.map][self.level].get_width() / 8 * 6 + plateformeMap2.get_width(), 350,
+                            plateformeMap2.get_width(), plateformeMap2.get_height(), plateformeMap2)]
+        elif self.map == 1:
             if self.level == 0:
                 self.plateformes = [
                     self.plateformes[0],
@@ -663,10 +772,10 @@ class game:
                             plateformeMap1.get_width(), plateformeMap1.get_height(), plateformeMap1)
                 ]
         self.p1.timingRespawn = 0
-        self.p1.setPos(200, 300, sizeSprites)
+        self.p1.setPos(200, 250, sizeSprites)
         self.p1.position = "right"
         self.p2.timingRespawn = 0
-        self.p2.setPos(600, 300, sizeSprites)
+        self.p2.setPos(600, 250, sizeSprites)
         self.p2.position = "left"
         # Create sword 1 for player 1 when spawn
         s1 = sword(self.p1.x + 48, self.p1.y + 15, swordRight)
@@ -715,12 +824,12 @@ class game:
         if self.p1.timingRespawn:
             self.p1.timingRespawn -= 1
             if not self.p1.timingRespawn:
-                self.p1.setPos(50, 300, self.p1.size)
+                self.p1.setPos(50, 250, self.p1.size)
                 self.p1.sword.setPos(self.p1.x + 48, self.p1.y + 15, self.p1.sword.size)
         if self.p2.timingRespawn:
             self.p2.timingRespawn -= 1
             if not self.p2.timingRespawn:
-                self.p2.setPos(750, 300, self.p2.size)
+                self.p2.setPos(750, 250, self.p2.size)
                 self.p2.sword.setPos(self.p2.x - 48, self.p2.y + 15, self.p2.sword.size)
 
     def timerPickUpSword(self):
