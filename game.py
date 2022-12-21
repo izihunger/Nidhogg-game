@@ -78,6 +78,9 @@ class game:
         self.isGameStarted = 0
         self.cliqueSoundEffect = pygame.mixer.Sound("musique/cliqueSoundEffect.wav")
         self.musiqueBackground = pygame.mixer.Sound("musique/nidhoggOSTCastle.mp3")
+        self.musiqueMenu = pygame.mixer.Sound("musique/menuMusic.mp3")
+        self.volumeMusic = 0.1
+        self.volumeSoundEffect = 0.1
 
     def displayMenu(self, mouse):
         if self.menuTimer:
@@ -86,7 +89,6 @@ class game:
         # Menu d'ouverture du jeu
         if self.menu == 1:
             if self.isGameStarted:
-                self.musiqueBackground.set_volume(0.05)
                 menu = label(self.screen, 200, 50, 400, 50, "Menu", textsize=40)
                 menu.pygamePrint()
                 # Resume game button
@@ -101,8 +103,12 @@ class game:
                 settingsButton = label(self.screen, 50, 300, 700, 50, "KEYBOARD SETTINGS", bgcolor=(100, 100, 100))
                 settingsButton.displayButton()
                 settingsButton.pygamePrint()
+                # print volume button
+                volumeButton = label(self.screen, 50, 375, 700, 50, "VOLUME", bgcolor=(100, 100, 100))
+                volumeButton.displayButton()
+                volumeButton.pygamePrint()
                 # print exit button
-                exitButton = label(self.screen, 50, 375, 700, 50, "EXIT", bgcolor=(100, 100, 100))
+                exitButton = label(self.screen, 50, 450, 700, 50, "EXIT", bgcolor=(100, 100, 100))
                 exitButton.displayButton()
                 exitButton.pygamePrint()
                 if not self.menuTimer:
@@ -111,7 +117,8 @@ class game:
                             and resumeButton.y <= pygame.mouse.get_pos()[
                         1] <= resumeButton.y + resumeButton.height:
                         self.cliqueSoundEffect.play()
-                        self.musiqueBackground.set_volume(0.4)
+                        self.musiqueMenu.fadeout(100)
+                        self.musiqueBackground.play(loops=-1)
                         self.menu = 0
                     elif mouse[0] and startgameButton.x <= pygame.mouse.get_pos()[
                         0] <= startgameButton.x + startgameButton.width \
@@ -119,6 +126,13 @@ class game:
                         1] <= startgameButton.y + startgameButton.height:
                         self.cliqueSoundEffect.play()
                         self.menu = 2
+                        self.menuTimer = 30
+                    elif mouse[0] and volumeButton.x <= pygame.mouse.get_pos()[
+                        0] <= volumeButton.x + volumeButton.width \
+                            and volumeButton.y <= pygame.mouse.get_pos()[
+                        1] <= volumeButton.y + volumeButton.height:
+                        self.cliqueSoundEffect.play()
+                        self.menu = 4
                         self.menuTimer = 30
                     elif mouse[0] and settingsButton.x <= pygame.mouse.get_pos()[
                         0] <= settingsButton.x + settingsButton.width \
@@ -143,7 +157,11 @@ class game:
                 settingsButton.displayButton()
                 settingsButton.pygamePrint()
                 # print exit button
-                exitButton = label(self.screen, 50, 300, 700, 50, "EXIT", bgcolor=(100, 100, 100))
+                volumeButton = label(self.screen, 50, 300, 700, 50, "VOLUME", bgcolor=(100, 100, 100))
+                volumeButton.displayButton()
+                volumeButton.pygamePrint()
+                # print exit button
+                exitButton = label(self.screen, 50, 375, 700, 50, "EXIT", bgcolor=(100, 100, 100))
                 exitButton.displayButton()
                 exitButton.pygamePrint()
                 if not self.menuTimer:
@@ -160,6 +178,13 @@ class game:
                         1] <= settingsButton.y + settingsButton.height:
                         self.cliqueSoundEffect.play()
                         self.menu = 3
+                        self.menuTimer = 30
+                    elif mouse[0] and volumeButton.x <= pygame.mouse.get_pos()[
+                        0] <= volumeButton.x + volumeButton.width \
+                            and volumeButton.y <= pygame.mouse.get_pos()[
+                        1] <= volumeButton.y + volumeButton.height:
+                        self.cliqueSoundEffect.play()
+                        self.menu = 4
                         self.menuTimer = 30
                     elif mouse[0] and exitButton.x <= pygame.mouse.get_pos()[0] <= exitButton.x + exitButton.width \
                             and exitButton.y <= pygame.mouse.get_pos()[1] <= exitButton.y + exitButton.height:
@@ -190,6 +215,7 @@ class game:
                 if mouse[0] and 50 <= pygame.mouse.get_pos()[0] <= 350 \
                         and 125 <= pygame.mouse.get_pos()[1] <= 275:
                     self.cliqueSoundEffect.play()
+                    self.musiqueBackground.stop()
                     self.map = 0
                     self.menu = 0
                     self.startGame()
@@ -197,6 +223,7 @@ class game:
                 elif mouse[0] and 450 <= pygame.mouse.get_pos()[0] <= 750 \
                         and 125 <= pygame.mouse.get_pos()[1] <= 275:
                     self.cliqueSoundEffect.play()
+                    self.musiqueBackground.stop()
                     self.map = 1
                     self.menu = 0
                     self.startGame()
@@ -204,6 +231,7 @@ class game:
                 elif mouse[0] and 50 <= pygame.mouse.get_pos()[0] <= 350 \
                         and 350 <= pygame.mouse.get_pos()[1] <= 600:
                     self.cliqueSoundEffect.play()
+                    self.musiqueBackground.stop()
                     self.map = 2
                     self.menu = 0
                     self.startGame()
@@ -211,6 +239,7 @@ class game:
                 elif mouse[0] and 450 <= pygame.mouse.get_pos()[0] <= 750 \
                         and 350 <= pygame.mouse.get_pos()[1] <= 600:
                     self.cliqueSoundEffect.play()
+                    self.musiqueBackground.stop()
                     self.map = 3
                     self.menu = 0
                     self.startGame()
@@ -429,9 +458,65 @@ class game:
                     self.cliqueSoundEffect.play()
                     self.menu = 1
                     self.menuTimer = 30
+        elif self.menu == 4:
+            menu = label(self.screen, 200, 50, 400, 50, "Sound volume", textsize=40)
+            menu.pygamePrint()
+            #print background
+            musicVolumelabel = label(self.screen, 200, 150, 400, 50, "music volume :", textsize=25)
+            musicVolumelabel.pygamePrint()
+            Background = label(self.screen, 50, 200, 700, 75, "", bgcolor=(100, 100, 100))
+            Background.displayButton()
+            Background.pygamePrint()
+
+            soundEffectVolumelabel = label(self.screen, 200, 300, 400, 50, "sound effect volume :", textsize=25)
+            soundEffectVolumelabel.pygamePrint()
+            Background2 = label(self.screen, 50, 350, 700, 75, "", bgcolor=(100, 100, 100))
+            Background2.displayButton()
+            Background2.pygamePrint()
+            #print music bar back
+            volumeMusicBackground = label(self.screen, 55, 205, 690, 65, "", bgcolor=(100, 100, 100))
+            volumeMusicBackground.displayButton()
+            volumeMusicBackground.pygamePrint()
+            # print music bar front
+            length = 690 * self.volumeMusic
+            volumeMusicFront = label(self.screen, 55, 205, length, 65, "", bgcolor=(231, 228, 1))
+            volumeMusicFront.displayButton()
+            volumeMusicFront.pygamePrint()
+            # print soundEffect bar back
+            volumeSoundEffectBackground = label(self.screen, 55, 355, 690, 65, "", bgcolor=(100, 100, 100))
+            volumeSoundEffectBackground.displayButton()
+            volumeSoundEffectBackground.pygamePrint()
+            # print soundEffect bar front
+            length = 690 * self.volumeSoundEffect
+            volumeSoundEffectFront = label(self.screen, 55, 355, length, 65, "", bgcolor=(231, 228, 1))
+            volumeSoundEffectFront.displayButton()
+            volumeSoundEffectFront.pygamePrint()
+            # return to menu button
+            menuButton = label(self.screen, 250, 475, 300, 50, "Main menu", bgcolor=(100, 100, 100))
+            menuButton.displayButton()
+            menuButton.pygamePrint()
+            if not self.menuTimer:
+                if mouse[0] and volumeMusicBackground.x <= pygame.mouse.get_pos()[0] <= volumeMusicBackground.x + volumeMusicBackground.width \
+                        and volumeMusicBackground.y <= pygame.mouse.get_pos()[1] <= volumeMusicBackground.y + volumeMusicBackground.height:
+                    self.volumeMusic = (pygame.mouse.get_pos()[0] - 55) / 690
+                    self.musiqueBackground.set_volume(self.volumeMusic)
+                    self.musiqueMenu.set_volume(self.volumeMusic/2)
+                    self.menuTimer = 30
+                elif mouse[0] and volumeSoundEffectBackground.x <= pygame.mouse.get_pos()[0] <= volumeSoundEffectBackground.x + volumeSoundEffectBackground.width \
+                        and volumeSoundEffectBackground.y <= pygame.mouse.get_pos()[1] <= volumeSoundEffectBackground.y + volumeSoundEffectBackground.height:
+                    self.volumeSoundEffect = (pygame.mouse.get_pos()[0] - 55) / 690
+                    self.cliqueSoundEffect.set_volume(self.volumeSoundEffect)
+                    self.menuTimer = 30
+                    self.cliqueSoundEffect.play()
+                elif mouse[0] and menuButton.x <= pygame.mouse.get_pos()[0] <= menuButton.x + menuButton.width \
+                        and menuButton.y <= pygame.mouse.get_pos()[1] <= menuButton.y + menuButton.height:
+                    self.cliqueSoundEffect.play()
+                    self.menu = 1
+                    self.menuTimer = 30
 
     def startGame(self):
-        self.musiqueBackground.set_volume(0.4)
+        self.musiqueMenu.fadeout(100)
+        self.musiqueBackground.set_volume(self.volumeMusic)
         self.musiqueBackground.play(loops=-1)
         self.sword_list = []
         self.plateformes = [self.plateformes[0]]
@@ -550,6 +635,9 @@ class game:
     def keyboardInput(self, key):
         if key[pygame.K_ESCAPE]:
             self.menu = 1
+            self.musiqueBackground.fadeout(100)
+            self.musiqueMenu.play(loops=-1)
+            self.musiqueMenu.set_volume(self.volumeMusic/2)
         else:
             self.timerPickUpSword()
             self.timingRespawn()
