@@ -67,9 +67,11 @@ class label:
         textRect.center = (self.x + self.width / 2, self.y + self.height / 2)
         self.screen.blit(text, textRect)
 
-    """Function to display the label's background"""
-    def displayButton(self):
+    def displayBackground(self):
         pygame.draw.rect(self.screen, self.bgcolor, [self.x, self.y, self.width, self.height])
+    """Function to display label + background"""
+    def displayButton(self):
+        self.displayBackground()
         self.pygamePrint()
 
 
@@ -95,6 +97,7 @@ class game:
         self.volumeMusic = 0.05
         self.volumeSoundEffect = 0.05
 
+    """Function to display all differents menus"""
     def displayMenu(self, mouse):
         if self.menuTimer:
             self.menuTimer -= 1
@@ -107,23 +110,18 @@ class game:
                 # Resume game button
                 resumeButton = label(self.screen, 50, 150, 700, 50, "RESUME GAME", bgcolor=(100, 100, 100))
                 resumeButton.displayButton()
-                resumeButton.pygamePrint()
                 # print start game button
                 startgameButton = label(self.screen, 50, 225, 700, 50, "START NEW GAME", bgcolor=(100, 100, 100))
                 startgameButton.displayButton()
-                startgameButton.pygamePrint()
                 # print settings button
                 settingsButton = label(self.screen, 50, 300, 700, 50, "KEYBOARD SETTINGS", bgcolor=(100, 100, 100))
                 settingsButton.displayButton()
-                settingsButton.pygamePrint()
                 # print volume button
                 volumeButton = label(self.screen, 50, 375, 700, 50, "VOLUME", bgcolor=(100, 100, 100))
                 volumeButton.displayButton()
-                volumeButton.pygamePrint()
                 # print exit button
                 exitButton = label(self.screen, 50, 450, 700, 50, "EXIT", bgcolor=(100, 100, 100))
                 exitButton.displayButton()
-                exitButton.pygamePrint()
                 if not self.menuTimer:
                     if mouse[0] and resumeButton.x <= pygame.mouse.get_pos()[
                         0] <= resumeButton.x + resumeButton.width \
@@ -164,19 +162,15 @@ class game:
                 # print start game button
                 startgameButton = label(self.screen, 50, 150, 700, 50, "START GAME", bgcolor=(100, 100, 100))
                 startgameButton.displayButton()
-                startgameButton.pygamePrint()
                 # print settings button
                 settingsButton = label(self.screen, 50, 225, 700, 50, "KEYBOARD SETTINGS", bgcolor=(100, 100, 100))
                 settingsButton.displayButton()
-                settingsButton.pygamePrint()
                 # print exit button
                 volumeButton = label(self.screen, 50, 300, 700, 50, "VOLUME", bgcolor=(100, 100, 100))
                 volumeButton.displayButton()
-                volumeButton.pygamePrint()
                 # print exit button
                 exitButton = label(self.screen, 50, 375, 700, 50, "EXIT", bgcolor=(100, 100, 100))
                 exitButton.displayButton()
-                exitButton.pygamePrint()
                 if not self.menuTimer:
                     if mouse[0] and startgameButton.x <= pygame.mouse.get_pos()[
                         0] <= startgameButton.x + startgameButton.width \
@@ -268,48 +262,37 @@ class game:
             player1RightButton = label(self.screen, 50, 100, 300, 50,
                                        "Move right : " + pygame.key.name(self.p1.rightCtrl), bgcolor=(100, 100, 100))
             player1RightButton.displayButton()
-            player1RightButton.pygamePrint()
             player1LeftButton = label(self.screen, 50, 175, 300, 50,
                                       "Move left : " + pygame.key.name(self.p1.leftCtrl), bgcolor=(100, 100, 100))
             player1LeftButton.displayButton()
-            player1LeftButton.pygamePrint()
             player1JumpButton = label(self.screen, 50, 250, 300, 50,
                                       "Jump : " + pygame.key.name(self.p1.jumpCtrl), bgcolor=(100, 100, 100))
             player1JumpButton.displayButton()
-            player1JumpButton.pygamePrint()
             player1ThrowButton = label(self.screen, 50, 325, 300, 50,
                                        "Throw : " + pygame.key.name(self.p1.throwCtrl), bgcolor=(100, 100, 100))
             player1ThrowButton.displayButton()
-            player1ThrowButton.pygamePrint()
             player1AttackButton = label(self.screen, 50, 400, 300, 50,
                                        "Attack : " + pygame.key.name(self.p1.attaqueCtrl), bgcolor=(100, 100, 100))
             player1AttackButton.displayButton()
-            player1AttackButton.pygamePrint()
             # player 2 command
             player2RightButton = label(self.screen, 450, 100, 300, 50,
                                        "Move right : " + pygame.key.name(self.p2.rightCtrl), bgcolor=(100, 100, 100))
             player2RightButton.displayButton()
-            player2RightButton.pygamePrint()
             player2LeftButton = label(self.screen, 450, 175, 300, 50,
                                       "Move left : " + pygame.key.name(self.p2.leftCtrl), bgcolor=(100, 100, 100))
             player2LeftButton.displayButton()
-            player2LeftButton.pygamePrint()
             player2JumpButton = label(self.screen, 450, 250, 300, 50,
                                       "Jump : " + pygame.key.name(self.p2.jumpCtrl), bgcolor=(100, 100, 100))
             player2JumpButton.displayButton()
-            player2JumpButton.pygamePrint()
             player2ThrowButton = label(self.screen, 450, 325, 300, 50,
                                        "Throw : " + pygame.key.name(self.p2.throwCtrl), bgcolor=(100, 100, 100))
             player2ThrowButton.displayButton()
-            player2ThrowButton.pygamePrint()
             player2AttackButton = label(self.screen, 450, 400, 300, 50,
                                        "Attack : " + pygame.key.name(self.p2.attaqueCtrl), bgcolor=(100, 100, 100))
             player2AttackButton.displayButton()
-            player2AttackButton.pygamePrint()
             # return to menu button
             menuButton = label(self.screen, 250, 475, 300, 50, "Main menu", bgcolor=(100, 100, 100))
             menuButton.displayButton()
-            menuButton.pygamePrint()
 
             # player 1 button interactions
             if not self.menuTimer:
@@ -479,35 +462,28 @@ class game:
             musicVolumelabel.pygamePrint()
             Background = label(self.screen, 50, 200, 700, 75, "", bgcolor=(100, 100, 100))
             Background.displayButton()
-            Background.pygamePrint()
 
             soundEffectVolumelabel = label(self.screen, 200, 300, 400, 50, "sound effect volume :", textsize=25)
             soundEffectVolumelabel.pygamePrint()
             Background2 = label(self.screen, 50, 350, 700, 75, "", bgcolor=(100, 100, 100))
             Background2.displayButton()
-            Background2.pygamePrint()
             #print music bar back
             volumeMusicBackground = label(self.screen, 55, 205, 690, 65, "", bgcolor=(100, 100, 100))
             volumeMusicBackground.displayButton()
-            volumeMusicBackground.pygamePrint()
             # print music bar front
             length = 690 * self.volumeMusic
             volumeMusicFront = label(self.screen, 55, 205, length, 65, "", bgcolor=(231, 228, 1))
             volumeMusicFront.displayButton()
-            volumeMusicFront.pygamePrint()
             # print soundEffect bar back
             volumeSoundEffectBackground = label(self.screen, 55, 355, 690, 65, "", bgcolor=(100, 100, 100))
             volumeSoundEffectBackground.displayButton()
-            volumeSoundEffectBackground.pygamePrint()
             # print soundEffect bar front
             length = 690 * self.volumeSoundEffect
             volumeSoundEffectFront = label(self.screen, 55, 355, length, 65, "", bgcolor=(231, 228, 1))
             volumeSoundEffectFront.displayButton()
-            volumeSoundEffectFront.pygamePrint()
             # return to menu button
             menuButton = label(self.screen, 250, 475, 300, 50, "Main menu", bgcolor=(100, 100, 100))
             menuButton.displayButton()
-            menuButton.pygamePrint()
             if not self.menuTimer:
                 if mouse[0] and volumeMusicBackground.x <= pygame.mouse.get_pos()[0] <= volumeMusicBackground.x + volumeMusicBackground.width \
                         and volumeMusicBackground.y <= pygame.mouse.get_pos()[1] <= volumeMusicBackground.y + volumeMusicBackground.height:
@@ -527,6 +503,7 @@ class game:
                     self.menu = 1
                     self.menuTimer = 30
 
+    """Function to start a new game"""
     def startGame(self):
         self.musiqueMenu.fadeout(100)
         self.musiqueBackground.set_volume(self.volumeMusic)
@@ -592,7 +569,9 @@ class game:
         self.displayPlayers()
         self.displaySword()
 
+    "Function to change the level(part) of the map"
     def changeLevel(self, nextLevel, player):
+        self.animChangeLevel(nextLevel)
         self.level += nextLevel
         self.swordNumber = 0
         self.sword_list = []
@@ -801,11 +780,38 @@ class game:
         self.displayPlayers()
         self.displaySword()
 
+    def animChangeLevel(self, direction):
+        line1 = label(self.screen, 950*direction, 10, 800, 10, "2.95", bgcolor=(255, 255, 255))
+        line2 = label(self.screen, 1000*direction, 40, 800, 13, "3", bgcolor=(255, 255, 255))
+        line3 = label(self.screen, 800*direction, 100, 800, 17, "2.8", bgcolor=(255, 255, 255))
+        line4 = label(self.screen, 900*direction, 150, 800, 15, "2.9", bgcolor=(255, 255, 255))
+        line5 = label(self.screen, 1000*direction, 180, 800, 20, "3", bgcolor=(255, 255, 255))
+        line6 = label(self.screen, 850*direction, 250, 800, 10, "2.85", bgcolor=(255, 255, 255))
+        line7 = label(self.screen, 950*direction, 300, 800, 13, "2.95", bgcolor=(255, 255, 255))
+        line8 = label(self.screen, 1200*direction, 325, 800, 10, "4", bgcolor=(255, 255, 255))
+        line9 = label(self.screen, 1000 * direction, 400, 800, 15, "3", bgcolor=(255, 255, 255))
+        line10 = label(self.screen, 1150 * direction, 460, 800, 11, "3.5", bgcolor=(255, 255, 255))
+        line11 = label(self.screen, 900 * direction, 510, 800, 17, "2.9", bgcolor=(255, 255, 255))
+        line12 = label(self.screen, 1200 * direction, 325, 800, 10, "4", bgcolor=(255, 255, 255))
+        lines = [line1, line2, line3, line4, line5, line6, line7, line8, line9, line10, line11, line12]
+        while len(lines) > 0:
+            for line in lines:
+                line.displayBackground()
+                if direction == -1 and line.x + line.width < 800 or direction == 1 and line.x > 0:
+                    line.x -= float(line.text) * direction
+                else:
+                    lines.remove(line)
+            pygame.display.update()
+
+
+
+    """Function to add a sword to a player"""
     def addSword(self, player, sword):
         self.sword_list.append(sword)
         player.sword = self.sword_list[self.swordNumber]
         self.swordNumber += 1
 
+    """Function to display the map"""
     def displayBg(self):
         self.screen.fill((255, 255, 255))
         self.screen.blit(map[self.map][self.level], (self.cameraX, 0))
@@ -815,10 +821,12 @@ class game:
                 if plat.background is not None:
                     self.screen.blit(plat.background, (plat.hitbox.x, plat.hitbox.y))
 
+    """Function to display both player"""
     def displayPlayers(self):
         self.p1.displayPlayer(self.screen)
         self.p2.displayPlayer(self.screen)
 
+    """Function to display all the sword but not the player sword"""
     def displaySword(self):
         for s in self.sword_list:
             if s.falling == True:
@@ -831,6 +839,7 @@ class game:
                 self.screen.blit(s.sprite, (s.x, s.y))
                 pygame.draw.rect(self.screen, (255, 0, 0), s.hitbox, 1)
 
+    """Function to time the respawn of a player after he dies"""
     def timingRespawn(self):
         if self.p1.timingRespawn:
             self.p1.timingRespawn -= 1
@@ -843,12 +852,14 @@ class game:
                 self.p2.setPos(750, 250, self.p2.size)
                 self.p2.sword.setPos(self.p2.x - 48, self.p2.y + 15, self.p2.sword.size)
 
+    """Function to decremente the timer to pick a new sword"""
     def timerPickUpSword(self):
         if self.p1.timerpickUp:
             self.p1.timerpickUp -= 1
         if self.p2.timerpickUp:
             self.p2.timerpickUp -= 1
 
+    """Function to manage the keyboard input and the actions of the player"""
     def keyboardInput(self, key):
         if key[pygame.K_ESCAPE]:
             self.menu = 1
@@ -869,6 +880,7 @@ class game:
             elif self.p2.x+abs(self.cameraX) <= 10 and self.level == 0:
                 self.isGameStarted = False
 
+    """Function to test if a player kill another player"""
     def testKillPlayer(self):
         if self.p1.sword is not None and pygame.Rect.colliderect(self.p2.hitbox, self.p1.sword.hitbox) \
                 and not self.p2.timingRespawn and not self.p1.timingRespawn and not self.p1.fall:
@@ -885,15 +897,21 @@ class game:
         elif self.p2.attaque and self.p2.hitbox.x + self.p2.hitbox.width > self.p1.hitbox.x + self.p1.hitbox.width >= self.p2.hitbox.x:
             self.swordNumber = self.p1.dieP(200, 415, 1, self.sword_list, self.swordNumber)
 
+    """Function to manage all the sword interaction with players and walls"""
     def swordInteractions(self):
+        hitboxs = []
+        for pf in self.plateformes:
+            hitboxs.append(pf.hitbox)
         for s in self.sword_list:
             if s.throw == (1, "left", 2):
                 if self.p1.sword is not None and pygame.Rect.colliderect(s.hitbox,
                                                                          self.p1.sword.hitbox) and not self.p1.timingRespawn:
-                    s.stopThrow(swordRight)
+                    s.stopThrow(swordLeft)
                 elif pygame.Rect.colliderect(s.hitbox, self.p1.hitbox) and not self.p1.timingRespawn:
-                    s.stopThrow(swordRight)
+                    s.stopThrow(swordLeft)
                     self.swordNumber = self.p1.dieP(200, 415, 1, self.sword_list, self.swordNumber)
+                elif pygame.Rect.collidelist(s.hitbox, hitboxs) != -1:
+                    s.stopThrow(swordLeft)
                 else:
                     s.throwSword(0)
             elif s.throw == (1, "right", 2):
@@ -903,6 +921,8 @@ class game:
                 elif pygame.Rect.colliderect(s.hitbox, self.p1.hitbox) and not self.p1.timingRespawn:
                     s.stopThrow(swordRight)
                     self.swordNumber = self.p1.dieP(200, 415, 1, self.sword_list, self.swordNumber)
+                elif pygame.Rect.collidelist(s.hitbox, hitboxs) != -1:
+                    s.stopThrow(swordLeft)
                 else:
                     s.throwSword(1)
             elif s.throw == (1, "left", 1):
@@ -912,6 +932,8 @@ class game:
                 elif pygame.Rect.colliderect(s.hitbox, self.p2.hitbox) and not self.p2.timingRespawn:
                     s.stopThrow(swordRight)
                     self.swordNumber = self.p2.dieP(600, 415, 0, self.sword_list, self.swordNumber)
+                elif pygame.Rect.collidelist(s.hitbox, hitboxs) != -1:
+                    s.stopThrow(swordLeft)
                 else:
                     s.throwSword(0)
             elif s.throw == (1, "right", 1):
@@ -921,16 +943,19 @@ class game:
                 elif pygame.Rect.colliderect(s.hitbox, self.p2.hitbox) and not self.p2.timingRespawn:
                     s.stopThrow(swordRight)
                     self.swordNumber = self.p2.dieP(600, 415, 0, self.sword_list, self.swordNumber)
+                elif pygame.Rect.collidelist(s.hitbox, hitboxs) != -1:
+                    s.stopThrow(swordLeft)
                 else:
                     s.throwSword(1)
-            elif self.p1.sword is None and pygame.Rect.colliderect(s.hitbox, self.p1.hitbox) and not self.p1.timerpickUp:
-                self.p1.pickUpSword(s, self.p1.position)
-                self.p1.moveAnimation()
+            if self.p1.sword is None and pygame.Rect.colliderect(s.hitbox, self.p1.hitbox) and not self.p1.timerpickUp:
+                    self.p1.pickUpSword(s, self.p1.position)
+                    self.p1.moveAnimation()
             elif self.p2.sword is None and pygame.Rect.colliderect(s.hitbox,
-                                                                   self.p2.hitbox) and not self.p2.timerpickUp:
-                self.p2.pickUpSword(s, self.p2.position)
-                self.p2.moveAnimation()
+                                                                       self.p2.hitbox) and not self.p2.timerpickUp:
+                    self.p2.pickUpSword(s, self.p2.position)
+                    self.p2.moveAnimation()
 
+    """Function to always center the camera between both players"""
     def changeCamera(self):
         # if not self.p1.timingRespawn and not self.p2.timingRespawn:
         if self.p1.x >= self.p2.x:
@@ -960,6 +985,7 @@ class game:
                 for plateform in self.plateformes[1:]:
                     plateform.hitbox.x = plateform.x + self.cameraX
 
+    """Display the end of the game and the options"""
     def endGame(self, mouse):
         self.screen.fill((0, 0, 0))
         victory = label(self.screen, 400, 75, 0, 0, "WINNER", textsize=80, font="MV Boli", textcolor= (231, 228, 1))

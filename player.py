@@ -365,6 +365,8 @@ class Player:
     """Function to make the animation of the player's attaque"""
     def attaqueAnimation(self):
         if self.sword is not None:
+            if self.animMove > 15:
+                self.animMove = 0
             if self.animAttaque == 19:
                 self.animAttaque = 0
                 if self.position == "left":
