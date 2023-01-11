@@ -47,13 +47,14 @@ jumpLeft5 = pygame.transform.flip(jumpRight5, True, False)
 animationJumpRight = [jumpRight1, jumpRight2, jumpRight3, jumpRight4, jumpRight5]
 animationJumpLeft = [jumpLeft1, jumpLeft2, jumpLeft3, jumpLeft4, jumpLeft5]"""
 
-swordRight = pygame.image.load("image/Sword.png")
-swordRight = pygame.transform.scale(swordRight, (55, 13))
+"""All the sword sprites"""
+swordRight = pygame.transform.scale(pygame.image.load("image/Sword.png"), (55, 13))
 swordLeft = pygame.transform.flip(swordRight, True, False)
 swordBot = pygame.transform.rotate(swordLeft, 90)
 swordTop = pygame.transform.rotate(swordLeft, 270)
+spritesAnimSword = [swordRight, swordTop, swordLeft, swordBot]
 
-class personnage:
+class Player:
     def __init__(self,numberP, x, y, position, psprite):
         self.size = (55, 80)
         self.moveRight = pygame.transform.scale(pygame.image.load("image/moveFrame.png"), self.size)
@@ -147,7 +148,7 @@ class personnage:
         self.attaque = False
         self.animAttaque = 0
         self.animJumpCounter = 0
-        self.speed = 6
+        self.speed = 5
         self.lastFloorHitbox = None
         self.numberOfDeath = 0
 
@@ -160,14 +161,18 @@ class personnage:
                 a = image.get_at((x, y))[3]
                 image.set_at((x, y), pygame.Color(r, g, b, a))
 
+    """Function to fill the player's srpites with one colour"""
     def fillAllSprite(self, color):
         for sprite in self.allSprites:
             self.fill(sprite, color)
+
+    """Fonction to set the position of the player and his hitbox"""
     def setPos(self, x, y, sizePers):
         self.x = x
         self.y = y
         self.hitbox = pygame.Rect((x, y), sizePers)
 
+    """Fonction to make the player jump"""
     def jumps(self, surfaces):
         self.jumpAnim()
         collision = False
@@ -183,6 +188,7 @@ class personnage:
             self.jump = 0
             self.fall = 1
 
+    """Fonction to make the player fall"""
     def falling(self, surfaces):
         self.jumpAnim()
         for surface in surfaces:
@@ -195,10 +201,12 @@ class personnage:
                 self.fall = 0
                 self.lastFloorHitbox = surface.hitbox
                 return 0
-        self.setPos(self.x, self.y + 10, (35, 38))
+        self.setPos(self.x, self.y + 9, (35, 38))
         if self.sword is not None:
             self.sword.setPos(self.sword.x, self.sword.y + 10, (self.sword.hitbox.width, self.sword.hitbox.height))
         self.animJumpCounter += 1
+
+    """Fonction to set all the keyBoardSettings"""
     def setCtrlPlayer(self, jCtrl, lCtrl, rCtrl, tCtrl, aCtrl):
         self.jumpCtrl = jCtrl
         self.leftCtrl = lCtrl
@@ -206,6 +214,7 @@ class personnage:
         self.throwCtrl = tCtrl
         self.attaqueCtrl = aCtrl
 
+    """Function to move the player with the keyboard inputs"""
     def movePlayer(self, key, opponent, surfaces):
         if not self.timingRespawn:
             if key[self.throwCtrl] and self.sword is not None:
@@ -217,7 +226,7 @@ class personnage:
                 self.attaque = True
             elif key[self.jumpCtrl] and not self.jump and not self.fall:
                 self.jump = 1
-                self.jumpHeight = self.y - 140
+                self.jumpHeight = self.y - 144
             elif key[self.leftCtrl] and self.x > 0:
                 collision = False
                 for surface in surfaces:
@@ -302,6 +311,7 @@ class personnage:
         if self.attaque:
             self.attaqueAnimation()
 
+    """Function call when the player die"""
     def dieP(self, x, y, direction, sword_list, swordNumber):
         if self.sword != None:
             self.sword.falling = True
@@ -319,6 +329,7 @@ class personnage:
         self.numberOfDeath += 1
         return swordNumber + 1
 
+    """Function to pick a sword on the ground when the player walk on and don't have sword"""
     def pickUpSword(self, sword, direction):
         self.sword = sword
         if direction == "right":
@@ -330,6 +341,7 @@ class personnage:
             self.sword.setPos(self.x - 48, self.y + 15,
                               (self.sword.hitbox.width, self.sword.hitbox.height))
 
+    """Function to make the animation of the player's movements"""
     def moveAnimation(self):
         if self.sword is None:
             if self.animMove >= 23:
@@ -350,6 +362,7 @@ class personnage:
             else:
                 self.sprite = self.animationMoveRightWithSword[self.animMove]
 
+    """Function to make the animation of the player's attaque"""
     def attaqueAnimation(self):
         if self.sword is not None:
             if self.animAttaque == 19:
@@ -394,6 +407,7 @@ class personnage:
                     self.sprite = self.animationAttaqueRight[self.animAttaque]
                     self.setPos(self.x, self.y, (self.sprite.get_width(), self.sprite.get_height()))
 
+    """Function to make the animation of the player's jump"""
     def jumpAnim(self):
         if self.animJumpCounter == 5:
             self.animJumpCounter = 1
@@ -404,6 +418,7 @@ class personnage:
             self.sprite = self.animationJumpRight[self.animJumpCounter]
             self.hitbox = pygame.Rect(self.x, self.y, 35, 38)
 
+    """Function to display the player in the pygame window"""
     def displayPlayer(self, screen):
         if not self.timingRespawn:
             screen.blit(self.sprite, (self.x, self.y))

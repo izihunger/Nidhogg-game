@@ -1,6 +1,8 @@
-from personnage import personnage
+from player import Player
 from sword import sword
 import pygame
+
+"""All the sprites of backgrounds, plateforms and thumbnails of the map"""
 
 bg = pygame.image.load("image/backgroundComp.png")
 bg2 = pygame.image.load("image/bg2.png")
@@ -19,6 +21,8 @@ plateformeMap1_2 = pygame.transform.scale(pygame.image.load("image/plateformeMap
 plateformeMap2 =  pygame.transform.scale(pygame.image.load("image/plateformeMap2.png"), (142, 28))
 plateformeMap2_2 = pygame.transform.scale(pygame.image.load("image/plateformeMap2_2.png"), (350, 95))
 
+"""All the sprites of the player"""
+
 sizeSprites = height, width = 55, 80
 
 moveRight = pygame.transform.scale(pygame.image.load("image/moveFrame.png"), sizeSprites)
@@ -26,18 +30,22 @@ moveLeft = pygame.transform.scale(pygame.image.load("image/moveFrame2.png"), siz
 moveRight2 = pygame.transform.flip(moveRight, True, False)
 moveLeft2 = pygame.transform.flip(moveLeft, True, False)
 
+"""All the sprites of the sword"""
+
 swordRight = pygame.image.load("image/Sword.png")
 swordRight = pygame.transform.scale(swordRight, (55, 13))
 swordLeft = pygame.transform.flip(swordRight, True, False)
 swordBot = pygame.transform.rotate(swordLeft, 90)
 swordTop = pygame.transform.rotate(swordLeft, 270)
 
+"""Class for all the plateforms and all the map's hitbox"""
 class surface:
     def __init__(self,camera, x, y, width, height, background):
         self.x = x
         self.hitbox = pygame.Rect((x + camera, y), (width, height))
         self.background = background
 
+"""Class to create a button or a label"""
 class label:
     def __init__(self, screen, x, y, width, height, text, textcolor=(255, 255, 255), textsize=32, bgcolor=(0, 0, 0), font="Arial"):
         self.screen = screen
@@ -51,6 +59,7 @@ class label:
         self.bgcolor = bgcolor
         self.font = font
 
+    """Function to display the label's text"""
     def pygamePrint(self):
         font = pygame.font.SysFont(self.font, self.textsize)
         text = font.render(self.text, True, self.textcolor)
@@ -58,16 +67,18 @@ class label:
         textRect.center = (self.x + self.width / 2, self.y + self.height / 2)
         self.screen.blit(text, textRect)
 
+    """Function to display the label's background"""
     def displayButton(self):
         pygame.draw.rect(self.screen, self.bgcolor, [self.x, self.y, self.width, self.height])
         self.pygamePrint()
 
 
+"""Class who manage the game"""
 class game:
     def __init__(self, screen):
         self.run = True
-        self.p1 = personnage(1, 200, 300, "right", moveRight)
-        self.p2 = personnage(2, 600, 300, "left", moveRight2)
+        self.p1 = Player(1, 200, 300, "right", moveRight)
+        self.p2 = Player(2, 600, 300, "left", moveRight2)
         self.sword_list = []
         self.swordNumber = 0
         self.screen = screen
@@ -525,12 +536,12 @@ class game:
         self.cameraX = -(map[self.map][self.level].get_width() / 2 - 400)
         self.swordNumber = 0
         # Create player 1
-        self.p1 = personnage(1, 200, 200, "right", moveRight)
+        self.p1 = Player(1, 200, 200, "right", moveRight)
         self.p1.setCtrlPlayer(pygame.K_z, pygame.K_q, pygame.K_d, pygame.K_e, pygame.K_SPACE)
         self.p1.fillAllSprite(pygame.Color(238, 182, 61))
         self.p1.hitbox = pygame.Rect((self.p1.x, self.p1.y), self.p1.size)
         # Create player 2
-        self.p2 = personnage(2, 600, 200, "left", moveRight2)
+        self.p2 = Player(2, 600, 200, "left", moveRight2)
         self.p2.setCtrlPlayer(pygame.K_UP, pygame.K_LEFT, pygame.K_RIGHT, pygame.K_RSHIFT, pygame.K_RCTRL)
         self.p2.fillAllSprite(pygame.Color(202, 80, 203))
         self.p2.hitbox = pygame.Rect((self.p2.x, self.p2.y), self.p2.size)

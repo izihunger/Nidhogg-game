@@ -1,7 +1,7 @@
 import pygame
 
-swordRight = pygame.image.load("image/Sword.png")
-swordRight = pygame.transform.scale(swordRight, (55, 13))
+"""All the sword sprites"""
+swordRight = pygame.transform.scale(pygame.image.load("image/Sword.png"), (55, 13))
 swordLeft = pygame.transform.flip(swordRight, True, False)
 swordBot = pygame.transform.rotate(swordLeft, 90)
 swordTop = pygame.transform.rotate(swordLeft, 270)
@@ -18,11 +18,13 @@ class sword:
         self.animCounter = 0
         self.falling = False
 
+    """Fonction to set the position of the sword and his hitbox"""
     def setPos(self, x, y, sizeSword):
         self.x = x
         self.y = y
         self.hitbox = pygame.Rect((x, y), sizeSword)
 
+    """Fonction to make the animation of the sword"""
     def animationSword(self, direction):
         if 0 < self.x + 15*direction < 800-self.hitbox.width:
             if self.animCounter == 3:
@@ -39,6 +41,7 @@ class sword:
         else:
             self.stopThrow(swordRight)
 
+    """Function call by the player to throw the sword"""
     def throwSword(self, direction):
         if direction:
             i = 1
@@ -46,12 +49,14 @@ class sword:
             i = -1
         self.animationSword(i)
 
+    """Function to stop the throwing of the sword"""
     def stopThrow(self, sprite):
         self.throw = 0, "", 0
         self.setPos(self.x, 470, self.size)
         self.rotation = 0
         self.sprite = sprite
 
+    """Function call when the player die and he have this sword"""
     def fallingSword(self, plateformes):
         for plateforme in plateformes:
             if self.hitbox.x > plateforme.hitbox.x and self.hitbox.colliderect(plateforme.hitbox):
