@@ -19,15 +19,15 @@ if __name__ == "__main__":
         game.cliqueSoundEffect.set_volume(game.volumeSoundEffect)
         while game.run:
                 clock.tick(120)
-                keys = pygame.key.get_pressed()
-                mouse = pygame.mouse.get_pressed()
                 for event in pygame.event.get():
                         if event.type == pygame.QUIT:
                                 game.run = False
+                keys = pygame.key.get_pressed()
+                mouse = pygame.mouse.get_pressed()
                 if game.menu:
                         if keys[pygame.K_ESCAPE]:
                                 game.menu = 1
-                        game.displayMenu(mouse)
+                        game.displayMenu(mouse, keys)
                 elif game.isGameStarted:
                         game.keyboardInput(keys)
                         game.testKillPlayer()

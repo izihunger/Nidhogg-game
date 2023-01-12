@@ -1,3 +1,5 @@
+import time
+
 from player import Player
 from sword import sword
 import pygame
@@ -96,111 +98,185 @@ class game:
         self.musiqueMenu = pygame.mixer.Sound("musique/menuMusic.mp3")
         self.volumeMusic = 0.05
         self.volumeSoundEffect = 0.05
+        self.keyMenuTimer = 0
+        self.keyMenu = 0
 
     """Function to display all differents menus"""
-    def displayMenu(self, mouse):
+    def displayMenu(self, mouse, keys):
         if self.menuTimer:
             self.menuTimer -= 1
+        if self.keyMenuTimer:
+            self.keyMenuTimer -= 1
         self.screen.fill((0, 0, 0))
         # Menu d'ouverture du jeu
         if self.menu == 1:
             if self.isGameStarted:
+                if not self.keyMenuTimer:
+                    if keys[pygame.K_UP] and self.keyMenu > 0:
+                        self.keyMenu -= 1
+                        self.keyMenuTimer = 30
+                    elif keys[pygame.K_DOWN] and self.keyMenu < 4:
+                        self.keyMenu += 1
+                        self.keyMenuTimer = 30
                 menu = label(self.screen, 200, 50, 400, 50, "Menu", textsize=40)
                 menu.pygamePrint()
                 # Resume game button
                 resumeButton = label(self.screen, 50, 150, 700, 50, "RESUME GAME", bgcolor=(100, 100, 100))
-                resumeButton.displayButton()
                 # print start game button
                 startgameButton = label(self.screen, 50, 225, 700, 50, "START NEW GAME", bgcolor=(100, 100, 100))
-                startgameButton.displayButton()
                 # print settings button
                 settingsButton = label(self.screen, 50, 300, 700, 50, "KEYBOARD SETTINGS", bgcolor=(100, 100, 100))
-                settingsButton.displayButton()
                 # print volume button
                 volumeButton = label(self.screen, 50, 375, 700, 50, "VOLUME", bgcolor=(100, 100, 100))
-                volumeButton.displayButton()
                 # print exit button
                 exitButton = label(self.screen, 50, 450, 700, 50, "EXIT", bgcolor=(100, 100, 100))
+
+                if self.keyMenu == 0:
+                    resumeButton = label(self.screen, 50, 150, 700, 50, "RESUME GAME", bgcolor=(231, 228, 1))
+                elif self.keyMenu == 1:
+                    startgameButton = label(self.screen, 50, 225, 700, 50, "START NEW GAME", bgcolor=(231, 228, 1))
+                elif self.keyMenu == 2:
+                    settingsButton = label(self.screen, 50, 300, 700, 50, "KEYBOARD SETTINGS", bgcolor=(231, 228, 1))
+                elif self.keyMenu == 3:
+                    volumeButton = label(self.screen, 50, 375, 700, 50, "VOLUME", bgcolor=(231, 228, 1))
+                elif self.keyMenu == 4:
+                    exitButton = label(self.screen, 50, 450, 700, 50, "EXIT", bgcolor=(231, 228, 1))
+
+                resumeButton.displayButton()
+                startgameButton.displayButton()
+                settingsButton.displayButton()
+                volumeButton.displayButton()
                 exitButton.displayButton()
+
                 if not self.menuTimer:
-                    if mouse[0] and resumeButton.x <= pygame.mouse.get_pos()[
+                    if (mouse[0] and resumeButton.x <= pygame.mouse.get_pos()[
                         0] <= resumeButton.x + resumeButton.width \
                             and resumeButton.y <= pygame.mouse.get_pos()[
-                        1] <= resumeButton.y + resumeButton.height:
+                        1] <= resumeButton.y + resumeButton.height) or (self.keyMenu == 0 and keys[pygame.K_RETURN]):
                         self.cliqueSoundEffect.play()
                         self.musiqueMenu.fadeout(100)
                         self.musiqueBackground.play(loops=-1)
                         self.menu = 0
-                    elif mouse[0] and startgameButton.x <= pygame.mouse.get_pos()[
+                        self.keyMenu = 0
+                    elif (mouse[0] and startgameButton.x <= pygame.mouse.get_pos()[
                         0] <= startgameButton.x + startgameButton.width \
                             and startgameButton.y <= pygame.mouse.get_pos()[
-                        1] <= startgameButton.y + startgameButton.height:
+                        1] <= startgameButton.y + startgameButton.height) or (self.keyMenu == 1 and keys[pygame.K_RETURN]):
                         self.cliqueSoundEffect.play()
                         self.menu = 2
+                        self.keyMenu = 0
                         self.menuTimer = 30
-                    elif mouse[0] and volumeButton.x <= pygame.mouse.get_pos()[
+                    elif (mouse[0] and volumeButton.x <= pygame.mouse.get_pos()[
                         0] <= volumeButton.x + volumeButton.width \
                             and volumeButton.y <= pygame.mouse.get_pos()[
-                        1] <= volumeButton.y + volumeButton.height:
+                        1] <= volumeButton.y + volumeButton.height) or (self.keyMenu == 2 and keys[pygame.K_RETURN]):
                         self.cliqueSoundEffect.play()
                         self.menu = 4
+                        self.keyMenu = 0
                         self.menuTimer = 30
-                    elif mouse[0] and settingsButton.x <= pygame.mouse.get_pos()[
+                    elif (mouse[0] and settingsButton.x <= pygame.mouse.get_pos()[
                         0] <= settingsButton.x + settingsButton.width \
                             and settingsButton.y <= pygame.mouse.get_pos()[
-                        1] <= settingsButton.y + settingsButton.height:
+                        1] <= settingsButton.y + settingsButton.height) or (self.keyMenu == 3 and keys[pygame.K_RETURN]):
                         self.cliqueSoundEffect.play()
                         self.menu = 3
+                        self.keyMenu = 0
                         self.menuTimer = 30
-                    elif mouse[0] and exitButton.x <= pygame.mouse.get_pos()[0] <= exitButton.x + exitButton.width \
-                            and exitButton.y <= pygame.mouse.get_pos()[1] <= exitButton.y + exitButton.height:
+                    elif (mouse[0] and exitButton.x <= pygame.mouse.get_pos()[0] <= exitButton.x + exitButton.width \
+                            and exitButton.y <= pygame.mouse.get_pos()[1] <= exitButton.y + exitButton.height) or (self.keyMenu == 4 and keys[pygame.K_RETURN]):
                         self.run = False
             else:
+                if not self.keyMenuTimer:
+                    if keys[pygame.K_UP] and self.keyMenu > 0:
+                        self.keyMenu -= 1
+                        self.keyMenuTimer = 30
+                    elif keys[pygame.K_DOWN] and self.keyMenu < 3:
+                        self.keyMenu += 1
+                        self.keyMenuTimer = 30
                 # print the first label
                 menu = label(self.screen, 200, 50, 400, 50, "Menu", textsize=40)
                 menu.pygamePrint()
                 # print start game button
                 startgameButton = label(self.screen, 50, 150, 700, 50, "START GAME", bgcolor=(100, 100, 100))
-                startgameButton.displayButton()
                 # print settings button
                 settingsButton = label(self.screen, 50, 225, 700, 50, "KEYBOARD SETTINGS", bgcolor=(100, 100, 100))
-                settingsButton.displayButton()
                 # print exit button
                 volumeButton = label(self.screen, 50, 300, 700, 50, "VOLUME", bgcolor=(100, 100, 100))
-                volumeButton.displayButton()
                 # print exit button
                 exitButton = label(self.screen, 50, 375, 700, 50, "EXIT", bgcolor=(100, 100, 100))
+
+                if self.keyMenu == 0:
+                    startgameButton = label(self.screen, 50, 150, 700, 50, "START GAME", bgcolor=(231, 228, 1))
+                elif self.keyMenu == 1:
+                    settingsButton = label(self.screen, 50, 225, 700, 50, "KEYBOARD SETTINGS", bgcolor=(231, 228, 1))
+                elif self.keyMenu == 2:
+                    volumeButton = label(self.screen, 50, 300, 700, 50, "VOLUME", bgcolor=(231, 228, 1))
+                elif self.keyMenu == 3:
+                    exitButton = label(self.screen, 50, 375, 700, 50, "EXIT", bgcolor=(231, 228, 1))
+
+                startgameButton.displayButton()
+                settingsButton.displayButton()
+                volumeButton.displayButton()
                 exitButton.displayButton()
+
                 if not self.menuTimer:
-                    if mouse[0] and startgameButton.x <= pygame.mouse.get_pos()[
+                    if (mouse[0] and startgameButton.x <= pygame.mouse.get_pos()[
                         0] <= startgameButton.x + startgameButton.width \
                             and startgameButton.y <= pygame.mouse.get_pos()[
-                        1] <= startgameButton.y + startgameButton.height:
+                        1] <= startgameButton.y + startgameButton.height) or (self.keyMenu == 0 and keys[pygame.K_RETURN]):
                         self.cliqueSoundEffect.play()
                         self.menu = 2
+                        self.keyMenu = 0
                         self.menuTimer = 30
-                    elif mouse[0] and settingsButton.x <= pygame.mouse.get_pos()[
+                    elif (mouse[0] and settingsButton.x <= pygame.mouse.get_pos()[
                         0] <= settingsButton.x + settingsButton.width \
                             and settingsButton.y <= pygame.mouse.get_pos()[
-                        1] <= settingsButton.y + settingsButton.height:
+                        1] <= settingsButton.y + settingsButton.height) or (self.keyMenu == 1 and keys[pygame.K_RETURN]):
                         self.cliqueSoundEffect.play()
                         self.menu = 3
+                        self.keyMenu = 0
                         self.menuTimer = 30
-                    elif mouse[0] and volumeButton.x <= pygame.mouse.get_pos()[
+                    elif (mouse[0] and volumeButton.x <= pygame.mouse.get_pos()[
                         0] <= volumeButton.x + volumeButton.width \
                             and volumeButton.y <= pygame.mouse.get_pos()[
-                        1] <= volumeButton.y + volumeButton.height:
+                        1] <= volumeButton.y + volumeButton.height) or (self.keyMenu == 2 and keys[pygame.K_RETURN]):
                         self.cliqueSoundEffect.play()
                         self.menu = 4
+                        self.keyMenu = 0
                         self.menuTimer = 30
-                    elif mouse[0] and exitButton.x <= pygame.mouse.get_pos()[0] <= exitButton.x + exitButton.width \
-                            and exitButton.y <= pygame.mouse.get_pos()[1] <= exitButton.y + exitButton.height:
+                    elif (mouse[0] and exitButton.x <= pygame.mouse.get_pos()[0] <= exitButton.x + exitButton.width \
+                            and exitButton.y <= pygame.mouse.get_pos()[1] <= exitButton.y + exitButton.height) or (self.keyMenu == 3 and keys[pygame.K_RETURN]):
                         self.cliqueSoundEffect.play()
                         self.run = False
         # Menu de choix de la map
         elif self.menu == 2:
+            if not self.keyMenuTimer:
+                if keys[pygame.K_UP] and (self.keyMenu == 1 or self.keyMenu == 3):
+                    self.keyMenu -= 1
+                    self.keyMenuTimer = 30
+                elif keys[pygame.K_DOWN] and (self.keyMenu == 0 or self.keyMenu == 2):
+                    self.keyMenu += 1
+                    self.keyMenuTimer = 30
+                elif keys[pygame.K_RIGHT] and (self.keyMenu == 0 or self.keyMenu == 1):
+                    self.keyMenu += 2
+                    self.keyMenuTimer = 30
+                elif keys[pygame.K_LEFT] and (self.keyMenu == 2 or self.keyMenu == 3):
+                    self.keyMenu -= 2
+                    self.keyMenuTimer = 30
             menu = label(self.screen, 200, 50, 400, 50, "Choose the map", textsize=40)
             menu.pygamePrint()
+
+            if self.keyMenu == 0:
+                selection = label(self.screen, 45, 120, 310, 160, "KEYBOARD SETTINGS", bgcolor=(231, 228, 1))
+            elif self.keyMenu == 1:
+                selection = label(self.screen, 45, 345, 310, 160, "KEYBOARD SETTINGS", bgcolor=(231, 228, 1))
+            elif self.keyMenu == 2:
+                selection = label(self.screen, 445, 120, 310, 160, "KEYBOARD SETTINGS", bgcolor=(231, 228, 1))
+            else:
+                selection = label(self.screen, 445, 345, 310, 160, "KEYBOARD SETTINGS", bgcolor=(231, 228, 1))
+
+            selection.displayButton()
+
             # map1
             self.screen.blit(miniaMap1, (50, 125))
             map1 = label(self.screen, 200, 50, 0, 500, "Map 1 : Medieval")
@@ -219,40 +295,60 @@ class game:
             map2.pygamePrint()
 
             if not self.menuTimer:
-                if mouse[0] and 50 <= pygame.mouse.get_pos()[0] <= 350 \
-                        and 125 <= pygame.mouse.get_pos()[1] <= 275:
+                if (mouse[0] and 50 <= pygame.mouse.get_pos()[0] <= 350 \
+                        and 125 <= pygame.mouse.get_pos()[1] <= 275) or (self.keyMenu == 0 and keys[pygame.K_RETURN]):
                     self.cliqueSoundEffect.play()
                     self.musiqueBackground.stop()
                     self.map = 0
                     self.menu = 0
+                    self.keyMenu = 0
                     self.startGame()
                     self.isGameStarted = 1
-                elif mouse[0] and 450 <= pygame.mouse.get_pos()[0] <= 750 \
-                        and 125 <= pygame.mouse.get_pos()[1] <= 275:
+                elif (mouse[0] and 450 <= pygame.mouse.get_pos()[0] <= 750 \
+                        and 125 <= pygame.mouse.get_pos()[1] <= 275) or (self.keyMenu == 2 and keys[pygame.K_RETURN]):
                     self.cliqueSoundEffect.play()
                     self.musiqueBackground.stop()
                     self.map = 1
                     self.menu = 0
+                    self.keyMenu = 0
                     self.startGame()
                     self.isGameStarted = 1
-                elif mouse[0] and 50 <= pygame.mouse.get_pos()[0] <= 350 \
-                        and 350 <= pygame.mouse.get_pos()[1] <= 600:
+                elif (mouse[0] and 50 <= pygame.mouse.get_pos()[0] <= 350 \
+                        and 350 <= pygame.mouse.get_pos()[1] <= 600) or (self.keyMenu == 1 and keys[pygame.K_RETURN]):
                     self.cliqueSoundEffect.play()
                     self.musiqueBackground.stop()
                     self.map = 2
                     self.menu = 0
+                    self.keyMenu = 0
                     self.startGame()
                     self.isGameStarted = 1
-                elif mouse[0] and 450 <= pygame.mouse.get_pos()[0] <= 750 \
-                        and 350 <= pygame.mouse.get_pos()[1] <= 600:
+                elif (mouse[0] and 450 <= pygame.mouse.get_pos()[0] <= 750 \
+                        and 350 <= pygame.mouse.get_pos()[1] <= 600) or (self.keyMenu == 3 and keys[pygame.K_RETURN]):
                     self.cliqueSoundEffect.play()
                     self.musiqueBackground.stop()
                     self.map = 3
                     self.menu = 0
+                    self.keyMenu = 0
                     self.startGame()
                     self.isGameStarted = 1
     # Menu de changement de binding
         elif self.menu == 3:
+            if not self.keyMenuTimer:
+                if keys[pygame.K_UP] and self.keyMenu != 0 and self.keyMenu != 6:
+                    self.keyMenu -= 1
+                    self.keyMenuTimer = 30
+                elif keys[pygame.K_DOWN] and self.keyMenu != 12:
+                    if self.keyMenu == 5:
+                        self.keyMenu += 7
+                    else:
+                        self.keyMenu += 1
+                    self.keyMenuTimer = 30
+                elif keys[pygame.K_RIGHT] and (0 <= self.keyMenu <= 5):
+                    self.keyMenu += 6
+                    self.keyMenuTimer = 30
+                elif keys[pygame.K_LEFT] and (6 <= self.keyMenu <= 11):
+                    self.keyMenu -= 6
+                    self.keyMenuTimer = 30
             # print the first label
             player1 = label(self.screen, 100, 20, 200, 50, "Player 1")
             player1.pygamePrint()
@@ -300,197 +396,309 @@ class game:
             menuButton = label(self.screen, 250, 500, 300, 50, "Main menu", bgcolor=(100, 100, 100))
             menuButton.displayButton()
 
+            if self.keyMenu == 0:
+                player1RightButton = label(self.screen, 50, 75, 300, 50,
+                                           "Move right : " + pygame.key.name(self.p1.rightCtrl),
+                                           bgcolor=(231, 228, 1))
+            elif self.keyMenu == 1:
+                player1LeftButton = label(self.screen, 50, 145, 300, 50,
+                                          "Move left : " + pygame.key.name(self.p1.leftCtrl), bgcolor=(231, 228, 1))
+            elif self.keyMenu == 2:
+                player1JumpButton = label(self.screen, 50, 215, 300, 50,
+                                          "Jump : " + pygame.key.name(self.p1.jumpCtrl), bgcolor=(231, 228, 1))
+            elif self.keyMenu == 3:
+                player1ThrowButton = label(self.screen, 50, 285, 300, 50,
+                                           "Throw : " + pygame.key.name(self.p1.throwCtrl), bgcolor=(231, 228, 1))
+            elif self.keyMenu == 4:
+                player1AttackButton = label(self.screen, 50, 355, 300, 50,
+                                            "Attack : " + pygame.key.name(self.p1.attaqueCtrl), bgcolor=(231, 228, 1))
+            elif self.keyMenu == 5:
+                player1CrouchButton = label(self.screen, 50, 425, 300, 50,
+                                            "Crouch : " + pygame.key.name(self.p1.crouchCtrl), bgcolor=(231, 228, 1))
+            elif self.keyMenu == 6:
+                player2RightButton = label(self.screen, 450, 75, 300, 50,
+                                           "Move right : " + pygame.key.name(self.p2.rightCtrl),
+                                           bgcolor=(231, 228, 1))
+            elif self.keyMenu == 7:
+                player2LeftButton = label(self.screen, 450, 145, 300, 50,
+                                          "Move left : " + pygame.key.name(self.p2.leftCtrl), bgcolor=(231, 228, 1))
+            elif self.keyMenu == 8:
+                player2JumpButton = label(self.screen, 450, 215, 300, 50,
+                                          "Jump : " + pygame.key.name(self.p2.jumpCtrl), bgcolor=(231, 228, 1))
+            elif self.keyMenu == 9:
+                player2ThrowButton = label(self.screen, 450, 285, 300, 50,
+                                           "Throw : " + pygame.key.name(self.p2.throwCtrl), bgcolor=(231, 228, 1))
+            elif self.keyMenu == 10:
+                player2AttackButton = label(self.screen, 450, 355, 300, 50,
+                                            "Attack : " + pygame.key.name(self.p2.attaqueCtrl), bgcolor=(231, 228, 1))
+            elif self.keyMenu == 11:
+                player2CrouchButton = label(self.screen, 450, 425, 300, 50,
+                                            "Crouch : " + pygame.key.name(self.p2.crouchCtrl), bgcolor=(231, 228, 1))
+            elif self.keyMenu == 12:
+                menuButton = label(self.screen, 250, 500, 300, 50, "Main menu", bgcolor=(231, 228, 1))
+
+            player1RightButton.displayButton()
+            player1LeftButton.displayButton()
+            player1JumpButton.displayButton()
+            player1ThrowButton.displayButton()
+            player1AttackButton.displayButton()
+            player1CrouchButton.displayButton()
+            player2RightButton.displayButton()
+            player2LeftButton.displayButton()
+            player2JumpButton.displayButton()
+            player2ThrowButton.displayButton()
+            player2AttackButton.displayButton()
+            player2CrouchButton.displayButton()
+            menuButton.displayButton()
+
             # player 1 button interactions
             if not self.menuTimer:
-                if mouse[0] and player1RightButton.x <= pygame.mouse.get_pos()[
+                if (mouse[0] and player1RightButton.x <= pygame.mouse.get_pos()[
                     0] <= player1RightButton.x + player1RightButton.width \
                         and player1RightButton.y <= pygame.mouse.get_pos()[
-                    1] <= player1RightButton.y + player1RightButton.height:
+                    1] <= player1RightButton.y + player1RightButton.height) or (self.keyMenu == 0 and keys[pygame.K_RETURN]):
+                    self.keyMenu = 0
                     self.cliqueSoundEffect.play()
                     player1RightButton.bgcolor = (255, 0, 0)
                     player1RightButton.displayButton()
                     player1RightButton.pygamePrint()
                     pygame.display.update()
+                    time.sleep(0.2)
                     keyFind = False
                     while not keyFind:
+                        pygame.event.clear()
                         for event in pygame.event.get():
                             if event.type == pygame.KEYDOWN:
                                 self.p1.rightCtrl = event.key
                                 keyFind = True
-                elif mouse[0] and player1LeftButton.x <= pygame.mouse.get_pos()[
+                                time.sleep(0.2)
+                elif (mouse[0] and player1LeftButton.x <= pygame.mouse.get_pos()[
                     0] <= player1LeftButton.x + player1LeftButton.width \
                         and player1LeftButton.y <= pygame.mouse.get_pos()[
-                    1] <= player1LeftButton.y + player1LeftButton.height:
+                    1] <= player1LeftButton.y + player1LeftButton.height) or (self.keyMenu == 1 and keys[pygame.K_RETURN]):
+                    self.keyMenu = 1
                     self.cliqueSoundEffect.play()
                     player1LeftButton.bgcolor = (255, 0, 0)
                     player1LeftButton.displayButton()
                     player1LeftButton.pygamePrint()
                     pygame.display.update()
+                    time.sleep(0.2)
                     keyFind = False
                     while not keyFind:
+                        pygame.event.clear()
                         for event in pygame.event.get():
                             if event.type == pygame.KEYDOWN:
                                 self.p1.leftCtrl = event.key
                                 keyFind = True
-                elif mouse[0] and player1JumpButton.x <= pygame.mouse.get_pos()[
+                                time.sleep(0.2)
+                elif (mouse[0] and player1JumpButton.x <= pygame.mouse.get_pos()[
                     0] <= player1JumpButton.x + player1JumpButton.width \
                         and player1JumpButton.y <= pygame.mouse.get_pos()[
-                    1] <= player1JumpButton.y + player1JumpButton.height:
+                    1] <= player1JumpButton.y + player1JumpButton.height) or (self.keyMenu == 2 and keys[pygame.K_RETURN]):
+                    self.keyMenu = 2
                     self.cliqueSoundEffect.play()
                     player1JumpButton.bgcolor = (255, 0, 0)
                     player1JumpButton.displayButton()
                     player1JumpButton.pygamePrint()
                     pygame.display.update()
+                    time.sleep(0.2)
                     keyFind = False
                     while not keyFind:
+                        pygame.event.clear()
                         for event in pygame.event.get():
                             if event.type == pygame.KEYDOWN:
                                 self.p1.jumpCtrl = event.key
                                 keyFind = True
-                elif mouse[0] and player1ThrowButton.x <= pygame.mouse.get_pos()[
+                                time.sleep(0.2)
+                elif (mouse[0] and player1ThrowButton.x <= pygame.mouse.get_pos()[
                     0] <= player1ThrowButton.x + player1ThrowButton.width \
                         and player1ThrowButton.y <= pygame.mouse.get_pos()[
-                    1] <= player1ThrowButton.y + player1ThrowButton.height:
+                    1] <= player1ThrowButton.y + player1ThrowButton.height) or (self.keyMenu == 3 and keys[pygame.K_RETURN]):
+                    self.keyMenu = 3
                     self.cliqueSoundEffect.play()
                     player1ThrowButton.bgcolor = (255, 0, 0)
                     player1ThrowButton.displayButton()
                     player1ThrowButton.pygamePrint()
                     pygame.display.update()
+                    time.sleep(0.2)
                     keyFind = False
                     while not keyFind:
+                        pygame.event.clear()
                         for event in pygame.event.get():
                             if event.type == pygame.KEYDOWN:
                                 self.p1.throwCtrl = event.key
                                 keyFind = True
-                elif mouse[0] and player1AttackButton.x <= pygame.mouse.get_pos()[
+                                time.sleep(0.2)
+                elif (mouse[0] and player1AttackButton.x <= pygame.mouse.get_pos()[
                     0] <= player1AttackButton.x + player1AttackButton.width \
                         and player1AttackButton.y <= pygame.mouse.get_pos()[
-                    1] <= player1AttackButton.y + player1AttackButton.height:
+                    1] <= player1AttackButton.y + player1AttackButton.height) or (self.keyMenu == 4 and keys[pygame.K_RETURN]):
+                    self.keyMenu = 4
                     self.cliqueSoundEffect.play()
                     player1AttackButton.bgcolor = (255, 0, 0)
                     player1AttackButton.displayButton()
                     player1AttackButton.pygamePrint()
                     pygame.display.update()
+                    time.sleep(0.2)
                     keyFind = False
                     while not keyFind:
+                        pygame.event.clear()
                         for event in pygame.event.get():
                             if event.type == pygame.KEYDOWN:
                                 self.p1.attaqueCtrl = event.key
                                 keyFind = True
-                elif mouse[0] and player1CrouchButton.x <= pygame.mouse.get_pos()[
+                                time.sleep(0.2)
+                elif (mouse[0] and player1CrouchButton.x <= pygame.mouse.get_pos()[
                     0] <= player1CrouchButton.x + player1CrouchButton.width \
                         and player1CrouchButton.y <= pygame.mouse.get_pos()[
-                    1] <= player1CrouchButton.y + player1CrouchButton.height:
+                    1] <= player1CrouchButton.y + player1CrouchButton.height) or (self.keyMenu == 5 and keys[pygame.K_RETURN]):
+                    self.keyMenu = 5
                     self.cliqueSoundEffect.play()
                     player1CrouchButton.bgcolor = (255, 0, 0)
                     player1CrouchButton.displayButton()
                     player1CrouchButton.pygamePrint()
                     pygame.display.update()
+                    time.sleep(0.2)
                     keyFind = False
                     while not keyFind:
+                        pygame.event.clear()
                         for event in pygame.event.get():
                             if event.type == pygame.KEYDOWN:
                                 self.p1.crouchCtrl = event.key
                                 keyFind = True
+                                time.sleep(0.2)
                 # player 2 button interactions
-                elif mouse[0] and player2RightButton.x <= pygame.mouse.get_pos()[
+                elif (mouse[0] and player2RightButton.x <= pygame.mouse.get_pos()[
                     0] <= player2RightButton.x + player2RightButton.width \
                         and player2RightButton.y <= pygame.mouse.get_pos()[
-                    1] <= player2RightButton.y + player2RightButton.height:
+                    1] <= player2RightButton.y + player2RightButton.height) or (self.keyMenu == 6 and keys[pygame.K_RETURN]):
+                    self.keyMenu = 6
                     self.cliqueSoundEffect.play()
                     player2RightButton.bgcolor = (255, 0, 0)
                     player2RightButton.displayButton()
                     player2RightButton.pygamePrint()
                     pygame.display.update()
+                    time.sleep(0.2)
                     keyFind = False
                     while not keyFind:
+                        pygame.event.clear()
                         for event in pygame.event.get():
                             if event.type == pygame.KEYDOWN:
                                 self.p2.rightCtrl = event.key
                                 keyFind = True
-                elif mouse[0] and player2LeftButton.x <= pygame.mouse.get_pos()[
+                                time.sleep(0.2)
+                elif (mouse[0] and player2LeftButton.x <= pygame.mouse.get_pos()[
                     0] <= player2LeftButton.x + player2LeftButton.width \
                         and player2LeftButton.y <= pygame.mouse.get_pos()[
-                    1] <= player2LeftButton.y + player2LeftButton.height:
+                    1] <= player2LeftButton.y + player2LeftButton.height) or (self.keyMenu == 7 and keys[pygame.K_RETURN]):
+                    self.keyMenu = 7
                     self.cliqueSoundEffect.play()
                     player2LeftButton.bgcolor = (255, 0, 0)
                     player2LeftButton.displayButton()
                     player2LeftButton.pygamePrint()
                     pygame.display.update()
+                    time.sleep(0.2)
                     keyFind = False
                     while not keyFind:
+                        pygame.event.clear()
                         for event in pygame.event.get():
                             if event.type == pygame.KEYDOWN:
                                 self.p2.leftCtrl = event.key
                                 keyFind = True
-                elif mouse[0] and player2JumpButton.x <= pygame.mouse.get_pos()[
+                                time.sleep(0.2)
+                elif (mouse[0] and player2JumpButton.x <= pygame.mouse.get_pos()[
                     0] <= player2JumpButton.x + player2JumpButton.width \
                         and player2JumpButton.y <= pygame.mouse.get_pos()[
-                    1] <= player2JumpButton.y + player2JumpButton.height:
+                    1] <= player2JumpButton.y + player2JumpButton.height) or (self.keyMenu == 8 and keys[pygame.K_RETURN]):
+                    self.keyMenu = 8
                     self.cliqueSoundEffect.play()
                     player2JumpButton.bgcolor = (255, 0, 0)
                     player2JumpButton.displayButton()
                     player2JumpButton.pygamePrint()
                     pygame.display.update()
+                    time.sleep(0.2)
                     keyFind = False
                     while not keyFind:
+                        pygame.event.clear()
                         for event in pygame.event.get():
                             if event.type == pygame.KEYDOWN:
-                                self.p2.jumpCtrl = event.key
+                                self.p2.rightCtrl = event.key
                                 keyFind = True
-                elif mouse[0] and player2ThrowButton.x <= pygame.mouse.get_pos()[
+                                time.sleep(0.2)
+                elif (mouse[0] and player2ThrowButton.x <= pygame.mouse.get_pos()[
                     0] <= player2ThrowButton.x + player2ThrowButton.width \
                         and player2ThrowButton.y <= pygame.mouse.get_pos()[
-                    1] <= player2ThrowButton.y + player2ThrowButton.height:
+                    1] <= player2ThrowButton.y + player2ThrowButton.height) or (self.keyMenu == 9 and keys[pygame.K_RETURN]):
+                    self.keyMenu = 9
                     self.cliqueSoundEffect.play()
                     player2ThrowButton.bgcolor = (255, 0, 0)
                     player2ThrowButton.displayButton()
                     player2ThrowButton.pygamePrint()
                     pygame.display.update()
+                    time.sleep(0.2)
                     keyFind = False
                     while not keyFind:
+                        pygame.event.clear()
                         for event in pygame.event.get():
                             if event.type == pygame.KEYDOWN:
                                 self.p2.throwCtrl = event.key
                                 keyFind = True
-                elif mouse[0] and player2AttackButton.x <= pygame.mouse.get_pos()[
+                                time.sleep(0.2)
+                elif (mouse[0] and player2AttackButton.x <= pygame.mouse.get_pos()[
                     0] <= player2AttackButton.x + player2AttackButton.width \
                         and player2AttackButton.y <= pygame.mouse.get_pos()[
-                    1] <= player2AttackButton.y + player2AttackButton.height:
+                    1] <= player2AttackButton.y + player2AttackButton.height) or (self.keyMenu == 10 and keys[pygame.K_RETURN]):
+                    self.keyMenu = 10
                     self.cliqueSoundEffect.play()
                     player2AttackButton.bgcolor = (255, 0, 0)
                     player2AttackButton.displayButton()
                     player2AttackButton.pygamePrint()
                     pygame.display.update()
+                    time.sleep(0.2)
                     keyFind = False
                     while not keyFind:
+                        pygame.event.clear()
                         for event in pygame.event.get():
                             if event.type == pygame.KEYDOWN:
                                 self.p2.attaqueCtrl = event.key
                                 keyFind = True
-                elif mouse[0] and player2CrouchButton.x <= pygame.mouse.get_pos()[
+                                time.sleep(0.2)
+                elif (mouse[0] and player2CrouchButton.x <= pygame.mouse.get_pos()[
                     0] <= player2CrouchButton.x + player2CrouchButton.width \
                         and player2CrouchButton.y <= pygame.mouse.get_pos()[
-                    1] <= player2CrouchButton.y + player2CrouchButton.height:
+                    1] <= player2CrouchButton.y + player2CrouchButton.height) or (self.keyMenu == 11 and keys[pygame.K_RETURN]):
+                    self.keyMenu = 11
                     self.cliqueSoundEffect.play()
                     player2CrouchButton.bgcolor = (255, 0, 0)
                     player2CrouchButton.displayButton()
                     player2CrouchButton.pygamePrint()
                     pygame.display.update()
+                    time.sleep(0.2)
                     keyFind = False
                     while not keyFind:
+                        pygame.event.clear()
                         for event in pygame.event.get():
                             if event.type == pygame.KEYDOWN:
                                 self.p2.crouchCtrl = event.key
                                 keyFind = True
+                                time.sleep(0.2)
 
                 # menu button interaction
-                elif mouse[0] and menuButton.x <= pygame.mouse.get_pos()[0] <= menuButton.x + menuButton.width \
-                        and menuButton.y <= pygame.mouse.get_pos()[1] <= menuButton.y + menuButton.height:
+                elif (mouse[0] and menuButton.x <= pygame.mouse.get_pos()[0] <= menuButton.x + menuButton.width \
+                        and menuButton.y <= pygame.mouse.get_pos()[1] <= menuButton.y + menuButton.height) or (self.keyMenu == 12 and keys[pygame.K_RETURN]):
                     self.cliqueSoundEffect.play()
                     self.menu = 1
+                    self.keyMenu = 0
                     self.menuTimer = 30
         elif self.menu == 4:
+            if not self.keyMenuTimer:
+                if keys[pygame.K_UP] and self.keyMenu > 0:
+                    self.keyMenu -= 1
+                    self.keyMenuTimer = 30
+                elif keys[pygame.K_DOWN] and self.keyMenu < 2:
+                    self.keyMenu += 1
+                    self.keyMenuTimer = 30
+
             menu = label(self.screen, 200, 50, 400, 50, "Sound volume", textsize=40)
             menu.pygamePrint()
             #print background
@@ -505,38 +713,71 @@ class game:
             Background2.displayButton()
             #print music bar back
             volumeMusicBackground = label(self.screen, 55, 205, 690, 65, "", bgcolor=(100, 100, 100))
-            volumeMusicBackground.displayButton()
+            volumeMusicBackground.displayBackground()
             # print music bar front
             length = 690 * self.volumeMusic
-            volumeMusicFront = label(self.screen, 55, 205, length, 65, "", bgcolor=(231, 228, 1))
-            volumeMusicFront.displayButton()
+            volumeMusicFront = label(self.screen, 55, 205, length, 65, "", bgcolor=(0, 0, 0))
             # print soundEffect bar back
             volumeSoundEffectBackground = label(self.screen, 55, 355, 690, 65, "", bgcolor=(100, 100, 100))
-            volumeSoundEffectBackground.displayButton()
+            volumeSoundEffectBackground.displayBackground()
             # print soundEffect bar front
             length = 690 * self.volumeSoundEffect
-            volumeSoundEffectFront = label(self.screen, 55, 355, length, 65, "", bgcolor=(231, 228, 1))
-            volumeSoundEffectFront.displayButton()
+            volumeSoundEffectFront = label(self.screen, 55, 355, length, 65, "", bgcolor=(0, 0, 0))
             # return to menu button
             menuButton = label(self.screen, 250, 475, 300, 50, "Main menu", bgcolor=(100, 100, 100))
+
+            if self.keyMenu == 0:
+                length = 690 * self.volumeMusic
+                volumeMusicFront = label(self.screen, 55, 205, length, 65, "", bgcolor=(231, 228, 1))
+            elif self.keyMenu == 1:
+                length = 690 * self.volumeSoundEffect
+                volumeSoundEffectFront = label(self.screen, 55, 355, length, 65, "", bgcolor=(231, 228, 1))
+            elif self.keyMenu == 2:
+                menuButton = label(self.screen, 250, 475, 300, 50, "Main menu", bgcolor=(231, 228, 1))
+
+            volumeMusicFront.displayButton()
+            volumeSoundEffectFront.displayButton()
             menuButton.displayButton()
+
             if not self.menuTimer:
-                if mouse[0] and volumeMusicBackground.x <= pygame.mouse.get_pos()[0] <= volumeMusicBackground.x + volumeMusicBackground.width \
-                        and volumeMusicBackground.y <= pygame.mouse.get_pos()[1] <= volumeMusicBackground.y + volumeMusicBackground.height:
-                    self.volumeMusic = (pygame.mouse.get_pos()[0] - 55) / 690
-                    self.musiqueBackground.set_volume(self.volumeMusic)
-                    self.musiqueMenu.set_volume(self.volumeMusic/2)
-                    self.menuTimer = 30
-                elif mouse[0] and volumeSoundEffectBackground.x <= pygame.mouse.get_pos()[0] <= volumeSoundEffectBackground.x + volumeSoundEffectBackground.width \
-                        and volumeSoundEffectBackground.y <= pygame.mouse.get_pos()[1] <= volumeSoundEffectBackground.y + volumeSoundEffectBackground.height:
-                    self.volumeSoundEffect = (pygame.mouse.get_pos()[0] - 55) / 690
-                    self.cliqueSoundEffect.set_volume(self.volumeSoundEffect)
-                    self.menuTimer = 30
-                    self.cliqueSoundEffect.play()
-                elif mouse[0] and menuButton.x <= pygame.mouse.get_pos()[0] <= menuButton.x + menuButton.width \
-                        and menuButton.y <= pygame.mouse.get_pos()[1] <= menuButton.y + menuButton.height:
+                if (mouse[0] and volumeMusicBackground.x <= pygame.mouse.get_pos()[0] <= volumeMusicBackground.x + volumeMusicBackground.width \
+                        and volumeMusicBackground.y <= pygame.mouse.get_pos()[1] <= volumeMusicBackground.y + volumeMusicBackground.height) or self.keyMenu == 0:
+                    self.keyMenu = 0
+                    if keys[pygame.K_RIGHT] and self.volumeMusic < 1:
+                        self.volumeMusic += 0.01
+                        self.musiqueBackground.set_volume(self.volumeMusic)
+                        self.musiqueMenu.set_volume(self.volumeMusic / 2)
+                    elif keys[pygame.K_LEFT] and self.volumeMusic > 0:
+                        self.volumeMusic -= 0.01
+                        self.musiqueBackground.set_volume(self.volumeMusic)
+                        self.musiqueMenu.set_volume(self.volumeMusic / 2)
+                    elif pygame.mouse.get_pressed() == (1, 0, 0) and (mouse[0] and volumeMusicBackground.x <= pygame.mouse.get_pos()[0] <= volumeMusicBackground.x + volumeMusicBackground.width \
+                        and volumeMusicBackground.y <= pygame.mouse.get_pos()[1] <= volumeMusicBackground.y + volumeMusicBackground.height):
+                        self.volumeMusic = (pygame.mouse.get_pos()[0] - 55) / 690
+                        self.musiqueBackground.set_volume(self.volumeMusic)
+                        self.musiqueMenu.set_volume(self.volumeMusic/2)
+                        self.menuTimer = 30
+                if (mouse[0] and volumeSoundEffectBackground.x <= pygame.mouse.get_pos()[0] <= volumeSoundEffectBackground.x + volumeSoundEffectBackground.width \
+                        and volumeSoundEffectBackground.y <= pygame.mouse.get_pos()[1] <= volumeSoundEffectBackground.y + volumeSoundEffectBackground.height) or self.keyMenu == 1:
+                    self.keyMenu = 1
+                    if keys[pygame.K_RIGHT] and self.volumeSoundEffect < 1:
+                        self.volumeSoundEffect += 0.01
+                        self.cliqueSoundEffect.set_volume(self.volumeSoundEffect)
+                    elif keys[pygame.K_LEFT] and self.volumeSoundEffect > 0:
+                        self.volumeSoundEffect -= 0.01
+                        self.cliqueSoundEffect.set_volume(self.volumeSoundEffect)
+                    elif pygame.mouse.get_pressed() == (1, 0, 0) and (mouse[0] and volumeSoundEffectBackground.x <= pygame.mouse.get_pos()[
+                        0] <= volumeSoundEffectBackground.x + volumeSoundEffectBackground.width and
+                        volumeSoundEffectBackground.y <= pygame.mouse.get_pos()[1] <= volumeSoundEffectBackground.y + volumeSoundEffectBackground.height):
+                        self.volumeSoundEffect = (pygame.mouse.get_pos()[0] - 55) / 690
+                        self.cliqueSoundEffect.set_volume(self.volumeSoundEffect)
+                        self.cliqueSoundEffect.play()
+                        self.menuTimer = 30
+                if (mouse[0] and menuButton.x <= pygame.mouse.get_pos()[0] <= menuButton.x + menuButton.width \
+                        and menuButton.y <= pygame.mouse.get_pos()[1] <= menuButton.y + menuButton.height) or (self.keyMenu == 2 and keys[pygame.K_RETURN]):
                     self.cliqueSoundEffect.play()
                     self.menu = 1
+                    self.keyMenu = 0
                     self.menuTimer = 30
 
     """Function to start a new game"""
