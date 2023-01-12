@@ -79,8 +79,8 @@ class label:
 class game:
     def __init__(self, screen):
         self.run = True
-        self.p1 = Player(1, 200, 300, "right", moveRight)
-        self.p2 = Player(2, 600, 300, "left", moveRight2)
+        self.p1 = Player(1, 200, 200, "right", moveRight)
+        self.p2 = Player(2, 600, 200, "left", moveLeft)
         self.sword_list = []
         self.swordNumber = 0
         self.screen = screen
@@ -254,44 +254,50 @@ class game:
     # Menu de changement de binding
         elif self.menu == 3:
             # print the first label
-            player1 = label(self.screen, 100, 50, 200, 50, "Player 1")
+            player1 = label(self.screen, 100, 20, 200, 50, "Player 1")
             player1.pygamePrint()
-            player2 = label(self.screen, 500, 50, 200, 50, "Player 2")
+            player2 = label(self.screen, 500, 20, 200, 50, "Player 2")
             player2.pygamePrint()
             # player 1 command
-            player1RightButton = label(self.screen, 50, 100, 300, 50,
+            player1RightButton = label(self.screen, 50, 75, 300, 50,
                                        "Move right : " + pygame.key.name(self.p1.rightCtrl), bgcolor=(100, 100, 100))
             player1RightButton.displayButton()
-            player1LeftButton = label(self.screen, 50, 175, 300, 50,
+            player1LeftButton = label(self.screen, 50, 145, 300, 50,
                                       "Move left : " + pygame.key.name(self.p1.leftCtrl), bgcolor=(100, 100, 100))
             player1LeftButton.displayButton()
-            player1JumpButton = label(self.screen, 50, 250, 300, 50,
+            player1JumpButton = label(self.screen, 50, 215, 300, 50,
                                       "Jump : " + pygame.key.name(self.p1.jumpCtrl), bgcolor=(100, 100, 100))
             player1JumpButton.displayButton()
-            player1ThrowButton = label(self.screen, 50, 325, 300, 50,
+            player1ThrowButton = label(self.screen, 50, 285, 300, 50,
                                        "Throw : " + pygame.key.name(self.p1.throwCtrl), bgcolor=(100, 100, 100))
             player1ThrowButton.displayButton()
-            player1AttackButton = label(self.screen, 50, 400, 300, 50,
+            player1AttackButton = label(self.screen, 50, 355, 300, 50,
                                        "Attack : " + pygame.key.name(self.p1.attaqueCtrl), bgcolor=(100, 100, 100))
             player1AttackButton.displayButton()
+            player1CrouchButton = label(self.screen, 50, 425, 300, 50,
+                                        "Crouch : " + pygame.key.name(self.p1.crouchCtrl), bgcolor=(100, 100, 100))
+            player1CrouchButton.displayButton()
             # player 2 command
-            player2RightButton = label(self.screen, 450, 100, 300, 50,
+            player2RightButton = label(self.screen, 450, 75, 300, 50,
                                        "Move right : " + pygame.key.name(self.p2.rightCtrl), bgcolor=(100, 100, 100))
             player2RightButton.displayButton()
-            player2LeftButton = label(self.screen, 450, 175, 300, 50,
+            player2LeftButton = label(self.screen, 450, 145, 300, 50,
                                       "Move left : " + pygame.key.name(self.p2.leftCtrl), bgcolor=(100, 100, 100))
             player2LeftButton.displayButton()
-            player2JumpButton = label(self.screen, 450, 250, 300, 50,
+            player2JumpButton = label(self.screen, 450, 215, 300, 50,
                                       "Jump : " + pygame.key.name(self.p2.jumpCtrl), bgcolor=(100, 100, 100))
             player2JumpButton.displayButton()
-            player2ThrowButton = label(self.screen, 450, 325, 300, 50,
+            player2ThrowButton = label(self.screen, 450, 285, 300, 50,
                                        "Throw : " + pygame.key.name(self.p2.throwCtrl), bgcolor=(100, 100, 100))
             player2ThrowButton.displayButton()
-            player2AttackButton = label(self.screen, 450, 400, 300, 50,
+            player2AttackButton = label(self.screen, 450, 355, 300, 50,
                                        "Attack : " + pygame.key.name(self.p2.attaqueCtrl), bgcolor=(100, 100, 100))
             player2AttackButton.displayButton()
+            player2CrouchButton = label(self.screen, 450, 425, 300, 50,
+                                        "Crouch : " + pygame.key.name(self.p2.crouchCtrl), bgcolor=(100, 100, 100))
+            player2CrouchButton.displayButton()
             # return to menu button
-            menuButton = label(self.screen, 250, 475, 300, 50, "Main menu", bgcolor=(100, 100, 100))
+            menuButton = label(self.screen, 250, 500, 300, 50, "Main menu", bgcolor=(100, 100, 100))
             menuButton.displayButton()
 
             # player 1 button interactions
@@ -371,6 +377,21 @@ class game:
                             if event.type == pygame.KEYDOWN:
                                 self.p1.attaqueCtrl = event.key
                                 keyFind = True
+                elif mouse[0] and player1CrouchButton.x <= pygame.mouse.get_pos()[
+                    0] <= player1CrouchButton.x + player1CrouchButton.width \
+                        and player1CrouchButton.y <= pygame.mouse.get_pos()[
+                    1] <= player1CrouchButton.y + player1CrouchButton.height:
+                    self.cliqueSoundEffect.play()
+                    player1CrouchButton.bgcolor = (255, 0, 0)
+                    player1CrouchButton.displayButton()
+                    player1CrouchButton.pygamePrint()
+                    pygame.display.update()
+                    keyFind = False
+                    while not keyFind:
+                        for event in pygame.event.get():
+                            if event.type == pygame.KEYDOWN:
+                                self.p1.crouchCtrl = event.key
+                                keyFind = True
                 # player 2 button interactions
                 elif mouse[0] and player2RightButton.x <= pygame.mouse.get_pos()[
                     0] <= player2RightButton.x + player2RightButton.width \
@@ -447,6 +468,21 @@ class game:
                             if event.type == pygame.KEYDOWN:
                                 self.p2.attaqueCtrl = event.key
                                 keyFind = True
+                elif mouse[0] and player2CrouchButton.x <= pygame.mouse.get_pos()[
+                    0] <= player2CrouchButton.x + player2CrouchButton.width \
+                        and player2CrouchButton.y <= pygame.mouse.get_pos()[
+                    1] <= player2CrouchButton.y + player2CrouchButton.height:
+                    self.cliqueSoundEffect.play()
+                    player2CrouchButton.bgcolor = (255, 0, 0)
+                    player2CrouchButton.displayButton()
+                    player2CrouchButton.pygamePrint()
+                    pygame.display.update()
+                    keyFind = False
+                    while not keyFind:
+                        for event in pygame.event.get():
+                            if event.type == pygame.KEYDOWN:
+                                self.p2.crouchCtrl = event.key
+                                keyFind = True
 
                 # menu button interaction
                 elif mouse[0] and menuButton.x <= pygame.mouse.get_pos()[0] <= menuButton.x + menuButton.width \
@@ -512,14 +548,17 @@ class game:
         self.plateformes = [self.plateformes[0]]
         self.cameraX = -(map[self.map][self.level].get_width() / 2 - 400)
         self.swordNumber = 0
-        # Create player 1
-        self.p1 = Player(1, 200, 200, "right", moveRight)
-        self.p1.setCtrlPlayer(pygame.K_z, pygame.K_q, pygame.K_d, pygame.K_e, pygame.K_SPACE)
+        # Set player 1
+        self.p1.position = "right"
+        self.p1.sprite = moveRight
+        self.p1.setPos(200, 200, (self.p1.sprite.get_width(), self.p1.sprite.get_height()))
         self.p1.fillAllSprite(pygame.Color(238, 182, 61))
         self.p1.hitbox = pygame.Rect((self.p1.x, self.p1.y), self.p1.size)
-        # Create player 2
-        self.p2 = Player(2, 600, 200, "left", moveRight2)
-        self.p2.setCtrlPlayer(pygame.K_UP, pygame.K_LEFT, pygame.K_RIGHT, pygame.K_RSHIFT, pygame.K_RCTRL)
+        # Set player 2
+        self.p2.position = "left"
+        self.p2.sprite = moveLeft
+        self.p2.setPos(600, 200, (self.p2.sprite.get_width(), self.p2.sprite.get_height()))
+        self.p2.setCtrlPlayer(pygame.K_UP, pygame.K_LEFT, pygame.K_RIGHT, pygame.K_RSHIFT, pygame.K_RCTRL, pygame.K_DOWN)
         self.p2.fillAllSprite(pygame.Color(202, 80, 203))
         self.p2.hitbox = pygame.Rect((self.p2.x, self.p2.y), self.p2.size)
         # Create sword 1 for player 1 when spawn
@@ -972,10 +1011,10 @@ class game:
         if -(map[self.map][self.level].get_width() - 800) <= self.cameraX - move <= 0:
             if move and not self.p2.attaque:
                 self.cameraX -= move
-                self.p1.setPos(self.p1.x - move, self.p1.y, self.p1.size)
+                self.p1.setPos(self.p1.x - move, self.p1.y, (self.p1.sprite.get_width(), self.p1.sprite.get_height()))
                 if self.p1.sword is not None:
                     self.p1.sword.setPos(self.p1.sword.x - move, self.p1.sword.y, self.p1.sword.size)
-                self.p2.setPos(self.p2.x - move, self.p2.y, self.p2.size)
+                self.p2.setPos(self.p2.x - move, self.p2.y, (self.p2.sprite.get_width(), self.p2.sprite.get_height()))
                 if self.p2.sword is not None:
                     self.p2.sword.setPos(self.p2.sword.x - move, self.p2.sword.y, self.p2.sword.size)
                 for s in self.sword_list:
@@ -987,6 +1026,8 @@ class game:
 
     """Display the end of the game and the options"""
     def endGame(self, mouse):
+        self.p1.timingRespawn = 0
+        self.p2.timingRespawn = 0
         self.screen.fill((0, 0, 0))
         victory = label(self.screen, 400, 75, 0, 0, "WINNER", textsize=80, font="MV Boli", textcolor= (231, 228, 1))
         victory.pygamePrint()

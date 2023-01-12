@@ -67,6 +67,16 @@ class Player:
         self.moveLeft4 = pygame.transform.flip(self.moveRight4, True, False)
         self.moveRight5 = pygame.transform.scale(pygame.image.load("image/moveFrame5.png"), self.size)
         self.moveLeft5 = pygame.transform.flip(self.moveRight5, True, False)
+        self.moveRightCrouch = pygame.transform.scale(pygame.image.load("image/moveFrameCrouch1.png"), (55, 50))
+        self.moveLeftCrouch = pygame.transform.flip(self.moveRightCrouch, True, False)
+        self.moveRightCrouch2 = pygame.transform.scale(pygame.image.load("image/moveFrameCrouch2.png"), (55, 50))
+        self.moveLeftCrouch2 = pygame.transform.flip(self.moveRightCrouch2, True, False)
+        self.moveRightCrouch3 = pygame.transform.scale(pygame.image.load("image/moveFrameCrouch3.png"), (55, 50))
+        self.moveLeftCrouch3 = pygame.transform.flip(self.moveRightCrouch3, True, False)
+        self.moveRightCrouch4 = pygame.transform.scale(pygame.image.load("image/moveFrameCrouch4.png"), (55, 50))
+        self.moveLeftCrouch4 = pygame.transform.flip(self.moveRightCrouch4, True, False)
+        self.moveRightCrouch5 = pygame.transform.scale(pygame.image.load("image/moveFrameCrouch5.png"), (55, 50))
+        self.moveLeftCrouch5 = pygame.transform.flip(self.moveRightCrouch5, True, False)
         self.attaqueRight = pygame.transform.scale(pygame.image.load("image/attaqueFrame.png"), (63, 80))
         self.attaqueRight2 = pygame.transform.scale(pygame.image.load("image/attaqueFrame2.png"), (70, 80))
         self.attaqueLeft = pygame.transform.flip(self.attaqueRight, True, False)
@@ -87,10 +97,13 @@ class Player:
         self.jumpLeft5 = pygame.transform.flip(self.jumpRight5, True, False)
         self.allSprites = [self.moveRight, self.moveRight2, self.moveRight3, self.moveRight4, self.moveRight5,
                            self.moveLeft, self.moveLeft2, self.moveLeft3, self.moveLeft4, self.moveLeft5,
-                           self.attaqueRight,  self.attaqueRight2,  self.attaqueRight3,  self.attaqueRight4,
-                           self.attaqueLeft, self.attaqueLeft2, self.attaqueLeft3, self.attaqueLeft4,
-                           self.jumpRight1, self.jumpRight2, self.jumpRight3, self.jumpRight4, self.jumpRight5,
-                           self.jumpLeft1, self.jumpLeft2, self.jumpLeft3, self.jumpLeft4, self.jumpLeft5]
+                           self.moveRightCrouch, self.moveRightCrouch2, self.moveRightCrouch3, self.moveRightCrouch4,
+                           self.moveRightCrouch5, self.moveLeftCrouch, self.moveLeftCrouch2, self.moveLeftCrouch3,
+                           self.moveLeftCrouch4, self.moveLeftCrouch5, self.attaqueRight,  self.attaqueRight2,
+                           self.attaqueRight3,  self.attaqueRight4, self.attaqueLeft, self.attaqueLeft2,
+                           self.attaqueLeft3, self.attaqueLeft4, self.jumpRight1, self.jumpRight2, self.jumpRight3,
+                           self.jumpRight4, self.jumpRight5, self.jumpLeft1, self.jumpLeft2, self.jumpLeft3,
+                           self.jumpLeft4, self.jumpLeft5]
         self.animationMoveRightWithSword = [self.moveRight, self.moveRight, self.moveRight, self.moveRight, self.moveRight, self.moveRight, self.moveRight,
                                        self.moveRight, self.moveRight2, self.moveRight2, self.moveRight2, self.moveRight2, self.moveRight2,
                                        self.moveRight2, self.moveRight2, self.moveRight2]
@@ -98,14 +111,39 @@ class Player:
                                       self.moveLeft2, self.moveLeft2, self.moveLeft2, self.moveLeft2, self.moveLeft2, self.moveLeft2, self.moveLeft2,
                                       self.moveLeft2]
 
-        self.animationMoveRight = [self.moveRight3, self.moveRight3, self.moveRight3, self.moveRight3, self.moveRight3, self.moveRight3, self.moveRight3,
-                              self.moveRight3, self.moveRight3, self.moveRight4, self.moveRight4, self.moveRight4, self.moveRight4, self.moveRight4,
-                              self.moveRight4, self.moveRight4, self.moveRight4, self.moveRight5, self.moveRight5, self.moveRight5, self.moveRight5,
-                              self.moveRight5, self.moveRight5, self.moveRight5, self.moveRight5]
-        self.animationMoveLeft = [self.moveLeft3, self.moveLeft3, self.moveLeft3, self.moveLeft3, self.moveLeft3, self.moveLeft3, self.moveLeft3, self.moveLeft3,
-                             self.moveLeft3, self.moveLeft4, self.moveLeft4, self.moveLeft4, self.moveLeft4, self.moveLeft4, self.moveLeft4, self.moveLeft4,
-                             self.moveLeft4, self.moveLeft5, self.moveLeft5, self.moveLeft5, self.moveLeft5, self.moveLeft5, self.moveLeft5, self.moveLeft5,
-                             self.moveLeft5]
+        self.animationMoveRightCrouchWithSword = [self.moveRightCrouch, self.moveRightCrouch, self.moveRightCrouch, self.moveRightCrouch, self.moveRightCrouch, self.moveRightCrouch, self.moveRightCrouch, self.moveRightCrouch,
+                                      self.moveRightCrouch2, self.moveRightCrouch2, self.moveRightCrouch2, self.moveRightCrouch2, self.moveRightCrouch2, self.moveRightCrouch2, self.moveRightCrouch2,
+                                      self.moveRightCrouch2]
+        self.animationMoveLeftCrouchWithSword = [self.moveLeftCrouch, self.moveLeftCrouch, self.moveLeftCrouch, self.moveLeftCrouch, self.moveLeftCrouch, self.moveLeftCrouch, self.moveLeftCrouch, self.moveLeftCrouch,
+                                      self.moveLeftCrouch2, self.moveLeftCrouch2, self.moveLeftCrouch2, self.moveLeftCrouch2, self.moveLeftCrouch2, self.moveLeftCrouch2, self.moveLeftCrouch2,
+                                      self.moveLeftCrouch2]
+
+        self.animationMoveRight = [self.moveRight3, self.moveRight3, self.moveRight3, self.moveRight3, self.moveRight3,
+                                   self.moveRight3, self.moveRight3, self.moveRight3,
+                                   self.moveRight4, self.moveRight4, self.moveRight4, self.moveRight4, self.moveRight4,
+                                   self.moveRight4, self.moveRight4, self.moveRight4,
+                                   self.moveRight5, self.moveRight5, self.moveRight5, self.moveRight5, self.moveRight5,
+                                   self.moveRight5, self.moveRight5, self.moveRight5]
+        self.animationMoveLeft = [self.moveLeft3, self.moveLeft3, self.moveLeft3, self.moveLeft3, self.moveLeft3,
+                                  self.moveLeft3, self.moveLeft3, self.moveLeft3,
+                                  self.moveLeft3, self.moveLeft4, self.moveLeft4, self.moveLeft4, self.moveLeft4,
+                                  self.moveLeft4, self.moveLeft4, self.moveLeft4,
+                                  self.moveLeft4, self.moveLeft5, self.moveLeft5, self.moveLeft5, self.moveLeft5,
+                                  self.moveLeft5, self.moveLeft5, self.moveLeft5,
+                                  self.moveLeft5]
+
+        self.animationMoveRightCrouch = [self.moveRightCrouch3, self.moveRightCrouch3, self.moveRightCrouch3, self.moveRightCrouch3, self.moveRightCrouch3,
+                                   self.moveRightCrouch3, self.moveRightCrouch3, self.moveRightCrouch3,
+                                   self.moveRightCrouch4, self.moveRightCrouch4, self.moveRightCrouch4, self.moveRightCrouch4, self.moveRightCrouch4,
+                                   self.moveRightCrouch4, self.moveRightCrouch4, self.moveRightCrouch4,
+                                   self.moveRightCrouch5, self.moveRightCrouch5, self.moveRightCrouch5, self.moveRightCrouch5, self.moveRightCrouch5,
+                                   self.moveRightCrouch5, self.moveRightCrouch5, self.moveRightCrouch5]
+        self.animationMoveLeftCrouch = [self.moveLeftCrouch3, self.moveLeftCrouch3, self.moveLeftCrouch3, self.moveLeftCrouch3, self.moveLeftCrouch3,
+                                  self.moveLeftCrouch3, self.moveLeftCrouch3, self.moveLeftCrouch3,
+                                  self.moveLeftCrouch4, self.moveLeftCrouch4, self.moveLeftCrouch4, self.moveLeftCrouch4, self.moveLeftCrouch4,
+                                  self.moveLeftCrouch4, self.moveLeftCrouch4, self.moveLeftCrouch4,
+                                  self.moveLeftCrouch5, self.moveLeftCrouch5, self.moveLeftCrouch5, self.moveLeftCrouch5, self.moveLeftCrouch5,
+                                  self.moveLeftCrouch5, self.moveLeftCrouch5, self.moveLeftCrouch5]
 
         self.animationSwordAttaqueRight = [self.attaqueRight, self.attaqueRight, self.attaqueRight, self.attaqueRight, self.attaqueRight,
                                       self.attaqueRight, self.attaqueRight, self.attaqueRight, self.attaqueRight2, self.attaqueRight2,
@@ -133,6 +171,7 @@ class Player:
         self.rightCtrl = None
         self.throwCtrl = None
         self.attaqueCtrl = None
+        self.crouchCtrl = None
         self.numberPlayer = numberP
         self.sprite = psprite
         self.hitbox = pygame.Rect(0,0,0,0)
@@ -148,9 +187,10 @@ class Player:
         self.attaque = False
         self.animAttaque = 0
         self.animJumpCounter = 0
-        self.speed = 5
+        self.speed = 4.5
         self.lastFloorHitbox = None
         self.numberOfDeath = 0
+        self.crouch = False
 
     def fill(self, image, color):
         """Fill all pixels of the surface with color, preserve transparency."""
@@ -193,8 +233,11 @@ class Player:
         self.jumpAnim()
         for surface in surfaces:
             if self.hitbox.colliderect(surface.hitbox) == 1 and self.hitbox.y - 1 + self.hitbox.height >= surface.hitbox.y > self.hitbox.y:
-                self.setPos(self.x, surface.hitbox.y - 79, self.size)
                 self.moveAnimation()
+                if self.crouch:
+                    self.setPos(self.x, surface.hitbox.y - 49, (self.sprite.get_width(), self.sprite.get_height()))
+                else:
+                    self.setPos(self.x, surface.hitbox.y - 79, (self.sprite.get_width(), self.sprite.get_height()))
                 if self.sword is not None:
                     self.sword.setPos(self.sword.x, self.y + 15, (self.sword.hitbox.width, self.sword.hitbox.height))
                 self.animJumpCounter = 0
@@ -207,16 +250,30 @@ class Player:
         self.animJumpCounter += 1
 
     """Fonction to set all the keyBoardSettings"""
-    def setCtrlPlayer(self, jCtrl, lCtrl, rCtrl, tCtrl, aCtrl):
+    def setCtrlPlayer(self, jCtrl, lCtrl, rCtrl, tCtrl, aCtrl, cCtrl):
         self.jumpCtrl = jCtrl
         self.leftCtrl = lCtrl
         self.rightCtrl = rCtrl
         self.throwCtrl = tCtrl
         self.attaqueCtrl = aCtrl
+        self.crouchCtrl = cCtrl
 
     """Function to move the player with the keyboard inputs"""
     def movePlayer(self, key, opponent, surfaces):
         if not self.timingRespawn:
+            if key[self.crouchCtrl]:
+                if not self.crouch:
+                    self.crouch = True
+                    self.moveAnimation()
+                    self.setPos(self.x, self.y + 30, (self.sprite.get_width(), self.sprite.get_height()))
+                    self.sword.setPos(self.sword.x, self.sword.y + 30, (self.sword.sprite.get_width(), self.sword.sprite.get_height()))
+            else:
+                if self.crouch:
+                    self.crouch = False
+                    self.moveAnimation()
+                    self.setPos(self.x, self.y - 30, self.size)
+                    self.sword.setPos(self.sword.x, self.sword.y - 30,
+                                      (self.sword.sprite.get_width(), self.sword.sprite.get_height()))
             if key[self.throwCtrl] and self.sword is not None:
                 self.sword.throw = 1, self.position, self.numberPlayer
                 self.timerpickUp = 50
@@ -224,10 +281,10 @@ class Player:
                 self.moveAnimation()
             elif key[self.attaqueCtrl] and not self.attaque:
                 self.attaque = True
-            elif key[self.jumpCtrl] and not self.jump and not self.fall:
+            elif key[self.jumpCtrl] and not self.jump and not self.fall and not self.crouch:
                 self.jump = 1
                 self.jumpHeight = self.y - 144
-            elif key[self.leftCtrl] and self.x > 0:
+            if key[self.leftCtrl] and self.x > 0 and not key[self.rightCtrl]:
                 collision = False
                 for surface in surfaces:
                     if self.hitbox.colliderect(surface.hitbox) == 1 and self.hitbox.y-1 + self.hitbox.height != surface.hitbox.y and \
@@ -246,13 +303,13 @@ class Player:
                             if not pygame.Rect.colliderect(hb, opponent.sword.hitbox) or \
                                     (pygame.Rect.colliderect(hb, opponent.sword.hitbox) and opponent.timingRespawn):
                                 self.moveAnimation()
-                                self.setPos(self.x - self.speed, self.y, self.size)
+                                self.setPos(self.x - self.speed, self.y, (self.sprite.get_width(), self.sprite.get_height()))
                                 self.sword.sprite = swordLeft
                                 self.sword.setPos(self.x - 48, self.sword.y,
                                                   (self.sword.hitbox.width, self.sword.hitbox.height))
                         else:
                             self.moveAnimation()
-                            self.setPos(self.x - self.speed, self.y, self.size)
+                            self.setPos(self.x - self.speed, self.y, (self.sprite.get_width(), self.sprite.get_height()))
                             self.sword.sprite = swordLeft
                             self.sword.setPos(self.x - 48, self.sword.y, (self.sword.hitbox.width, self.sword.hitbox.height))
                     else:
@@ -260,8 +317,8 @@ class Player:
                             self.setPos(self.x - self.speed, self.y, (35, 38))
                         else:
                             self.moveAnimation()
-                            self.setPos(self.x - self.speed, self.y, self.size)
-            elif key[self.rightCtrl] and self.x < 756:
+                            self.setPos(self.x - self.speed, self.y, (self.sprite.get_width(), self.sprite.get_height()))
+            if key[self.rightCtrl] and self.x < 756 and not key[self.leftCtrl]:
                 self.position = "right"
                 collision = False
                 for surface in surfaces:
@@ -273,7 +330,7 @@ class Player:
                     if self.sword is not None:
                         hb = pygame.Rect((self.x + 48, self.sword.y), self.sword.size)
                         if self.fall:
-                            self.setPos(self.x + self.speed, self.y, (30, 30))
+                            self.setPos(self.x + self.speed, self.y, (35, 38))
                             self.sword.sprite = swordRight
                             self.sword.setPos(self.x + 48, self.sword.y,
                                               (self.sword.hitbox.width, self.sword.hitbox.height))
@@ -281,22 +338,22 @@ class Player:
                             if not pygame.Rect.colliderect(hb, opponent.sword.hitbox) or \
                                     (pygame.Rect.colliderect(hb, opponent.sword.hitbox) and opponent.timingRespawn):
                                 self.moveAnimation()
-                                self.setPos(self.x + self.speed, self.y, self.size)
+                                self.setPos(self.x + self.speed, self.y, (self.sprite.get_width(), self.sprite.get_height()))
                                 self.sword.sprite = swordRight
                                 self.sword.setPos(self.x + 48, self.sword.y,
                                                   (self.sword.hitbox.width, self.sword.hitbox.height))
                         else:
                             self.moveAnimation()
-                            self.setPos(self.x + self.speed, self.y, self.size)
+                            self.setPos(self.x + self.speed, self.y, (self.sprite.get_width(), self.sprite.get_height()))
                             self.sword.sprite = swordRight
                             self.sword.setPos(self.x + 48, self.sword.y,
                                               (self.sword.hitbox.width, self.sword.hitbox.height))
                     else:
                         if self.fall:
-                            self.setPos(self.x + self.speed, self.y, (30, 30))
+                            self.setPos(self.x + self.speed, self.y, (35, 38))
                         else:
                             self.moveAnimation()
-                            self.setPos(self.x + self.speed, self.y, self.size)
+                            self.setPos(self.x + self.speed, self.y, (self.sprite.get_width(), self.sprite.get_height()))
         if self.jump:
             self.jumps(surfaces)
         f = False
@@ -349,18 +406,30 @@ class Player:
             else:
                 self.animMove += 1
             if self.position == "left":
-                self.sprite = self.animationMoveLeft[self.animMove]
+                if self.crouch:
+                    self.sprite = self.animationMoveLeftCrouch[self.animMove]
+                else:
+                    self.sprite = self.animationMoveLeft[self.animMove]
             else:
-                self.sprite = self.animationMoveRight[self.animMove]
+                if self.crouch:
+                    self.sprite = self.animationMoveRightCrouch[self.animMove]
+                else:
+                    self.sprite = self.animationMoveRight[self.animMove]
         else:
             if self.animMove >= 15:
                 self.animMove = 0
             else:
                 self.animMove += 1
             if self.position == "left":
-                self.sprite = self.animationMoveLeftWithSword[self.animMove]
+                if self.crouch:
+                    self.sprite = self.animationMoveLeftCrouchWithSword[self.animMove]
+                else:
+                    self.sprite = self.animationMoveLeftWithSword[self.animMove]
             else:
-                self.sprite = self.animationMoveRightWithSword[self.animMove]
+                if self.crouch:
+                    self.sprite = self.animationMoveRightCrouchWithSword[self.animMove]
+                else:
+                    self.sprite = self.animationMoveRightWithSword[self.animMove]
 
     """Function to make the animation of the player's attaque"""
     def attaqueAnimation(self):

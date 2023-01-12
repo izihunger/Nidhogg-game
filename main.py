@@ -12,8 +12,8 @@ if __name__ == "__main__":
 
         clock = pygame.time.Clock()
 
-        game.p1.setCtrlPlayer(pygame.K_z, pygame.K_q, pygame.K_d, pygame.K_e, pygame.K_SPACE)
-        game.p2.setCtrlPlayer(pygame.K_UP, pygame.K_LEFT, pygame.K_RIGHT, pygame.K_RSHIFT, pygame.K_RCTRL)
+        game.p1.setCtrlPlayer(pygame.K_z, pygame.K_q, pygame.K_d, pygame.K_e, pygame.K_SPACE, pygame.K_s)
+        game.p2.setCtrlPlayer(pygame.K_UP, pygame.K_LEFT, pygame.K_RIGHT, pygame.K_RSHIFT, pygame.K_RCTRL, pygame.K_DOWN)
         game.musiqueMenu.play(loops=-1)
         game.musiqueMenu.set_volume(game.volumeMusic/2)
         game.cliqueSoundEffect.set_volume(game.volumeSoundEffect)
