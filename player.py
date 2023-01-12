@@ -188,6 +188,7 @@ class Player:
         self.speed = 4.5
         self.numberOfDeath = 0
         self.crouch = False
+        self.numberPlayer = numberP
 
     def fill(self, image, color):
         """Fill all pixels of the surface with color, preserve transparency."""
@@ -262,13 +263,13 @@ class Player:
                     self.crouch = True
                     self.moveAnimation()
                     self.setPos(self.x, self.y + 30, (self.sprite.get_width(), self.sprite.get_height()))
-                    self.sword.setPos(self.sword.x, self.sword.y + 30, (self.sword.sprite.get_width(), self.sword.sprite.get_height()))
+                    self.sword.setPos(self.sword.x, self.sword.y + 25, (self.sword.sprite.get_width(), self.sword.sprite.get_height()))
             else:
                 if self.crouch:
                     self.crouch = False
                     self.moveAnimation()
                     self.setPos(self.x, self.y - 30, self.size)
-                    self.sword.setPos(self.sword.x, self.sword.y - 30,
+                    self.sword.setPos(self.sword.x, self.sword.y - 25,
                                       (self.sword.sprite.get_width(), self.sword.sprite.get_height()))
             if key[self.throwCtrl] and self.sword is not None:
                 self.sword.throw = 1, self.position, self.numberPlayer
@@ -489,7 +490,7 @@ class Player:
     def displayPlayer(self, screen):
         if not self.timingRespawn:
             screen.blit(self.sprite, (self.x, self.y))
-            pygame.draw.rect(screen, (0, 0, 255), self.hitbox, 1)
+            #pygame.draw.rect(screen, (0, 0, 255), self.hitbox, 1)
             if self.sword is not None and self.fall == 0:
                 screen.blit(self.sword.sprite, (self.sword.x, self.sword.y))
-                pygame.draw.rect(screen, (255, 0, 0), self.sword.hitbox, 1)
+                #pygame.draw.rect(screen, (255, 0, 0), self.sword.hitbox, 1)

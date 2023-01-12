@@ -1115,7 +1115,7 @@ class Game:
         self.screen.blit(map[self.map][self.level], (self.cameraX, 0))
         if self.plateformes != []:
             for plat in self.plateformes:
-                pygame.draw.rect(self.screen, (0, 255, 0), plat.hitbox, 1)
+                #pygame.draw.rect(self.screen, (0, 255, 0), plat.hitbox, 1)
                 if plat.background is not None:
                     self.screen.blit(plat.background, (plat.hitbox.x, plat.hitbox.y))
 
@@ -1132,10 +1132,10 @@ class Game:
             if s.throw == (1, "left", 1) or s.throw == (1, "right", 1) or s.throw == (1, "left", 2) or s.throw == (
                     1, "right", 2):
                 self.screen.blit(s.sprite, (s.x, s.y))
-                pygame.draw.rect(self.screen, (255, 0, 0), s.hitbox, 1)
+                #pygame.draw.rect(self.screen, (255, 0, 0), s.hitbox, 1)
             if s != self.p1.sword and s != self.p2.sword:
                 self.screen.blit(s.sprite, (s.x, s.y))
-                pygame.draw.rect(self.screen, (255, 0, 0), s.hitbox, 1)
+                #pygame.draw.rect(self.screen, (255, 0, 0), s.hitbox, 1)
 
     """Function to time the respawn of a player after he dies"""
     def timingRespawn(self):
@@ -1207,7 +1207,7 @@ class Game:
                     s.stopThrow(swordLeft)
                 elif pygame.Rect.colliderect(s.hitbox, self.p1.hitbox) and not self.p1.timingRespawn:
                     s.stopThrow(swordLeft)
-                    self.swordNumber = self.p1.dieP(200, 415, 1, self.sword_list, self.swordNumber)
+                    self.swordNumber = self.p1.dieP(200, 1, self.sword_list, self.swordNumber)
                 elif pygame.Rect.collidelist(s.hitbox, hitboxs) != -1:
                     s.stopThrow(swordLeft)
                 else:
@@ -1218,7 +1218,7 @@ class Game:
                     s.stopThrow(swordRight)
                 elif pygame.Rect.colliderect(s.hitbox, self.p1.hitbox) and not self.p1.timingRespawn:
                     s.stopThrow(swordRight)
-                    self.swordNumber = self.p1.dieP(200, 415, 1, self.sword_list, self.swordNumber)
+                    self.swordNumber = self.p1.dieP(200, 1, self.sword_list, self.swordNumber)
                 elif pygame.Rect.collidelist(s.hitbox, hitboxs) != -1:
                     s.stopThrow(swordLeft)
                 else:
@@ -1229,7 +1229,7 @@ class Game:
                     s.stopThrow(swordRight)
                 elif pygame.Rect.colliderect(s.hitbox, self.p2.hitbox) and not self.p2.timingRespawn:
                     s.stopThrow(swordRight)
-                    self.swordNumber = self.p2.dieP(600, 415, 0, self.sword_list, self.swordNumber)
+                    self.swordNumber = self.p2.dieP(600, 0, self.sword_list, self.swordNumber)
                 elif pygame.Rect.collidelist(s.hitbox, hitboxs) != -1:
                     s.stopThrow(swordLeft)
                 else:
@@ -1240,7 +1240,7 @@ class Game:
                     s.stopThrow(swordRight)
                 elif pygame.Rect.colliderect(s.hitbox, self.p2.hitbox) and not self.p2.timingRespawn:
                     s.stopThrow(swordRight)
-                    self.swordNumber = self.p2.dieP(600, 415, 0, self.sword_list, self.swordNumber)
+                    self.swordNumber = self.p2.dieP(600, 0, self.sword_list, self.swordNumber)
                 elif pygame.Rect.collidelist(s.hitbox, hitboxs) != -1:
                     s.stopThrow(swordLeft)
                 else:
