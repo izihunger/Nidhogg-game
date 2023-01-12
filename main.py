@@ -1,5 +1,5 @@
 import pygame
-from game import game
+from game import Game
 
 if __name__ == "__main__":
         pygame.init()
@@ -8,7 +8,7 @@ if __name__ == "__main__":
         pygame.key.set_repeat(1, 1)
         pygame.display.set_icon(pygame.image.load("image/stiletto.svg"))
 
-        game = game(screen)
+        game = Game(screen)
 
         clock = pygame.time.Clock()
 
@@ -17,6 +17,7 @@ if __name__ == "__main__":
         game.musiqueMenu.play(loops=-1)
         game.musiqueMenu.set_volume(game.volumeMusic/2)
         game.cliqueSoundEffect.set_volume(game.volumeSoundEffect)
+        game.menuSoundEffect.set_volume(game.volumeSoundEffect*2)
         while game.run:
                 clock.tick(120)
                 for event in pygame.event.get():
@@ -38,7 +39,7 @@ if __name__ == "__main__":
                         game.displaySword()
                         game.displayPlayers()
                 else:
-                        game.endGame(mouse)
+                        game.endGame(mouse, keys)
                 pygame.display.update()
 
         pygame.quit()

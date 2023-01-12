@@ -1,5 +1,5 @@
 import pygame
-from sword import sword
+from sword import Sword
 
 """moveRight = pygame.transform.scale(pygame.image.load("image/moveFrame.png"), sizePersonnage)
 moveLeft = pygame.transform.flip(moveRight, True, False)
@@ -172,7 +172,6 @@ class Player:
         self.throwCtrl = None
         self.attaqueCtrl = None
         self.crouchCtrl = None
-        self.numberPlayer = numberP
         self.sprite = psprite
         self.hitbox = pygame.Rect(0,0,0,0)
         self.jump = 0
@@ -181,14 +180,12 @@ class Player:
         self.sword = None
         self.timerpickUp = 0
         self.timingRespawn = 0
-        self.die = 0
         self.position = position
         self.animMove = 0
         self.attaque = False
         self.animAttaque = 0
         self.animJumpCounter = 0
         self.speed = 4.5
-        self.lastFloorHitbox = None
         self.numberOfDeath = 0
         self.crouch = False
 
@@ -242,7 +239,6 @@ class Player:
                     self.sword.setPos(self.sword.x, self.y + 15, (self.sword.hitbox.width, self.sword.hitbox.height))
                 self.animJumpCounter = 0
                 self.fall = 0
-                self.lastFloorHitbox = surface.hitbox
                 return 0
         self.setPos(self.x, self.y + 9, (35, 38))
         if self.sword is not None:
@@ -369,18 +365,18 @@ class Player:
             self.attaqueAnimation()
 
     """Function call when the player die"""
-    def dieP(self, x, y, direction, sword_list, swordNumber):
+    def dieP(self, x, direction, sword_list, swordNumber):
         if self.sword != None:
-            self.sword.falling = True
+            self.sword.fall = True
         self.setPos(x, 250, self.size)
         if direction:
             self.sprite = self.moveRight
             self.position = "right"
-            sword_list.append(sword(self.x + 48, self.y + 15, swordRight))
+            sword_list.append(Sword(self.x + 48, self.y + 15, swordRight))
         else:
             self.sprite = self.moveLeft
             self.position = "left"
-            sword_list.append(sword(self.x - 48, self.y + 15, swordLeft))
+            sword_list.append(Sword(self.x - 48, self.y + 15, swordLeft))
         self.sword = sword_list[swordNumber]
         self.timingRespawn = 80
         self.numberOfDeath += 1

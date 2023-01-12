@@ -7,7 +7,7 @@ swordBot = pygame.transform.rotate(swordLeft, 90)
 swordTop = pygame.transform.rotate(swordLeft, 270)
 spritesAnimSword = [swordRight, swordTop, swordLeft, swordBot]
 
-class sword:
+class Sword:
     def __init__(self, x, y, psprite):
         self.x = x
         self.y = y
@@ -16,7 +16,7 @@ class sword:
         self.size = (55, 13)
         self.throw = 0, "", 0
         self.animCounter = 0
-        self.falling = False
+        self.fall = False
 
     """Fonction to set the position of the sword and his hitbox"""
     def setPos(self, x, y, sizeSword):
@@ -61,6 +61,6 @@ class sword:
         for plateforme in plateformes:
             if self.hitbox.x > plateforme.hitbox.x and self.hitbox.colliderect(plateforme.hitbox):
                 self.setPos(self.x, plateforme.hitbox.y - self.hitbox.height, (self.sprite.get_width(), self.sprite.get_height()))
-                self.falling = False
+                self.fall = False
                 return 0
         self.setPos(self.x, self.y + 10, (self.sprite.get_width(), self.sprite.get_height()))
