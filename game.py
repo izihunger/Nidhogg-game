@@ -172,7 +172,7 @@ class Game:
                     elif (mouse[0] and volumeButton.x <= pygame.mouse.get_pos()[
                         0] <= volumeButton.x + volumeButton.width \
                             and volumeButton.y <= pygame.mouse.get_pos()[
-                        1] <= volumeButton.y + volumeButton.height) or (self.keyMenu == 2 and keys[pygame.K_RETURN]):
+                        1] <= volumeButton.y + volumeButton.height) or (self.keyMenu == 3 and keys[pygame.K_RETURN]):
                         self.cliqueSoundEffect.play()
                         self.menu = 4
                         self.keyMenu = 0
@@ -180,7 +180,7 @@ class Game:
                     elif (mouse[0] and settingsButton.x <= pygame.mouse.get_pos()[
                         0] <= settingsButton.x + settingsButton.width \
                             and settingsButton.y <= pygame.mouse.get_pos()[
-                        1] <= settingsButton.y + settingsButton.height) or (self.keyMenu == 3 and keys[pygame.K_RETURN]):
+                        1] <= settingsButton.y + settingsButton.height) or (self.keyMenu == 2 and keys[pygame.K_RETURN]):
                         self.cliqueSoundEffect.play()
                         self.menu = 3
                         self.keyMenu = 0
@@ -810,14 +810,15 @@ class Game:
         # Set player 1
         self.p1.position = "right"
         self.p1.sprite = moveRight
+        self.p1.numberOfDeath = 0
         self.p1.setPos(200, 200, (self.p1.sprite.get_width(), self.p1.sprite.get_height()))
         self.p1.fillAllSprite(pygame.Color(238, 182, 61))
         self.p1.hitbox = pygame.Rect((self.p1.x, self.p1.y), self.p1.size)
         # Set player 2
         self.p2.position = "left"
         self.p2.sprite = moveLeft
+        self.p2.numberOfDeath = 0
         self.p2.setPos(600, 200, (self.p2.sprite.get_width(), self.p2.sprite.get_height()))
-        self.p2.setCtrlPlayer(pygame.K_UP, pygame.K_LEFT, pygame.K_RIGHT, pygame.K_RSHIFT, pygame.K_RCTRL, pygame.K_DOWN)
         self.p2.fillAllSprite(pygame.Color(202, 80, 203))
         self.p2.hitbox = pygame.Rect((self.p2.x, self.p2.y), self.p2.size)
         # Create sword 1 for player 1 when spawn
@@ -1201,6 +1202,13 @@ class Game:
         for pf in self.plateformes:
             hitboxs.append(pf.hitbox)
         for s in self.sword_list:
+            if self.p1.sword is None and pygame.Rect.colliderect(s.hitbox, self.p1.hitbox) and not self.p1.timerpickUp and s.isFall:
+                    self.p1.pickUpSword(s, self.p1.position)
+                    self.p1.moveAnimation()
+            elif self.p2.sword is None and pygame.Rect.colliderect(s.hitbox,
+                                                                       self.p2.hitbox) and not self.p2.timerpickUp and s.isFall:
+                    self.p2.pickUpSword(s, self.p2.position)
+                    self.p2.moveAnimation()
             if s.throw == (1, "left", 2):
                 if self.p1.sword is not None and pygame.Rect.colliderect(s.hitbox,
                                                                          self.p1.sword.hitbox) and not self.p1.timingRespawn:
@@ -1220,15 +1228,15 @@ class Game:
                     s.stopThrow(swordRight)
                     self.swordNumber = self.p1.dieP(200, 1, self.sword_list, self.swordNumber)
                 elif pygame.Rect.collidelist(s.hitbox, hitboxs) != -1:
-                    s.stopThrow(swordLeft)
+                    s.stopThrow(swordRight)
                 else:
                     s.throwSword(1)
             elif s.throw == (1, "left", 1):
                 if self.p2.sword is not None and pygame.Rect.colliderect(s.hitbox,
                                                                          self.p2.sword.hitbox) and not self.p2.timingRespawn:
-                    s.stopThrow(swordRight)
+                    s.stopThrow(swordLeft)
                 elif pygame.Rect.colliderect(s.hitbox, self.p2.hitbox) and not self.p2.timingRespawn:
-                    s.stopThrow(swordRight)
+                    s.stopThrow(swordLeft)
                     self.swordNumber = self.p2.dieP(600, 0, self.sword_list, self.swordNumber)
                 elif pygame.Rect.collidelist(s.hitbox, hitboxs) != -1:
                     s.stopThrow(swordLeft)
@@ -1239,19 +1247,12 @@ class Game:
                                                                          self.p2.sword.hitbox) and not self.p2.timingRespawn:
                     s.stopThrow(swordRight)
                 elif pygame.Rect.colliderect(s.hitbox, self.p2.hitbox) and not self.p2.timingRespawn:
-                    s.stopThrow(swordRight)
                     self.swordNumber = self.p2.dieP(600, 0, self.sword_list, self.swordNumber)
+                    s.stopThrow(swordRight)
                 elif pygame.Rect.collidelist(s.hitbox, hitboxs) != -1:
-                    s.stopThrow(swordLeft)
+                    s.stopThrow(swordRight)
                 else:
                     s.throwSword(1)
-            if self.p1.sword is None and pygame.Rect.colliderect(s.hitbox, self.p1.hitbox) and not self.p1.timerpickUp:
-                    self.p1.pickUpSword(s, self.p1.position)
-                    self.p1.moveAnimation()
-            elif self.p2.sword is None and pygame.Rect.colliderect(s.hitbox,
-                                                                       self.p2.hitbox) and not self.p2.timerpickUp:
-                    self.p2.pickUpSword(s, self.p2.position)
-                    self.p2.moveAnimation()
 
     """Function to always center the camera between both players"""
     def changeCamera(self):

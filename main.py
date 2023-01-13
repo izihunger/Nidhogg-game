@@ -6,6 +6,7 @@ if __name__ == "__main__":
         screen = pygame.display.set_mode((800, 576))
         pygame.mouse.set_visible(True)
         pygame.key.set_repeat(1, 1)
+        pygame.display.set_caption("Nidhogg")
         pygame.display.set_icon(pygame.image.load("image/stiletto.svg"))
 
         game = Game(screen)
@@ -13,7 +14,8 @@ if __name__ == "__main__":
         clock = pygame.time.Clock()
 
         game.p1.setCtrlPlayer(pygame.K_z, pygame.K_q, pygame.K_d, pygame.K_e, pygame.K_SPACE, pygame.K_s)
-        game.p2.setCtrlPlayer(pygame.K_UP, pygame.K_LEFT, pygame.K_RIGHT, pygame.K_RSHIFT, pygame.K_RCTRL, pygame.K_DOWN)
+        game.p2.setCtrlPlayer(pygame.K_UP, pygame.K_LEFT, pygame.K_RIGHT, pygame.K_RSHIFT,
+                              pygame.K_RCTRL, pygame.K_DOWN)
         game.musiqueMenu.play(loops=-1)
         game.musiqueMenu.set_volume(game.volumeMusic/2)
         game.cliqueSoundEffect.set_volume(game.volumeSoundEffect)
@@ -28,6 +30,7 @@ if __name__ == "__main__":
                 if game.menu:
                         if keys[pygame.K_ESCAPE]:
                                 game.menu = 1
+                                game.keyMenu = 0
                         game.displayMenu(mouse, keys)
                 elif game.isGameStarted:
                         game.keyboardInput(keys)

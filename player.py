@@ -185,7 +185,7 @@ class Player:
         self.attaque = False
         self.animAttaque = 0
         self.animJumpCounter = 0
-        self.speed = 4.5
+        self.speed = 4
         self.numberOfDeath = 0
         self.crouch = False
         self.numberPlayer = numberP
@@ -257,26 +257,33 @@ class Player:
 
     """Function to move the player with the keyboard inputs"""
     def movePlayer(self, key, opponent, surfaces):
+        if self.jump:
+            speed = 2 * self.speed
+        else:
+            speed = self.speed
         if not self.timingRespawn:
-            if key[self.crouchCtrl]:
+            if key[self.crouchCtrl] and not self.attaque:
                 if not self.crouch:
                     self.crouch = True
                     self.moveAnimation()
                     self.setPos(self.x, self.y + 30, (self.sprite.get_width(), self.sprite.get_height()))
-                    self.sword.setPos(self.sword.x, self.sword.y + 25, (self.sword.sprite.get_width(), self.sword.sprite.get_height()))
+                    if self.sword is not None:
+                        self.sword.setPos(self.sword.x, self.sword.y + 30, (self.sword.sprite.get_width(), self.sword.sprite.get_height()))
             else:
                 if self.crouch:
                     self.crouch = False
                     self.moveAnimation()
                     self.setPos(self.x, self.y - 30, self.size)
-                    self.sword.setPos(self.sword.x, self.sword.y - 25,
+                    if self.sword is not None:
+                        self.sword.setPos(self.sword.x, self.sword.y - 30,
                                       (self.sword.sprite.get_width(), self.sword.sprite.get_height()))
             if key[self.throwCtrl] and self.sword is not None:
                 self.sword.throw = 1, self.position, self.numberPlayer
+                self.sword.setPos(self.sword.x, self.sword.y + 10, self.sword.size)
                 self.timerpickUp = 50
                 self.sword = None
                 self.moveAnimation()
-            elif key[self.attaqueCtrl] and not self.attaque:
+            elif key[self.attaqueCtrl] and not self.attaque and not self.crouch:
                 self.attaque = True
             elif key[self.jumpCtrl] and not self.jump and not self.fall and not self.crouch:
                 self.jump = 1
@@ -292,7 +299,7 @@ class Player:
                     if self.sword is not None:
                         hb = pygame.Rect((self.x - 48, self.sword.y), self.sword.size)
                         if self.fall:
-                            self.setPos(self.x - self.speed, self.y, (35, 38))
+                            self.setPos(self.x - speed, self.y, (35, 38))
                             self.sword.sprite = swordLeft
                             self.sword.setPos(self.x - 48, self.sword.y,
                                               (self.sword.hitbox.width, self.sword.hitbox.height))
@@ -300,21 +307,21 @@ class Player:
                             if not pygame.Rect.colliderect(hb, opponent.sword.hitbox) or \
                                     (pygame.Rect.colliderect(hb, opponent.sword.hitbox) and opponent.timingRespawn):
                                 self.moveAnimation()
-                                self.setPos(self.x - self.speed, self.y, (self.sprite.get_width(), self.sprite.get_height()))
+                                self.setPos(self.x - speed, self.y, (self.sprite.get_width(), self.sprite.get_height()))
                                 self.sword.sprite = swordLeft
                                 self.sword.setPos(self.x - 48, self.sword.y,
                                                   (self.sword.hitbox.width, self.sword.hitbox.height))
                         else:
                             self.moveAnimation()
-                            self.setPos(self.x - self.speed, self.y, (self.sprite.get_width(), self.sprite.get_height()))
+                            self.setPos(self.x - speed, self.y, (self.sprite.get_width(), self.sprite.get_height()))
                             self.sword.sprite = swordLeft
                             self.sword.setPos(self.x - 48, self.sword.y, (self.sword.hitbox.width, self.sword.hitbox.height))
                     else:
                         if self.fall:
-                            self.setPos(self.x - self.speed, self.y, (35, 38))
+                            self.setPos(self.x - speed, self.y, (35, 38))
                         else:
                             self.moveAnimation()
-                            self.setPos(self.x - self.speed, self.y, (self.sprite.get_width(), self.sprite.get_height()))
+                            self.setPos(self.x - speed, self.y, (self.sprite.get_width(), self.sprite.get_height()))
             if key[self.rightCtrl] and self.x < 756 and not key[self.leftCtrl]:
                 self.position = "right"
                 collision = False
@@ -327,7 +334,7 @@ class Player:
                     if self.sword is not None:
                         hb = pygame.Rect((self.x + 48, self.sword.y), self.sword.size)
                         if self.fall:
-                            self.setPos(self.x + self.speed, self.y, (35, 38))
+                            self.setPos(self.x + speed, self.y, (35, 38))
                             self.sword.sprite = swordRight
                             self.sword.setPos(self.x + 48, self.sword.y,
                                               (self.sword.hitbox.width, self.sword.hitbox.height))
@@ -335,22 +342,22 @@ class Player:
                             if not pygame.Rect.colliderect(hb, opponent.sword.hitbox) or \
                                     (pygame.Rect.colliderect(hb, opponent.sword.hitbox) and opponent.timingRespawn):
                                 self.moveAnimation()
-                                self.setPos(self.x + self.speed, self.y, (self.sprite.get_width(), self.sprite.get_height()))
+                                self.setPos(self.x + speed, self.y, (self.sprite.get_width(), self.sprite.get_height()))
                                 self.sword.sprite = swordRight
                                 self.sword.setPos(self.x + 48, self.sword.y,
                                                   (self.sword.hitbox.width, self.sword.hitbox.height))
                         else:
                             self.moveAnimation()
-                            self.setPos(self.x + self.speed, self.y, (self.sprite.get_width(), self.sprite.get_height()))
+                            self.setPos(self.x + speed, self.y, (self.sprite.get_width(), self.sprite.get_height()))
                             self.sword.sprite = swordRight
                             self.sword.setPos(self.x + 48, self.sword.y,
                                               (self.sword.hitbox.width, self.sword.hitbox.height))
                     else:
                         if self.fall:
-                            self.setPos(self.x + self.speed, self.y, (35, 38))
+                            self.setPos(self.x + speed, self.y, (35, 38))
                         else:
                             self.moveAnimation()
-                            self.setPos(self.x + self.speed, self.y, (self.sprite.get_width(), self.sprite.get_height()))
+                            self.setPos(self.x + speed, self.y, (self.sprite.get_width(), self.sprite.get_height()))
         if self.jump:
             self.jumps(surfaces)
         f = False
@@ -386,6 +393,7 @@ class Player:
     """Function to pick a sword on the ground when the player walk on and don't have sword"""
     def pickUpSword(self, sword, direction):
         self.sword = sword
+        self.sword.isFall = False
         if direction == "right":
             self.sword.sprite = swordRight
             self.sword.setPos(self.x + 48, self.y + 15,

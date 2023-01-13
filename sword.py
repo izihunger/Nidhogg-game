@@ -17,6 +17,7 @@ class Sword:
         self.throw = 0, "", 0
         self.animCounter = 0
         self.fall = False
+        self.isFall = False
 
     """Fonction to set the position of the sword and his hitbox"""
     def setPos(self, x, y, sizeSword):
@@ -55,6 +56,7 @@ class Sword:
         self.setPos(self.x, 470, self.size)
         self.rotation = 0
         self.sprite = sprite
+        self.isFall = True
 
     """Function call when the player die and he have this sword"""
     def fallingSword(self, plateformes):
@@ -62,5 +64,6 @@ class Sword:
             if self.hitbox.x > plateforme.hitbox.x and self.hitbox.colliderect(plateforme.hitbox):
                 self.setPos(self.x, plateforme.hitbox.y - self.hitbox.height, (self.sprite.get_width(), self.sprite.get_height()))
                 self.fall = False
+                self.isFall = True
                 return 0
         self.setPos(self.x, self.y + 10, (self.sprite.get_width(), self.sprite.get_height()))
